@@ -377,10 +377,9 @@ Sound::Sound( const std::wstring& fileName,LoopType loopType,
 			file.open( fileName,std::ios::binary );
 
 			{
-				char fourcc[5];
-				file.read( fourcc,4u );
-				fourcc[4] = '\0';
-				if( strcmp( fourcc,"RIFF" ) != 0 )
+				BYTE fourcc[4];
+				file.read( reinterpret_cast<char*>(fourcc),4u );
+				if( !IsFourCC( fourcc,"RIFF" ) )
 				{
 					throw CHILI_SOUND_FILE_EXCEPTION( fileName,L"Bad fourcc code" );
 				}

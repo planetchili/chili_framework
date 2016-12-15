@@ -354,6 +354,19 @@ Sound::Sound( const std::wstring& fileName,LoopType loopType,
 		(loopStartSample == nullSample || loopEndSample == nullSample) &&
 		"Did you pass a LoopType::Manual to the constructor? (BAD!)" );
 
+	const auto IsFourCC = []( const BYTE* pData,const char* pFourcc )
+	{
+		assert( strlen( pFourcc ) == 4 );
+		for( int i = 0; i < 4; i++ )
+		{
+			if( char( pData[i] ) != pFourcc[i] )
+			{
+				return false;
+			}
+		}
+		return true;
+	};
+
 	unsigned int fileSize = 0;
 	std::unique_ptr<BYTE[]> pFileIn;
 	try
@@ -364,17 +377,18 @@ Sound::Sound( const std::wstring& fileName,LoopType loopType,
 			file.open( fileName,std::ios::binary );
 
 			{
-				int fourcc;
-				file.read( reinterpret_cast<char*>(&fourcc),4 );
-				if( fourcc != 'FFIR' )
+				char fourcc[5];
+				file.read( fourcc,4u );
+				fourcc[4] = '\0';
+				if( strcmp( fourcc,"RIFF" ) != 0 )
 				{
 					throw CHILI_SOUND_FILE_EXCEPTION( fileName,L"Bad fourcc code" );
 				}
 			}
 
-			file.read( reinterpret_cast<char*>(&fileSize),4 );
-			fileSize += 8; // entry doesn't include the fourcc or itself
-			if( fileSize <= 44 )
+			file.read( reinterpret_cast<char*>(&fileSize),sizeof( fileSize ) );
+			fileSize += 8u; // entry doesn't include the fourcc or itself
+			if( fileSize <= 44u )
 			{
 				throw CHILI_SOUND_FILE_EXCEPTION( fileName,L"file too small" );
 			}
@@ -384,7 +398,7 @@ Sound::Sound( const std::wstring& fileName,LoopType loopType,
 			file.read( reinterpret_cast<char*>(pFileIn.get()),fileSize );
 		}
 
-		if( *reinterpret_cast<const unsigned int*>(&pFileIn[8]) != 'EVAW' )
+		if( !IsFourCC( &pFileIn[8],"WAVE" ) )
 		{
 			throw CHILI_SOUND_FILE_EXCEPTION( fileName,L"format not WAVE" );
 		}
@@ -392,16 +406,18 @@ Sound::Sound( const std::wstring& fileName,LoopType loopType,
 		//look for 'fmt ' chunk id
 		WAVEFORMATEX format;
 		bool bFilledFormat = false;
-		for( unsigned int i = 12; i < fileSize; )
+		for( size_t i = 12u; i < fileSize; )
 		{
-			if( *reinterpret_cast<const unsigned int*>(&pFileIn[i]) == ' tmf' )
+			if( IsFourCC( &pFileIn[i],"fmt " ) )
 			{
-				memcpy( &format,&pFileIn[i + 8],sizeof( format ) );
+				memcpy( &format,&pFileIn[i + 8u],sizeof( format ) );
 				bFilledFormat = true;
 				break;
 			}
 			// chunk size + size entry size + chunk id entry size + word padding
-			i += (*reinterpret_cast<const unsigned int*>(&pFileIn[i + 4]) + 9) & 0xFFFFFFFE;
+			unsigned int chunkSize;
+			memcpy( &chunkSize,&pFileIn[i + 4u],sizeof( chunkSize ) );
+			i += (chunkSize + 9u) & 0xFFFFFFFEu;
 		}
 		if( !bFilledFormat )
 		{
@@ -440,20 +456,21 @@ Sound::Sound( const std::wstring& fileName,LoopType loopType,
 
 		//look for 'data' chunk id
 		bool bFilledData = false;
-		for( unsigned int i = 12; i < fileSize; )
+		for( size_t i = 12u; i < fileSize; )
 		{
-			const int chunkSize = *reinterpret_cast<const unsigned int*>(&pFileIn[i + 4]);
-			if( *reinterpret_cast<const unsigned int*>(&pFileIn[i]) == 'atad' )
+			unsigned int chunkSize;
+			memcpy( &chunkSize,&pFileIn[i + 4u],sizeof( chunkSize ) );
+			if( IsFourCC( &pFileIn[i],"data" ) )
 			{
 				pData = std::make_unique<BYTE[]>( chunkSize );
 				nBytes = chunkSize;
-				memcpy( pData.get(),&pFileIn[i + 8],nBytes );
+				memcpy( pData.get(),&pFileIn[i + 8u],nBytes );
 
 				bFilledData = true;
 				break;
 			}
 			// chunk size + size entry size + chunk id entry size + word padding
-			i += (chunkSize + 9) & 0xFFFFFFFE;
+			i += (chunkSize + 9u) & 0xFFFFFFFEu;
 		}
 		if( !bFilledData )
 		{
@@ -468,10 +485,11 @@ Sound::Sound( const std::wstring& fileName,LoopType loopType,
 
 				//look for 'cue' chunk id
 				bool bFilledCue = false;
-				for( unsigned int i = 12; i < fileSize; )
+				for( size_t i = 12u; i < fileSize; )
 				{
-					const int chunkSize = *reinterpret_cast<const unsigned int*>(&pFileIn[i + 4]);
-					if( *reinterpret_cast<const unsigned int*>(&pFileIn[i]) == ' euc' )
+					unsigned int chunkSize;
+					memcpy( &chunkSize,&pFileIn[i + 4u],sizeof( chunkSize ) );
+					if( IsFourCC( &pFileIn[i],"cue " ) )
 					{
 						struct CuePoint
 						{
@@ -483,22 +501,20 @@ Sound::Sound( const std::wstring& fileName,LoopType loopType,
 							unsigned int frameOffset;
 						};
 
-						const unsigned int nCuePts =
-							*reinterpret_cast<const unsigned int*>(&pFileIn[i + 8]);
-						if( nCuePts != 2 )
+						unsigned int nCuePts;
+						memcpy( &nCuePts,&pFileIn[i + 8u],sizeof( nCuePts ) );
+						if( nCuePts == 2u )
 						{
-							continue;
+							CuePoint cuePts[2];
+							memcpy( cuePts,&pFileIn[i + 12u],sizeof( cuePts ) );
+							loopStart = cuePts[0].frameOffset;
+							loopEnd = cuePts[1].frameOffset;
+							bFilledCue = true;
+							break;
 						}
-
-						const CuePoint* const pCuePts =
-							reinterpret_cast<const CuePoint* const>(&pFileIn[i + 12]);
-						loopStart = pCuePts[0].frameOffset;
-						loopEnd = pCuePts[1].frameOffset;
-						bFilledCue = true;
-						break;
 					}
 					// chunk size + size entry size + chunk id entry size + word padding
-					i += (chunkSize + 9) & 0xFFFFFFFE;
+					i += (chunkSize + 9u) & 0xFFFFFFFEu;
 				}
 				if( !bFilledCue )
 				{
@@ -520,8 +536,8 @@ Sound::Sound( const std::wstring& fileName,LoopType loopType,
 				assert( loopEnd > loopStart && loopEnd < nFrames );
 
 				// just in case ;)
-				loopStart = std::min( loopStart,nFrames - 1 );
-				loopEnd = std::min( loopEnd,nFrames - 1 );
+				loopStart = std::min( loopStart,nFrames - 1u );
+				loopEnd = std::min( loopEnd,nFrames - 1u );
 			}
 			break;
 		case LoopType::ManualSample:
@@ -537,8 +553,8 @@ Sound::Sound( const std::wstring& fileName,LoopType loopType,
 				loopEnd = loopEndSample;
 
 				// just in case ;)
-				loopStart = std::min( loopStart,nFrames - 1 );
-				loopEnd = std::min( loopEnd,nFrames - 1 );
+				loopStart = std::min( loopStart,nFrames - 1u );
+				loopEnd = std::min( loopEnd,nFrames - 1u );
 			}
 			break;
 		case LoopType::AutoFullSound:

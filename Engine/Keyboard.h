@@ -25,11 +25,11 @@
 class Keyboard
 {
 	friend class MainWindow;
-public:
+private:
 	class Event
 	{
 	public:
-		enum Type
+		enum class Type
 		{
 			Press,
 			Release,
@@ -41,7 +41,7 @@ public:
 	public:
 		Event()
 			:
-			type( Invalid ),
+			type( Type::Invalid ),
 			code( 0u )
 		{}
 		Event( Type type,unsigned char code )
@@ -51,15 +51,15 @@ public:
 		{}
 		bool IsPress() const
 		{
-			return type == Press;
+			return type == Type::Press;
 		}
 		bool IsRelease() const
 		{
-			return type == Release;
+			return type == Type::Release;
 		}
 		bool IsValid() const
 		{
-			return type != Invalid;
+			return type != Type::Invalid;
 		}
 		unsigned char GetCode() const
 		{

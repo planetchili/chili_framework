@@ -97,14 +97,14 @@ bool Keyboard::AutorepeatIsEnabled() const
 void Keyboard::OnKeyPressed( unsigned char keycode )
 {
 	keystates[ keycode ] = true;	
-	keybuffer.push( Keyboard::Event( Keyboard::Event::Press,keycode ) );
+	keybuffer.push( Keyboard::Event( Keyboard::Event::Type::Press,keycode ) );
 	TrimBuffer( keybuffer );
 }
 
 void Keyboard::OnKeyReleased( unsigned char keycode )
 {
 	keystates[ keycode ] = false;
-	keybuffer.push( Keyboard::Event( Keyboard::Event::Release,keycode ) );
+	keybuffer.push( Keyboard::Event( Keyboard::Event::Type::Release,keycode ) );
 	TrimBuffer( keybuffer );
 }
 

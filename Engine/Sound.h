@@ -27,10 +27,20 @@
 #include <thread>
 #include "ChiliException.h"
 #include <wrl\client.h>
+#include "COMInitializer.h"
 
 // forward declare WAVEFORMATEX so we don't have to include bullshit headers
 struct tWAVEFORMATEX;
 typedef tWAVEFORMATEX WAVEFORMATEX;
+
+class MFInitializer
+{
+public:
+	MFInitializer();
+	~MFInitializer();
+private:
+	HRESULT hr;
+};
 
 class SoundSystem
 {
@@ -110,6 +120,8 @@ private:
 	SoundSystem();
 	void DeactivateChannel( Channel& channel );
 private:
+	COMInitializer comInit;
+	MFInitializer mfInit;
 	XAudioDll xaudio_dll;
 	Microsoft::WRL::ComPtr<struct IXAudio2> pEngine;
 	struct IXAudio2MasteringVoice* pMaster = nullptr;
@@ -142,7 +154,7 @@ public:
 	};
 public:
 	Sound() = default;
-	// for backwards compatibility--2nd parameter false -> NotLooping
+	// for backwards compatibility--2nd parameter false -> NotLooping (does not work with non-wav)
 	Sound( const std::wstring& fileName,bool loopingWithAutoCueDetect );
 	// do not pass this function Manual LoopTypes!
 	Sound( const std::wstring& fileName,LoopType loopType = LoopType::NotLooping );
@@ -154,7 +166,10 @@ public:
 	void StopOne();
 	void StopAll();
 	~Sound();
-private:	
+private:
+	static Sound LoadNonWav( const std::wstring& fileName,LoopType loopType,
+							 unsigned int loopStartSample,unsigned int loopEndSample,
+							 float loopStartSeconds,float loopEndSeconds );
 	Sound( const std::wstring& fileName,LoopType loopType,
 		unsigned int loopStartSample,unsigned int loopEndSample,
 		float loopStartSeconds,float loopEndSeconds );

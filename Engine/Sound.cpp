@@ -521,7 +521,8 @@ Sound Sound::LoadNonWav( const std::wstring& fileName,LoopType loopType,
 		PropVariantClear( &var );
 
 		// calculating number of bytes for samples
-		sound.nBytes = UINT32( (pFormat->nAvgBytesPerSec * duration) / 10000000 );
+		// (adding extra 1 sec of padding for length calculation error margin)
+		sound.nBytes = UINT32( (pFormat->nAvgBytesPerSec * duration) / 10000000 + pFormat->nAvgBytesPerSec );
 
 		/////////////////////////////
 		// setting looping parameters
@@ -649,6 +650,17 @@ Sound Sound::LoadNonWav( const std::wstring& fileName,LoopType loopType,
 			throw CHILI_SOUND_API_EXCEPTION( hr,L"unlocking sample buffer" );
 		}
 	}
+
+	// reallocate buffer for proper size
+	{
+		auto pAdjustedBuffer = std::make_unique<BYTE[]>( nBytesWritten );
+		// copy over bytes
+		memcpy( pAdjustedBuffer.get(),sound.pData.get(),nBytesWritten );
+		// move buffer
+		sound.pData = std::move( pAdjustedBuffer );
+		// adjust byte count
+		sound.nBytes = nBytesWritten;
+	}	
 
 	return std::move( sound );
 }

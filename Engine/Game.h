@@ -43,6 +43,5 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-	Sound jizz = Sound( L"cum.mp3" );
 	/********************************/
 };

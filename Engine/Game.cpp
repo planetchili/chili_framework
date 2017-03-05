@@ -20,13 +20,6 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
-#include <mfapi.h>
-#include <mfidl.h>
-#include <mfreadwrite.h>
-#include <stdio.h>
-#include <mferror.h>
-#include <Propvarutil.h>
-#include <memory>
 
 Game::Game( MainWindow& wnd )
 	:
@@ -45,14 +38,6 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	if( !wnd.kbd.KeyIsEmpty() )
-	{
-		const auto e = wnd.kbd.ReadKey();
-		if( e.IsPress() && e.GetCode() == VK_SPACE )
-		{
-			jizz.Play();
-		}
-	}
 }
 
 void Game::ComposeFrame()

@@ -586,7 +586,7 @@ Sound Sound::LoadNonWav( const std::wstring& fileName,LoopType loopType,
 	}
 	
 	// allocate memory for sample data
-	sound.pData = std::make_unique<unsigned char[]>( sound.nBytes );
+	sound.pData = std::make_unique<BYTE[]>( sound.nBytes );
 
 	// decode samples and copy into data buffer
 	size_t nBytesWritten = 0u;

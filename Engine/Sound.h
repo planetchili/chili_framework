@@ -33,15 +33,6 @@
 struct tWAVEFORMATEX;
 typedef tWAVEFORMATEX WAVEFORMATEX;
 
-class MFInitializer
-{
-public:
-	MFInitializer();
-	~MFInitializer();
-private:
-	HRESULT hr;
-};
-
 class SoundSystem
 {
 public:
@@ -66,6 +57,14 @@ public:
 		std::wstring filename;
 	};
 private:
+	class MFInitializer
+	{
+	public:
+		MFInitializer();
+		~MFInitializer();
+	private:
+		HRESULT hr;
+	};
 	class XAudioDll
 	{
 	private:

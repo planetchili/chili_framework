@@ -397,7 +397,7 @@ Sound Sound::LoadNonWav( const std::wstring& fileName,LoopType loopType,
 	wrl::ComPtr<IMFSourceReader> pReader;
 	if( FAILED( hr = MFCreateSourceReaderFromURL( fileName.c_str(),nullptr,&pReader ) ) )
 	{
-		throw CHILI_SOUND_API_EXCEPTION( hr,L"Creating MF Source Reader" );
+		throw CHILI_SOUND_API_EXCEPTION( hr,L"Creating MF Source Reader\nFilename: " + fileName );
 	}
 
 	// selecting first stream
@@ -659,7 +659,7 @@ Sound Sound::LoadNonWav( const std::wstring& fileName,LoopType loopType,
 		// move buffer
 		sound.pData = std::move( pAdjustedBuffer );
 		// adjust byte count
-		sound.nBytes = nBytesWritten;
+		sound.nBytes = UINT32( nBytesWritten );
 	}	
 
 	return std::move( sound );
@@ -1057,12 +1057,12 @@ std::wstring SoundSystem::FileException::GetExceptionType() const
 	return L"Sound System File Exception";
 }
 
-MFInitializer::MFInitializer()
+SoundSystem::MFInitializer::MFInitializer()
 {
 	hr = MFStartup( MF_VERSION );
 }
 
-MFInitializer::~MFInitializer()
+SoundSystem::MFInitializer::~MFInitializer()
 {
 	if( hr == S_OK )
 	{

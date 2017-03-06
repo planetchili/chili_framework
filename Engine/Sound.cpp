@@ -480,49 +480,60 @@ Sound Sound::LoadNonWav( const std::wstring& fileName,LoopType loopType,
 
 			if( pFormat->nChannels != sysFormat.nChannels )
 			{
+				CoTaskMemFree( pFormat );
 				throw CHILI_SOUND_FILE_EXCEPTION( fileName,L"bad decompressed wave format (nChannels)" );
 			}
 			else if( pFormat->wBitsPerSample != sysFormat.wBitsPerSample )
 			{
+				CoTaskMemFree( pFormat );
 				throw CHILI_SOUND_FILE_EXCEPTION( fileName,L"bad decompressed wave format (wBitsPerSample)" );
 			}
 			else if( pFormat->nSamplesPerSec != sysFormat.nSamplesPerSec )
 			{
+				CoTaskMemFree( pFormat );
 				throw CHILI_SOUND_FILE_EXCEPTION( fileName,L"bad decompressed wave format (nSamplesPerSec)" );
 			}
 			else if( pFormat->wFormatTag != sysFormat.wFormatTag )
 			{
+				CoTaskMemFree( pFormat );
 				throw CHILI_SOUND_FILE_EXCEPTION( fileName,L"bad decompressed wave format (wFormatTag)" );
 			}
 			else if( pFormat->nBlockAlign != sysFormat.nBlockAlign )
 			{
+				CoTaskMemFree( pFormat );
 				throw CHILI_SOUND_FILE_EXCEPTION( fileName,L"bad decompressed wave format (nBlockAlign)" );
 			}
 			else if( pFormat->nAvgBytesPerSec != sysFormat.nAvgBytesPerSec )
 			{
+				CoTaskMemFree( pFormat );
 				throw CHILI_SOUND_FILE_EXCEPTION( fileName,L"bad decompressed wave format (nAvgBytesPerSec)" );
 			}
 		}
 
-		// getting duration
-		PROPVARIANT var;
-		if( FAILED( hr = pReader->GetPresentationAttribute( MF_SOURCE_READER_MEDIASOURCE,
-												MF_PD_DURATION,&var ) ) )
 		{
-			throw CHILI_SOUND_API_EXCEPTION( hr,L"getting duration attribute from reader" );
-		}
+			// getting duration
+			PROPVARIANT var;
+			if( FAILED( hr = pReader->GetPresentationAttribute( MF_SOURCE_READER_MEDIASOURCE,
+				MF_PD_DURATION,&var ) ) )
+			{
+				CoTaskMemFree( pFormat );
+				throw CHILI_SOUND_API_EXCEPTION( hr,L"getting duration attribute from reader" );
+			}
 
-		// getting int64 from duration prop variant
-		long long duration;
-		if( FAILED( hr = PropVariantToInt64( var,&duration ) ) )
-		{
-			throw CHILI_SOUND_API_EXCEPTION( hr,L"getting int64 out of variant property (duration)" );
-		}
-		PropVariantClear( &var );
+			// getting int64 from duration prop variant
+			long long duration;
+			if( FAILED( hr = PropVariantToInt64( var,&duration ) ) )
+			{
+				PropVariantClear( &var );
+				CoTaskMemFree( pFormat );
+				throw CHILI_SOUND_API_EXCEPTION( hr,L"getting int64 out of variant property (duration)" );
+			}
+			PropVariantClear( &var );
 
-		// calculating number of bytes for samples
-		// (adding extra 1 sec of padding for length calculation error margin)
-		sound.nBytes = UINT32( (pFormat->nAvgBytesPerSec * duration) / 10000000 + pFormat->nAvgBytesPerSec );
+			// calculating number of bytes for samples
+			// (adding extra 1 sec of padding for length calculation error margin)
+			sound.nBytes = UINT32( (pFormat->nAvgBytesPerSec * duration) / 10000000 + pFormat->nAvgBytesPerSec );
+		}
 
 		/////////////////////////////
 		// setting looping parameters

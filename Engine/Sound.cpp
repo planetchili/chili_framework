@@ -1066,6 +1066,6 @@ SoundSystem::MFInitializer::~MFInitializer()
 {
 	if( hr == S_OK )
 	{
-		CoUninitialize();
+		MFShutdown();
 	}
 }

@@ -465,14 +465,20 @@ Sound Sound::LoadNonWav( const std::wstring& fileName,LoopType loopType,
 	// and verifying that format matches sound system channels
 	// and setting loop parameters
 	{
-		WAVEFORMATEX *pFormat = nullptr;
 		UINT32 cbFormat = 0;
 
-		// loading format info into wave format structure (callee allocated, but we must free)
-		if( FAILED( hr = MFCreateWaveFormatExFromMFMediaType( pUncompressedAudioType.Get(),&pFormat,&cbFormat ) ) )
+		// init smart pointer with custom deleter
+		const auto pFormat = [&]()
 		{
-			throw CHILI_SOUND_API_EXCEPTION( hr,L"loading format info into wave format structure" );
-		}
+			// to be temp filled with the pointer
+			WAVEFORMATEX *pFormat = nullptr;
+			// loading format info into wave format structure (callee allocated, but we must free)
+			if( FAILED( hr = MFCreateWaveFormatExFromMFMediaType( pUncompressedAudioType.Get(),&pFormat,&cbFormat ) ) )
+			{
+				throw CHILI_SOUND_API_EXCEPTION( hr,L"loading format info into wave format structure" );
+			}
+			return std::unique_ptr<WAVEFORMATEX,decltype(&CoTaskMemFree)>( pFormat,CoTaskMemFree );
+		}();
 
 		// compare format with sound system format
 		{
@@ -480,43 +486,44 @@ Sound Sound::LoadNonWav( const std::wstring& fileName,LoopType loopType,
 
 			if( pFormat->nChannels != sysFormat.nChannels )
 			{
-				CoTaskMemFree( pFormat );
 				throw CHILI_SOUND_FILE_EXCEPTION( fileName,L"bad decompressed wave format (nChannels)" );
 			}
 			else if( pFormat->wBitsPerSample != sysFormat.wBitsPerSample )
 			{
-				CoTaskMemFree( pFormat );
 				throw CHILI_SOUND_FILE_EXCEPTION( fileName,L"bad decompressed wave format (wBitsPerSample)" );
 			}
 			else if( pFormat->nSamplesPerSec != sysFormat.nSamplesPerSec )
 			{
-				CoTaskMemFree( pFormat );
 				throw CHILI_SOUND_FILE_EXCEPTION( fileName,L"bad decompressed wave format (nSamplesPerSec)" );
 			}
 			else if( pFormat->wFormatTag != sysFormat.wFormatTag )
 			{
-				CoTaskMemFree( pFormat );
 				throw CHILI_SOUND_FILE_EXCEPTION( fileName,L"bad decompressed wave format (wFormatTag)" );
 			}
 			else if( pFormat->nBlockAlign != sysFormat.nBlockAlign )
 			{
-				CoTaskMemFree( pFormat );
 				throw CHILI_SOUND_FILE_EXCEPTION( fileName,L"bad decompressed wave format (nBlockAlign)" );
 			}
 			else if( pFormat->nAvgBytesPerSec != sysFormat.nAvgBytesPerSec )
 			{
-				CoTaskMemFree( pFormat );
 				throw CHILI_SOUND_FILE_EXCEPTION( fileName,L"bad decompressed wave format (nAvgBytesPerSec)" );
 			}
 		}
 
 		{
-			// getting duration
-			PROPVARIANT var;
+			// inheritance for automatic freeing of propvariant resources
+			struct AutoPropVariant : PROPVARIANT
+			{
+				~AutoPropVariant()
+				{
+					PropVariantClear( this );
+				}
+			} var;
+
+			// get duration attribute (as prop variant) from reader
 			if( FAILED( hr = pReader->GetPresentationAttribute( MF_SOURCE_READER_MEDIASOURCE,
 				MF_PD_DURATION,&var ) ) )
 			{
-				CoTaskMemFree( pFormat );
 				throw CHILI_SOUND_API_EXCEPTION( hr,L"getting duration attribute from reader" );
 			}
 
@@ -524,13 +531,10 @@ Sound Sound::LoadNonWav( const std::wstring& fileName,LoopType loopType,
 			long long duration;
 			if( FAILED( hr = PropVariantToInt64( var,&duration ) ) )
 			{
-				PropVariantClear( &var );
-				CoTaskMemFree( pFormat );
 				throw CHILI_SOUND_API_EXCEPTION( hr,L"getting int64 out of variant property (duration)" );
 			}
-			PropVariantClear( &var );
 
-			// calculating number of bytes for samples
+			// calculating number of bytes for samples (duration is in units of 100ns)
 			// (adding extra 1 sec of padding for length calculation error margin)
 			sound.nBytes = UINT32( (pFormat->nAvgBytesPerSec * duration) / 10000000 + pFormat->nAvgBytesPerSec );
 		}
@@ -591,9 +595,6 @@ Sound Sound::LoadNonWav( const std::wstring& fileName,LoopType loopType,
 			break;
 		}
 		/////////////////////////////
-		
-		// clean up wav header allocated by com
-		CoTaskMemFree( pFormat );
 	}
 	
 	// allocate memory for sample data

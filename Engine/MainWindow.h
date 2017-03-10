@@ -56,7 +56,7 @@ public:
 	~MainWindow();
 	bool IsActive() const;
 	bool IsMinimized() const;
-	void ShowMessageBox( const std::wstring& title,const std::wstring& message ) const;
+	void ShowMessageBox( const std::wstring& title,const std::wstring& message,UINT type = MB_OK ) const;
 	void Kill()
 	{
 		PostQuitMessage( 0 );

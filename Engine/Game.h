@@ -46,5 +46,6 @@ private:
 	/*  User Variables              */
 	/********************************/
 	Player player;
+	RectF walls;
 	FrameTimer deltaTime;
 };

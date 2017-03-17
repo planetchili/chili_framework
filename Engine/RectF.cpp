@@ -18,7 +18,7 @@ RectF::RectF(const Vec2& recTop, float recWidth, float recHeight) :
 {
 }
 
-RectF RectF::FromCenter(const Vec2 & center, float halfWidth, float halfHeight)
+RectF RectF::FromCenter(const Vec2& center, float halfWidth, float halfHeight)
 {
 	const Vec2 half(halfWidth, halfHeight);
 	return RectF(center - half, center + half);

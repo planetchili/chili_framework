@@ -24,9 +24,9 @@
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
-	gfx( wnd )
-{
-}
+	gfx( wnd ),
+	player(Vec2(450, 450))
+{}
 
 void Game::Go()
 {
@@ -38,8 +38,11 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	const float dt = deltaTime.Mark();
+	player.Update(wnd.kbd, dt);
 }
 
 void Game::ComposeFrame()
 {
+	player.DrawPlayer(gfx);
 }

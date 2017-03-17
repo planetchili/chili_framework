@@ -7,5 +7,5 @@ class SpriteCodex
 {
 public:
 	// centered drawing of 14x14 sprite
-	static void DrawBall( const Vec2& center,Graphics& gfx );
+	static void DrawPlayer( const Vec2& center,Graphics& gfx );
 };

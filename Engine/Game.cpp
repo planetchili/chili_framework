@@ -25,7 +25,7 @@ Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	player(Vec2(450.0f, 550.0f), 20.0f, 15.0f),
+	player(Vec2(450.0f, 525.0f), 20.0f, 15.0f),
 	walls(0.0f, (float) Graphics::ScreenWidth, 0.0f, (float) Graphics::ScreenHeight)
 {}
 

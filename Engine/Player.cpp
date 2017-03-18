@@ -12,7 +12,7 @@ void Player::WallCollision(const RectF& wall)
 {
 	const RectF playerRect = GetRect();
 
-	if (mPosition.x < wall.left)
+	if (playerRect.left < wall.left)
 	{
 		mPosition.x += wall.left - playerRect.left;
 	}
@@ -32,12 +32,17 @@ void Player::Update(const Keyboard& kbd, float delta)
 	{
 		mPosition.x += mVelocity.x * delta;
 	}
+
+	if (kbd.KeyIsPressed(VK_SPACE))
+	{
+		mIsShooting = true;
+	}
 }
 
-void Player::DrawPlayer(Graphics& gfx) const
+void Player::DrawPlayer(Graphics& gfx)
 {
-	RectF playerRect = GetRect();
-	gfx.DrawRect(playerRect, Colors::White);
+	//RectF playerRect = GetRect();
+	//gfx.DrawRect(playerRect, Colors::White);
 	SpriteCodex::DrawPlayer(mPosition, gfx);
 }
 

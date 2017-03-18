@@ -11,16 +11,15 @@ class Player
 public:
 	Player() = default;
 	Player(const Vec2& playerPostion, float halfWidth, float halfHeight);
-	bool ProjectileCollision(const RectF& projectile) const;
 	void WallCollision(const RectF& wall);
 	void Update(const Keyboard& kbd, float delta);
-	void DrawPlayer(Graphics& gfx) const;
+	void DrawPlayer(Graphics& gfx);
 	RectF GetRect() const;
 private:
 	Vec2 mPosition;
 	float mHalfWidth;
 	float mHalfHeight;
 	Vec2 mVelocity;
-	bool mIsShooting;
+	bool mIsShooting = false;
 	static constexpr float mSpeed = 300.0f;
 };

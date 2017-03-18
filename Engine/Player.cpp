@@ -33,10 +33,7 @@ void Player::Update(const Keyboard& kbd, float delta)
 		mPosition.x += mVelocity.x * delta;
 	}
 
-	if (kbd.KeyIsPressed(VK_SPACE))
-	{
-		mIsShooting = true;
-	}
+	
 }
 
 void Player::DrawPlayer(Graphics& gfx)

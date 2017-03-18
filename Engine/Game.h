@@ -24,6 +24,7 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "Player.h"
+#include "Projectile.h"
 #include "FrameTimer.h"
 
 class Game
@@ -46,6 +47,7 @@ private:
 	/*  User Variables              */
 	/********************************/
 	Player player;
+	Projectile missile;
 	RectF walls;
 	FrameTimer deltaTime;
 };

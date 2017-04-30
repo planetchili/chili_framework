@@ -24,9 +24,10 @@
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
-	gfx( wnd )
-{
-}
+	gfx( wnd ),
+	player(Vec2(450.0f, 525.0f), 20.0f, 15.0f),
+	walls(0.0f, (float) Graphics::ScreenWidth, 100.0f, (float) Graphics::ScreenHeight)
+{}
 
 void Game::Go()
 {
@@ -38,8 +39,13 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	const float dt = deltaTime.Mark();
+	player.Update(wnd.kbd, dt);
+
+	player.WallCollision(walls);
 }
 
 void Game::ComposeFrame()
 {
+	player.DrawPlayer(gfx);
 }

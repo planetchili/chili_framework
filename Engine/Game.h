@@ -47,7 +47,6 @@ private:
 	/*  User Variables              */
 	/********************************/
 	Player player;
-	Projectile missile;
 	RectF walls;
 	FrameTimer deltaTime;
 };

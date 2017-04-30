@@ -5,6 +5,7 @@
 #include "FrameTimer.h"
 #include "SpriteCodex.h"
 #include "Graphics.h"
+#include "Projectile.h"
 
 class Player
 {
@@ -20,6 +21,7 @@ private:
 	float mHalfWidth;
 	float mHalfHeight;
 	Vec2 mVelocity;
+	Projectile mMissile;
 	bool mIsShooting = false;
 	static constexpr float mSpeed = 300.0f;
 };

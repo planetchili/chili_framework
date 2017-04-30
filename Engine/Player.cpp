@@ -4,7 +4,8 @@ Player::Player(const Vec2& playerPostion, float halfWidth, float halfHeight) :
 	mPosition(playerPostion),
 	mHalfWidth(halfWidth),
 	mHalfHeight(halfHeight),
-	mVelocity(200.0f, 100.0f)
+	mVelocity(200.0f, 100.0f),
+	mMissile(Vec2((mPosition.x + 1.0f), mPosition.y - 20.0f))
 {
 }
 
@@ -20,6 +21,8 @@ void Player::WallCollision(const RectF& wall)
 	{
 		mPosition.x -= playerRect.right - wall.right;
 	}
+
+	mMissile.Collision(wall);
 }
 
 void Player::Update(const Keyboard& kbd, float delta)
@@ -33,7 +36,11 @@ void Player::Update(const Keyboard& kbd, float delta)
 		mPosition.x += mVelocity.x * delta;
 	}
 
-	
+	if (kbd.KeyIsPressed(VK_SPACE))
+	{
+		mIsShooting = true;
+		mMissile.Update(delta);
+	}
 }
 
 void Player::DrawPlayer(Graphics& gfx)
@@ -41,6 +48,11 @@ void Player::DrawPlayer(Graphics& gfx)
 	//RectF playerRect = GetRect();
 	//gfx.DrawRect(playerRect, Colors::White);
 	SpriteCodex::DrawPlayer(mPosition, gfx);
+
+	if (mIsShooting)
+	{
+		mMissile.DrawProjectile(gfx);
+	}
 }
 
 RectF Player::GetRect() const

@@ -26,8 +26,7 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd ),
 	player(Vec2(450.0f, 525.0f), 20.0f, 15.0f),
-	missile(Vec2(451.0f, 505.0f)), 
-	walls(0.0f, (float) Graphics::ScreenWidth, 0.0f, (float) Graphics::ScreenHeight)
+	walls(0.0f, (float) Graphics::ScreenWidth, 100.0f, (float) Graphics::ScreenHeight)
 {}
 
 void Game::Go()
@@ -43,16 +42,10 @@ void Game::UpdateModel()
 	const float dt = deltaTime.Mark();
 	player.Update(wnd.kbd, dt);
 
-	if (wnd.kbd.KeyIsPressed(VK_SPACE))
-	{
-		missile.Update(dt);
-	}
 	player.WallCollision(walls);
-	//missile.Collision(walls);
 }
 
 void Game::ComposeFrame()
 {
 	player.DrawPlayer(gfx);
-	missile.DrawProjectile(gfx);
 }

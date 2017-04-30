@@ -12,6 +12,7 @@ public:
 	bool Collision(const RectF& rect);
 	void DrawProjectile(Graphics& gfx) const;
 	RectF GetRect() const;
+	void SetPosition(const Vec2& pos);
 private:
 	Vec2 mPosition;
 	Vec2 mVelocity;

@@ -114,6 +114,11 @@ void Keyboard::OnChar( char character )
 	TrimBuffer( charbuffer );
 }
 
+void Keyboard::ClearState()
+{
+	keystates.reset();
+}
+
 template<typename T>
 void Keyboard::TrimBuffer( std::queue<T>& buffer )
 {

@@ -135,6 +135,9 @@ LRESULT MainWindow::HandleMsg( HWND hWnd,UINT msg,WPARAM wParam,LPARAM lParam )
 	case WM_DESTROY:
 		PostQuitMessage( 0 );
 		break;
+	case WM_KILLFOCUS:
+		kbd.ClearState();
+		break;
 
 		// ************ KEYBOARD MESSAGES ************ //
 	case WM_KEYDOWN:

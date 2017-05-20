@@ -85,6 +85,7 @@ private:
 	void OnKeyPressed( unsigned char keycode );
 	void OnKeyReleased( unsigned char keycode );
 	void OnChar( char character );
+	void ClearState();
 	template<typename T>
 	void TrimBuffer( std::queue<T>& buffer );
 private:

@@ -25,7 +25,7 @@
 class Keyboard
 {
 	friend class MainWindow;
-private:
+public:
 	class Event
 	{
 	public:

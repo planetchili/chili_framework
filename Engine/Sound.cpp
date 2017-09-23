@@ -463,7 +463,6 @@ Sound Sound::LoadNonWav( const std::wstring& fileName,LoopType loopType,
 
 	// calculating number of sample bytes
 	// and verifying that format matches sound system channels
-	// and setting loop parameters
 	{
 		UINT32 cbFormat = 0;
 
@@ -538,63 +537,6 @@ Sound Sound::LoadNonWav( const std::wstring& fileName,LoopType loopType,
 			// (adding extra 1 sec of padding for length calculation error margin)
 			sound.nBytes = UINT32( (pFormat->nAvgBytesPerSec * duration) / 10000000 + pFormat->nAvgBytesPerSec );
 		}
-
-		/////////////////////////////
-		// setting looping parameters
-		switch( loopType )
-		{		
-		case LoopType::ManualFloat:
-		{
-			sound.looping = true;
-
-			const WAVEFORMATEX& sysFormat = SoundSystem::GetFormat();
-			const unsigned int nFrames = sound.nBytes / sysFormat.nBlockAlign;
-
-			const unsigned int nFramesPerSec = sysFormat.nAvgBytesPerSec / sysFormat.nBlockAlign;
-			sound.loopStart = unsigned int( loopStartSeconds * float( nFramesPerSec ) );
-			assert( sound.loopStart < nFrames );
-			sound.loopEnd = unsigned int( loopEndSeconds * float( nFramesPerSec ) );
-			assert( sound.loopEnd > sound.loopStart && sound.loopEnd < nFrames );
-
-			// just in case ;)
-			sound.loopStart = std::min( sound.loopStart,nFrames - 1u );
-			sound.loopEnd = std::min( sound.loopEnd,nFrames - 1u );
-		}
-			break;
-		case LoopType::ManualSample:
-		{
-			sound.looping = true;
-
-			const WAVEFORMATEX& sysFormat = SoundSystem::GetFormat();
-			const unsigned int nFrames = sound.nBytes / sysFormat.nBlockAlign;
-
-			assert( loopStartSample < nFrames );
-			sound.loopStart = loopStartSample;
-			assert( loopEndSample > loopStartSample && loopEndSample < nFrames );
-			sound.loopEnd = loopEndSample;
-
-			// just in case ;)
-			sound.loopStart = std::min( sound.loopStart,nFrames - 1u );
-			sound.loopEnd = std::min( sound.loopEnd,nFrames - 1u );
-		}
-			break;
-		case LoopType::AutoFullSound:
-		{
-			sound.looping = true;
-
-			const unsigned int nFrames = sound.nBytes / SoundSystem::GetFormat().nBlockAlign;
-			assert( nFrames != 0u && "Cannot auto full-loop on zero-length sound!" );
-			sound.loopStart = 0u;
-			sound.loopEnd = nFrames != 0u ? nFrames - 1u : 0u;
-		}
-			break;
-		case LoopType::NotLooping:
-			break;
-		default:
-			assert( "Bad LoopType encountered!" && false );
-			break;
-		}
-		/////////////////////////////
 	}
 	
 	// allocate memory for sample data
@@ -672,7 +614,65 @@ Sound Sound::LoadNonWav( const std::wstring& fileName,LoopType loopType,
 		sound.pData = std::move( pAdjustedBuffer );
 		// adjust byte count
 		sound.nBytes = UINT32( nBytesWritten );
-	}	
+	}
+
+	// setting looping parameters
+	/////////////////////////////
+	// setting looping parameters
+	switch( loopType )
+	{
+	case LoopType::ManualFloat:
+	{
+		sound.looping = true;
+
+		const WAVEFORMATEX& sysFormat = SoundSystem::GetFormat();
+		const unsigned int nFrames = sound.nBytes / sysFormat.nBlockAlign;
+
+		const unsigned int nFramesPerSec = sysFormat.nAvgBytesPerSec / sysFormat.nBlockAlign;
+		sound.loopStart = unsigned int( loopStartSeconds * float( nFramesPerSec ) );
+		assert( sound.loopStart < nFrames );
+		sound.loopEnd = unsigned int( loopEndSeconds * float( nFramesPerSec ) );
+		assert( sound.loopEnd > sound.loopStart && sound.loopEnd < nFrames );
+
+		// just in case ;)
+		sound.loopStart = std::min( sound.loopStart,nFrames - 1u );
+		sound.loopEnd = std::min( sound.loopEnd,nFrames - 1u );
+	}
+	break;
+	case LoopType::ManualSample:
+	{
+		sound.looping = true;
+
+		const WAVEFORMATEX& sysFormat = SoundSystem::GetFormat();
+		const unsigned int nFrames = sound.nBytes / sysFormat.nBlockAlign;
+
+		assert( loopStartSample < nFrames );
+		sound.loopStart = loopStartSample;
+		assert( loopEndSample > loopStartSample && loopEndSample < nFrames );
+		sound.loopEnd = loopEndSample;
+
+		// just in case ;)
+		sound.loopStart = std::min( sound.loopStart,nFrames - 1u );
+		sound.loopEnd = std::min( sound.loopEnd,nFrames - 1u );
+	}
+	break;
+	case LoopType::AutoFullSound:
+	{
+		sound.looping = true;
+
+		const unsigned int nFrames = sound.nBytes / SoundSystem::GetFormat().nBlockAlign;
+		assert( nFrames != 0u && "Cannot auto full-loop on zero-length sound!" );
+		sound.loopStart = 0u;
+		sound.loopEnd = nFrames != 0u ? nFrames - 1u : 0u;
+	}
+	break;
+	case LoopType::NotLooping:
+		break;
+	default:
+		assert( "Bad LoopType encountered!" && false );
+		break;
+	}
+	/////////////////////////////
 
 	return std::move( sound );
 }

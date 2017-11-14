@@ -374,6 +374,99 @@ void Graphics::DrawCircle( int x,int y,int radius,Color c )
 	}
 }
 
+void Graphics::DrawLine( int x0,int y0,int x1,int y1,Color c )
+{
+	bool steep = ( abs( y1 - y0 ) > abs( x1 - x0 ) );
+
+	if( steep )
+	{
+		std::swap( x0,y0 );
+		std::swap( x1,y1 );
+	}
+	if( x0 > x1 )
+	{
+		std::swap( x0,x1 );
+		std::swap( y0,y1 );
+	}
+
+	float dx = x1 - x0;
+	float dy = y1 - y0;
+	float gradient = dy / dx;
+	if( dx == 0.0 )
+	{
+		gradient = 1.0;
+	}
+
+	// handle first endpoint
+	float xend = round( x0 );
+	float yend = y0 + gradient * ( xend - x0 );
+	float xgap = 1 - x0 + 0.5 - floor( x0 + 0.5 );
+	float xpxl1 = xend; // this will be used in the main loop
+	float ypxl1 = floor( yend );
+	if( steep )
+	{
+		// plot(ypxl1,   xpxl1, rfpart(yend) * xgap)
+		// plot(ypxl1+1, xpxl1,  fpart(yend) * xgap)
+		PutPixel( ypxl1,xpxl1,c,float( 1 - yend - floor( yend ) * xgap ) );
+		PutPixel( ypxl1 + 1,xpxl1,c,float( yend - floor( yend ) * xgap ) );
+	}
+	else
+	{
+		// plot(xpxl1, ypxl1  , 1 - yend - floor(yend) * xgap)
+		// plot(xpxl1, ypxl1+1,  yend - floor(yend) * xgap)
+		PutPixel( xpxl1,ypxl1,c,float( 1 - yend - floor( yend ) * xgap ) );
+		PutPixel( xpxl1,ypxl1 + 1,yend - floor( yend ) * xgap );
+	}
+	float intery = yend + gradient; // first y-intersection for the main loop
+
+	// handle second endpoint
+	xend = round( x1 );
+	yend = y1 + gradient * ( xend - x1 );
+	xgap = x1 + 0.5 - floor( x1 + 0.5 );
+	float xpxl2 = xend; //this will be used in the main loop
+	float ypxl2 = floor( yend );
+	if( steep )
+	{
+		// plot( ypxl2,xpxl2,1 - yend - floor( yend ) * xgap )
+		// plot( ypxl2 + 1,xpxl2,yend - floor( yend ) * xgap )
+		PutPixel( ypxl2,xpxl2,c,float( 1 - yend - floor( yend ) * xgap ) );
+		PutPixel( ypxl2 + 1,xpxl2,c,float( yend - floor( yend ) * xgap ) );
+	}
+	else
+	{
+		// plot( xpxl2,ypxl2,1 - yend - floor( yend ) * xgap )
+		// plot( xpxl2,ypxl2 + 1,yend - floor( yend ) * xgap )
+		PutPixel( xpxl2,ypxl2,c,float( 1 - yend - floor( yend ) * xgap ) );
+		PutPixel( xpxl2,ypxl2 + 1,c,float( yend - floor( yend ) * xgap ) );
+	}
+
+			// main loop
+	if( steep )
+	{
+		// for x from xpxl1 + 1 to xpxl2 - 1 do
+		for( int x = xpxl1 + 1; x < xpxl2 - 1; ++x )
+		{
+			// plot( floor( intery ),x,1 - intery - floor( intery ) )
+			// plot( floor( intery ) + 1,x,intery - floor( intery ) )
+			PutPixel( floor( intery ),x,c,float( 1 - intery - floor( intery ) ) );
+			PutPixel( floor( intery ) + 1,x,c,float( intery - floor( intery ) ) );
+			intery = intery + gradient;
+		}
+	}
+	else
+	{
+		// for x from xpxl1 + 1 to xpxl2 - 1 do
+		for( int x = xpxl1 + 1; x < xpxl2 - 1; ++x )
+		{
+			// plot( x,floor( intery ),1 - intery - floor( intery ) )
+			// plot( x,floor( intery ) + 1,intery - floor( intery ) )
+			PutPixel( x,floor( intery ),c,float( 1 - intery - floor( intery ) ) );
+			PutPixel( x,floor( intery ) + 1,c,float( intery - floor( intery ) ) );
+			intery = intery + gradient;
+		}
+	}
+}
+
 
 //////////////////////////////////////////////////
 //           Graphics Exception

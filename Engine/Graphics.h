@@ -62,6 +62,7 @@ public:
 	void DrawRect( int x,int y,int width,int height,Color c );
 	void DrawRectDim( int x1,int y1,int x2,int y2,Color c );
 	void DrawCircle( int x,int y,int radius,Color c );
+	void DrawLine( int x0,int y0,int x1,int y1,Color c );
 	~Graphics();
 private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;

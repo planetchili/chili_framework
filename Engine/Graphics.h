@@ -57,6 +57,8 @@ public:
 		PutPixel( x,y,{ unsigned char( r ),unsigned char( g ),unsigned char( b ) } );
 	}
 	void PutPixel( int x,int y,Color c );
+	void PutPixel( int x,int y,Color c,unsigned char alpha );
+	void PutPixel( int x,int y,Color c,float alpha );
 	void DrawRect( int x,int y,int width,int height,Color c );
 	void DrawRectDim( int x1,int y1,int x2,int y2,Color c );
 	void DrawCircle( int x,int y,int radius,Color c );

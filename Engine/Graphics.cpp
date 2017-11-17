@@ -66,9 +66,9 @@ Graphics::Graphics( HWNDKey& key )
 	createFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 #endif
-	
+
 	// create device and front/back buffers
-	if( FAILED( hr = D3D11CreateDeviceAndSwapChain( 
+	if( FAILED( hr = D3D11CreateDeviceAndSwapChain(
 		nullptr,
 		D3D_DRIVER_TYPE_HARDWARE,
 		nullptr,
@@ -90,13 +90,13 @@ Graphics::Graphics( HWNDKey& key )
 	if( FAILED( hr = pSwapChain->GetBuffer(
 		0,
 		__uuidof( ID3D11Texture2D ),
-		(LPVOID*)&pBackBuffer ) ) )
+		( LPVOID* )&pBackBuffer ) ) )
 	{
 		throw CHILI_GFX_EXCEPTION( hr,L"Getting back buffer" );
 	}
 
 	// create a view on backbuffer that we can render to
-	if( FAILED( hr = pDevice->CreateRenderTargetView( 
+	if( FAILED( hr = pDevice->CreateRenderTargetView(
 		pBackBuffer.Get(),
 		nullptr,
 		&pRenderTargetView ) ) )
@@ -163,7 +163,7 @@ Graphics::Graphics( HWNDKey& key )
 	{
 		throw CHILI_GFX_EXCEPTION( hr,L"Creating pixel shader" );
 	}
-	
+
 
 	/////////////////////////////////////////////////
 	// create vertex shader for framebuffer
@@ -176,7 +176,7 @@ Graphics::Graphics( HWNDKey& key )
 	{
 		throw CHILI_GFX_EXCEPTION( hr,L"Creating vertex shader" );
 	}
-	
+
 
 	//////////////////////////////////////////////////////////////
 	// create and fill vertex buffer with quad for rendering frame
@@ -201,7 +201,7 @@ Graphics::Graphics( HWNDKey& key )
 		throw CHILI_GFX_EXCEPTION( hr,L"Creating vertex buffer" );
 	}
 
-	
+
 	//////////////////////////////////////////
 	// create input layout for fullscreen quad
 	const D3D11_INPUT_ELEMENT_DESC ied[] =
@@ -236,7 +236,7 @@ Graphics::Graphics( HWNDKey& key )
 	}
 
 	// allocate memory for sysbuffer (16-byte aligned for faster access)
-	pSysBuffer = reinterpret_cast<Color*>( 
+	pSysBuffer = reinterpret_cast< Color* >(
 		_aligned_malloc( sizeof( Color ) * Graphics::ScreenWidth * Graphics::ScreenHeight,16u ) );
 }
 
@@ -263,14 +263,14 @@ void Graphics::EndFrame()
 		throw CHILI_GFX_EXCEPTION( hr,L"Mapping sysbuffer" );
 	}
 	// setup parameters for copy operation
-	Color* pDst = reinterpret_cast<Color*>(mappedSysBufferTexture.pData );
+	Color* pDst = reinterpret_cast< Color* >( mappedSysBufferTexture.pData );
 	const size_t dstPitch = mappedSysBufferTexture.RowPitch / sizeof( Color );
 	const size_t srcPitch = Graphics::ScreenWidth;
 	const size_t rowBytes = srcPitch * sizeof( Color );
 	// perform the copy line-by-line
 	for( size_t y = 0u; y < Graphics::ScreenHeight; y++ )
 	{
-		memcpy( &pDst[ y * dstPitch ],&pSysBuffer[y * srcPitch],rowBytes );
+		memcpy( &pDst[y * dstPitch],&pSysBuffer[y * srcPitch],rowBytes );
 	}
 	// release the adapter memory
 	pImmediateContext->Unmap( pSysBufferTexture.Get(),0u );
@@ -307,6 +307,25 @@ void Graphics::BeginFrame()
 	memset( pSysBuffer,0u,sizeof( Color ) * Graphics::ScreenHeight * Graphics::ScreenWidth );
 }
 
+void Graphics::PutPixel( int x,int y,Color c,unsigned char alpha )
+{
+	const Color srcPixel = c;
+	const Color dstPixel = pSysBuffer[y * ScreenWidth + x];
+
+	const Color blendedPixel = {
+		unsigned char( ( dstPixel.GetR() + srcPixel.GetR() ) / 2 ),
+		unsigned char( ( dstPixel.GetG() + srcPixel.GetG() ) / 2 ),
+		unsigned char( ( dstPixel.GetB() + srcPixel.GetB() ) / 2 )
+	};
+
+	pSysBuffer[Graphics::ScreenWidth * y + x] = blendedPixel;
+}
+
+void Graphics::PutPixel( int x,int y,Color c,float alpha )
+{
+	PutPixel( x,y,c,unsigned char( alpha * 255 ) );
+}
+
 void Graphics::PutPixel( int x,int y,Color c )
 {
 	assert( x >= 0 );
@@ -314,6 +333,138 @@ void Graphics::PutPixel( int x,int y,Color c )
 	assert( y >= 0 );
 	assert( y < int( Graphics::ScreenHeight ) );
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
+}
+
+void Graphics::DrawRect( int x,int y,int width,int height,Color c )
+{
+	for( int i = y; i < y + height; ++i )
+	{
+		for( int j = x; j < x + width; ++j )
+		{
+			PutPixel( j,i,c );
+		}
+	}
+}
+
+void Graphics::DrawRectDim( int x1,int y1,int x2,int y2,Color c )
+{
+	for( int y = y1; y < y2; ++y )
+	{
+		for( int x = x1; x < x2; ++x )
+		{
+			PutPixel( x,y,c );
+		}
+	}
+}
+
+void Graphics::DrawCircle( int x,int y,int radius,Color c )
+{
+	const int radSq = radius * radius;
+	for( int i = y - radius; i < y + radius; ++i )
+	{
+		for( int j = x - radius; j < x + radius; ++j )
+		{
+			const int xDiff = x - j;
+			const int yDiff = y - i;
+			if( xDiff * xDiff + yDiff * yDiff < radSq )
+			{
+				PutPixel( j,i,c );
+			}
+		}
+	}
+}
+
+void Graphics::DrawLine( int x0,int y0,int x1,int y1,Color c )
+{
+	bool steep = ( abs( y1 - y0 ) > abs( x1 - x0 ) );
+
+	if( steep )
+	{
+		std::swap( x0,y0 );
+		std::swap( x1,y1 );
+	}
+	if( x0 > x1 )
+	{
+		std::swap( x0,x1 );
+		std::swap( y0,y1 );
+	}
+
+	float dx = x1 - x0;
+	float dy = y1 - y0;
+	float gradient = dy / dx;
+	if( dx == 0.0 )
+	{
+		gradient = 1.0;
+	}
+
+	// handle first endpoint
+	float xend = round( x0 );
+	float yend = y0 + gradient * ( xend - x0 );
+	float xgap = 1 - x0 + 0.5 - floor( x0 + 0.5 );
+	float xpxl1 = xend; // this will be used in the main loop
+	float ypxl1 = floor( yend );
+	if( steep )
+	{
+		// plot(ypxl1,   xpxl1, rfpart(yend) * xgap)
+		// plot(ypxl1+1, xpxl1,  fpart(yend) * xgap)
+		PutPixel( ypxl1,xpxl1,c,float( 1 - yend - floor( yend ) * xgap ) );
+		PutPixel( ypxl1 + 1,xpxl1,c,float( yend - floor( yend ) * xgap ) );
+	}
+	else
+	{
+		// plot(xpxl1, ypxl1  , 1 - yend - floor(yend) * xgap)
+		// plot(xpxl1, ypxl1+1,  yend - floor(yend) * xgap)
+		PutPixel( xpxl1,ypxl1,c,float( 1 - yend - floor( yend ) * xgap ) );
+		PutPixel( xpxl1,ypxl1 + 1,yend - floor( yend ) * xgap );
+	}
+	float intery = yend + gradient; // first y-intersection for the main loop
+
+	// handle second endpoint
+	xend = round( x1 );
+	yend = y1 + gradient * ( xend - x1 );
+	xgap = x1 + 0.5 - floor( x1 + 0.5 );
+	float xpxl2 = xend; //this will be used in the main loop
+	float ypxl2 = floor( yend );
+	if( steep )
+	{
+		// plot( ypxl2,xpxl2,1 - yend - floor( yend ) * xgap )
+		// plot( ypxl2 + 1,xpxl2,yend - floor( yend ) * xgap )
+		PutPixel( ypxl2,xpxl2,c,float( 1 - yend - floor( yend ) * xgap ) );
+		PutPixel( ypxl2 + 1,xpxl2,c,float( yend - floor( yend ) * xgap ) );
+	}
+	else
+	{
+		// plot( xpxl2,ypxl2,1 - yend - floor( yend ) * xgap )
+		// plot( xpxl2,ypxl2 + 1,yend - floor( yend ) * xgap )
+		PutPixel( xpxl2,ypxl2,c,float( 1 - yend - floor( yend ) * xgap ) );
+		PutPixel( xpxl2,ypxl2 + 1,c,float( yend - floor( yend ) * xgap ) );
+	}
+
+			// main loop
+	if( steep )
+	{
+		// for x from xpxl1 + 1 to xpxl2 - 1 do
+		for( int x = xpxl1 + 1; x < xpxl2 - 1; ++x )
+		{
+			// plot( floor( intery ),x,1 - intery - floor( intery ) )
+			// plot( floor( intery ) + 1,x,intery - floor( intery ) )
+			PutPixel( floor( intery ),x,c,float( 1 - intery - floor( intery ) ) );
+			PutPixel( floor( intery ) + 1,x,c,float( intery - floor( intery ) ) );
+			intery = intery + gradient;
+		}
+	}
+	else
+	{
+		// for x from xpxl1 + 1 to xpxl2 - 1 do
+		for( int x = xpxl1 + 1; x < xpxl2 - 1; ++x )
+		{
+			// plot( x,floor( intery ),1 - intery - floor( intery ) )
+			// plot( x,floor( intery ) + 1,intery - floor( intery ) )
+			PutPixel( x,floor( intery ),c,float( 1 - intery - floor( intery ) ) );
+			PutPixel( x,floor( intery ) + 1,c,float( intery - floor( intery ) ) );
+			intery = intery + gradient;
+		}
+	}
 }
 
 
@@ -332,14 +483,14 @@ std::wstring Graphics::Exception::GetFullMessage() const
 	const std::wstring errorDesc = GetErrorDescription();
 	const std::wstring& note = GetNote();
 	const std::wstring location = GetLocation();
-	return    (!errorName.empty() ? std::wstring( L"Error: " ) + errorName + L"\n"
-		: empty)
-		+ (!errorDesc.empty() ? std::wstring( L"Description: " ) + errorDesc + L"\n"
-			: empty)
-		+ (!note.empty() ? std::wstring( L"Note: " ) + note + L"\n"
-			: empty)
-		+ (!location.empty() ? std::wstring( L"Location: " ) + location
-			: empty);
+	return    ( !errorName.empty() ? std::wstring( L"Error: " ) + errorName + L"\n"
+		: empty )
+		+ ( !errorDesc.empty() ? std::wstring( L"Description: " ) + errorDesc + L"\n"
+			: empty )
+		+ ( !note.empty() ? std::wstring( L"Note: " ) + note + L"\n"
+			: empty )
+		+ ( !location.empty() ? std::wstring( L"Location: " ) + location
+			: empty );
 }
 
 std::wstring Graphics::Exception::GetErrorName() const

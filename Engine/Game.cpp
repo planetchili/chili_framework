@@ -38,8 +38,30 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	
+	if (wnd.mouse.LeftIsPressed())
+	{
+		R++;
+	}
+	if (wnd.mouse.RightIsPressed())
+	{
+		R--;
+	}
+	
+
+			
 }
 
 void Game::ComposeFrame()
 {
+	while (theta < 360.0)
+	{
+		
+		int x = R * std::cos(PI*theta / 180);
+		int y = R * std::sin(PI*theta / 180);
+
+		gfx.PutPixel(x+xpos,y+ypos,255,0,0);
+
+		theta += 0.2;
+	}
 }

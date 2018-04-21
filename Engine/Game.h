@@ -23,6 +23,7 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
+#include "JezierVec2.h"
 
 class Game
 {
@@ -42,9 +43,7 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-	int xpos = gfx.ScreenWidth / 2, ypos = gfx.ScreenHeight / 2;
-	double R = 300.0, theta = 0;
-	double PI = 3.1415926536;
+
 	/********************************/
 
 };

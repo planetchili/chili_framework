@@ -60,6 +60,12 @@
     <ClInclude Include="COMInitializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="JezierMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JezierVec2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DXErr.cpp">

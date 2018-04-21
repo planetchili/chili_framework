@@ -75,18 +75,35 @@ public:
 		return *this = *this / rhs;
 	}
 
+	/*Lenght operations*/
 
-	/*
-	inline T SqLen() 
+	inline T GetLengthSq() const
 	{
-		return Sq(*this) 
+		return x * x + y * y;
+	}
+	
+	inline T GetLength() const
+	{
+		return std::sqrt(GetLengthSq);
 	}
 
-	inline T Length() 
+	/*Normalise operations*/
+
+	inline _Vec2& Normalize()
 	{
-		return std::sqrt(SqLenght);
+		return *this = GetNormalize();
 	}
-	*/
+	inline _Vec2 GetNormalize() const
+	{
+		const double len = GetLength();
+		if (len != 0.0)
+		{
+			return *this * (1.0 / len);
+		}
+		return len;
+	}
+
+
 	
 public:
 	T x;

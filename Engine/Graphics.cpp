@@ -26,6 +26,7 @@
 #include <string>
 #include <array>
 
+
 // Ignore the intellisense error "cannot open source file" for .shh files.
 // They will be created during the build sequence before the preprocessor runs.
 namespace FramebufferShaders
@@ -315,6 +316,53 @@ void Graphics::PutPixel( int x,int y,Color c )
 	assert( y < int( Graphics::ScreenHeight ) );
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
 }
+
+void Graphics::DrawLine(float x1, float y1, float x2, float y2, Color c)
+{
+	const float dx = x2 - x1;
+	const float dy = y2 - y1;
+
+	if (dx == 0.0f && dy == 0.0f)
+	{
+		PutPixel((int)x1, (int)y1, c);
+	}
+	else if (abs(dx)>abs(dy))
+	{
+		if (dx < 0.0f)
+		{
+			std::swap(x1, x2);
+			std::swap(y1, y2);
+		}
+
+		float m = dy / dx;
+		float b = y1 - m * x1;
+
+		for (float x = x1; x <= x2; x++)
+		{
+			float y = m * x + b;
+			PutPixel((int)x, (int)y, c);
+		}
+	}
+	else
+	{
+		if (dy < 0.0f)
+		{
+			std::swap(x1, x2);
+			std::swap(y1, y2);
+		}
+
+		float m = dx / dy;
+		float b = x1 - m * y1;
+
+		for (float y = y1; y <= y2; y++)
+		{
+			float x = m * y + b;
+			PutPixel((int)x, (int)y, c);
+		}
+	}
+}
+
+
 
 
 //////////////////////////////////////////////////

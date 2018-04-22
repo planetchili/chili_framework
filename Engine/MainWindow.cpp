@@ -128,10 +128,39 @@ LRESULT WINAPI MainWindow::_HandleMsgThunk( HWND hWnd,UINT msg,WPARAM wParam,LPA
 	return pWnd->HandleMsg( hWnd,msg,wParam,lParam );
 }
 
+
 LRESULT MainWindow::HandleMsg( HWND hWnd,UINT msg,WPARAM wParam,LPARAM lParam )
 {
 	switch( msg )
 	{
+	
+	case WM_CREATE:
+		HMENU hMenu, hSubMenu;
+
+		hMenu = CreateMenu();
+
+		hSubMenu = CreatePopupMenu();
+		AppendMenu(hSubMenu, MF_STRING, ID_FILE_EXIT, L"E&xit");
+		AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT)hSubMenu,L"&File");
+
+		hSubMenu = CreatePopupMenu();
+		AppendMenu(hSubMenu, MF_STRING, ID_STUFF_GO, L"&Go");
+		AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT)hSubMenu, L"&Stuff");
+
+		SetMenu(hWnd, hMenu);
+
+	case WM_COMMAND:
+		switch (LOWORD(wParam))
+		{
+		case ID_FILE_EXIT:
+			PostMessage(hWnd, WM_CLOSE, 0, 0);
+			break;
+		case ID_STUFF_GO:
+			MessageBox(hWnd, L"You clicked Go!", L"Woo!", MB_OK);
+			break;
+		}
+		break;
+
 	case WM_DESTROY:
 		PostQuitMessage( 0 );
 		break;
@@ -230,3 +259,7 @@ LRESULT MainWindow::HandleMsg( HWND hWnd,UINT msg,WPARAM wParam,LPARAM lParam )
 
 	return DefWindowProc( hWnd,msg,wParam,lParam );
 }
+
+
+
+

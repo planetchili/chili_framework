@@ -20,11 +20,13 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include "JezierVec2.h"
 
-Game::Game( MainWindow& wnd )
+Game::Game(MainWindow& wnd)
 	:
-	wnd( wnd ),
-	gfx( wnd )
+	wnd(wnd),
+	gfx(wnd)
+
 {
 }
 
@@ -38,6 +40,7 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+
 }
 
 void Game::ComposeFrame()

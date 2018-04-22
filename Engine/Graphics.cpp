@@ -316,6 +316,39 @@ void Graphics::PutPixel( int x,int y,Color c )
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
 }
 
+void Graphics::DrawLine(float x1, float x2, float y1, float y2, Color c)
+{
+	const float dx = x2 - x1;
+	const float dy = y2 - y1;
+
+	if (dx == 0.0f, dy == 0.0f)
+	{
+		PutPixel((int)x1, (int)y1, c);
+	}
+	else if (dx>dy)
+	{
+		const float m = dy / dx;
+		const float b = y1 - m * x1;
+
+		for (float x = x1; x < x2; x++)
+		{
+			float y = m * x + b;
+			PutPixel((int)x, (int)y, c);
+		}
+	}
+	else
+	{
+		const float m = dy / dx;
+		const float b = y1 - m * x1;
+
+		for (float y = y1; y < y2; y++)
+		{
+			float x = m * y + b;
+			PutPixel((int)x, (int)y, c);
+		}
+	}
+}
+
 
 
 

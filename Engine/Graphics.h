@@ -57,6 +57,8 @@ public:
 		PutPixel( x,y,{ unsigned char( r ),unsigned char( g ),unsigned char( b ) } );
 	}
 	void PutPixel( int x,int y,Color c );
+
+	void DrawLine(float x1, float x2, float y1, float y2, Color c);
 	
 	~Graphics();
 private:

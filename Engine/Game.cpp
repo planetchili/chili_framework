@@ -25,9 +25,12 @@
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
-	gfx(wnd)
+	gfx(wnd),
+	v1(3,4),
+	x1(720),
+	y1(450)
 {
-
+	double len = &v1.GetLength;
 }
 
 void Game::Go()
@@ -40,10 +43,26 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
+	{
+		x2++;
+	}
+	if (wnd.kbd.KeyIsPressed(VK_LEFT))
+	{
+		x2--;
+	}
 
+	if (wnd.kbd.KeyIsPressed(VK_UP))
+	{
+		y2++;
+	}
+	if (wnd.kbd.KeyIsPressed(VK_DOWN))
+	{
+		y2--;
+	}
 }
 
 void Game::ComposeFrame()
 {
-
+	//gfx.DrawLine(x1, y1, x2, y2,White);
 }

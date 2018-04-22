@@ -2,6 +2,7 @@
 
 #include "JezierMath.h"
 
+
 template <typename T>
 class _Vec2
 {
@@ -84,7 +85,7 @@ public:
 	
 	inline T GetLength() const
 	{
-		return std::sqrt(GetLengthSq);
+		return std::sqrt(GetLengthSq());
 	}
 
 	/*Normalise operations*/

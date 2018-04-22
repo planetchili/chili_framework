@@ -45,6 +45,7 @@ private:
 	/*  User Variables              */
 	Ved2 v1;
 	float x1, y1, x2, y2;
+	double len;
 	/********************************/
 
 };

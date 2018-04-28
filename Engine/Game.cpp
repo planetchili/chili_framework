@@ -25,8 +25,11 @@
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
-	gfx(wnd)
-
+	gfx(wnd),
+	xpos(720),
+	ypos(450),
+	x1(100),  y1(450), x2(1300), y2(300),
+	c(Colors::White)
 {
 }
 
@@ -40,9 +43,31 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-
+	if (wnd.mouse.LeftIsPressed())
+	{
+		xpos = wnd.mouse.GetPosX();
+		ypos = wnd.mouse.GetPosY();
+		c = Colors::Yellow;
+	}
+	else
+		c = Colors::White;
+	if (wnd.kbd.KeyIsPressed(VK_UP))
+	{
+		y2--;
+		y1--;
+	}
+	if (wnd.kbd.KeyIsPressed(VK_DOWN))
+	{
+		y2++;
+		y1++;
+	}
 }
 
 void Game::ComposeFrame()
 {
+
+	gfx.DrawLine(x1, y1, x2, y2, Colors::White);
+	gfx.DrawCircle(xpos, ypos, 100, c);
+	gfx.DrawArc(520,450,720,450,45,120, Colors::White);
+
 }

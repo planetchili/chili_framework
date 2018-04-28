@@ -43,6 +43,12 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+
+	int xpos;
+	int ypos;
+	int x1,y1,x2,y2;
+	Color c;
+	
 	/********************************/
 
 };

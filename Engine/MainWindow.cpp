@@ -156,7 +156,8 @@ LRESULT MainWindow::HandleMsg( HWND hWnd,UINT msg,WPARAM wParam,LPARAM lParam )
 			PostMessage(hWnd, WM_CLOSE, 0, 0);
 			break;
 		case ID_STUFF_GO:
-			MessageBox(hWnd, L"You clicked Go!", L"Woo!", MB_OK);
+			ShowMessageBox(L"You clicked Go!", L"Woo!");
+		
 			break;
 		}
 		break;

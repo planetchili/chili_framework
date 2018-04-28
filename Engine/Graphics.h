@@ -24,6 +24,9 @@
 #include <wrl.h>
 #include "ChiliException.h"
 #include "Colors.h"
+#include "JezierVec2.h"
+#include  <type_traits>
+#include <assert.h>
 
 class Graphics
 {
@@ -57,9 +60,28 @@ public:
 		PutPixel( x,y,{ unsigned char( r ),unsigned char( g ),unsigned char( b ) } );
 	}
 	void PutPixel( int x,int y,Color c );
-
-	void DrawLine(float x1, float x2, float y1, float y2, Color c);
 	
+	/*Draw Line Functions*/
+	template<typename T>
+	void DrawLine(const _Vec2<T> v1, const _Vec2<T> v2, Color c)
+	{
+		DrawLine((float)v1.x, (float)v1.y, (float)v2.x, (float)v2.y, c);
+	}
+	void DrawLine(float x1, float y1, float x2, float y2, Color c);
+
+	/*Draw Circle Functions*/
+	template<typename T2>
+	void DrawCircle(_Vec2<T2> vpos, T2 R, Color c)
+	{
+		DrawCircle((float)vpos.x, (float)vpos.y, c);
+	}
+	void DrawCircle(float xpos, float ypos, float R, Color c);
+		
+	/*Draw Arc Functions*/
+	void DrawArc(float x1, float y1, float Ox, float Oy, float theta_begin,float theta_end, Color c);
+
+	
+
 	~Graphics();
 private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;

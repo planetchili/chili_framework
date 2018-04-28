@@ -324,7 +324,7 @@ void Graphics::DrawLine(float x1, float y1, float x2, float y2, Color c)
 
 	if (dx == 0.0f && dy == 0.0f)
 	{
-		PutPixel((int)x1, (int)y1, c);
+		PutPixel((int)x1, (int)y1, Colors::Red);
 	}
 	else if (abs(dx)>abs(dy))
 	{
@@ -359,6 +359,49 @@ void Graphics::DrawLine(float x1, float y1, float x2, float y2, Color c)
 			float x = m * y + b;
 			PutPixel((int)x, (int)y, c);
 		}
+	}
+}
+
+void Graphics::DrawCircle(float xpos, float ypos, float R, Color c)
+{
+	
+		if (R > 0.0)
+		{
+
+			for (double theta = 0; theta < 360; theta += 0.2)
+			{
+				float x = (float)(R * std::cos(PI_F*theta / 180));
+				float y = (float)(R * std::sin(PI_F*theta / 180));
+
+				PutPixel((int)(xpos), (int)(ypos), Colors::White);
+				PutPixel((int)(x+0.5f + xpos), (int)(y+0.5f + ypos), c);
+			}
+		}
+		else
+		{
+			PutPixel(int(xpos), int(ypos), Colors::White);
+		}
+
+	
+}
+
+void Graphics::DrawArc(float x1, float y1, float Ox, float Oy, float theta_begin, float theta_end, Color c)
+{
+
+	bool theta_range = theta_end - theta_begin > 0.0;
+	float R = std::sqrt((Ox - x1)*(Ox - x1) + (Oy - y1)*(Oy - y1));
+
+	for (float theta = theta_begin;
+		theta_range ? theta < theta_end : theta > theta_end;
+		theta_range > 0.0 ? theta += 0.2 : theta -= 0.2	)
+	{
+		float x = (float)(R * std::cos(PI_F*theta / 180));
+		float y = (float)(R * std::sin(PI_F*theta / 180));
+
+		//Draw pixel at the begining of radius
+		PutPixel((int)(Ox), (int)(Oy), Colors::Red);
+		//Draw arc
+		PutPixel((int)(x + Ox), (int)(y + Oy), c);
 	}
 }
 

@@ -241,6 +241,35 @@ Graphics::Graphics( HWNDKey& key )
 		_aligned_malloc( sizeof( Color ) * Graphics::ScreenWidth * Graphics::ScreenHeight,16u ) );
 }
 
+void Graphics::DrawFlatEllipse(float Ox, float Oy, float Rx, float Ry, Color c)
+{
+	if (Ry==0.0)
+	{
+		DrawLine(Ox - Rx, Oy, Ox + Rx, Oy, c);
+	}
+	else if (Rx==0.0)
+	{
+
+		DrawLine(Ox, Oy - Ry, Ox, Oy + Ry, c);
+	}
+	else if (Rx == 0.0 && Ry == 0.0)
+	{
+		PutPixel((int)(Ox), (int)(Oy), c);
+	}
+	else
+	{
+		for (double theta = 0; theta < 360; theta += 0.2)
+		{
+			float x = (float)(Rx * std::cos(PI_F*theta / 180));
+			float y = (float)(Ry * std::sin(PI_F*theta / 180));
+
+			PutPixel((int)(Ox), (int)(Oy), c);
+			PutPixel((int)(x + 0.5f + Ox), (int)(y + 0.5f + Oy), c);
+		}
+	}
+
+}
+
 Graphics::~Graphics()
 {
 	// free sysbuffer memory (aligned free)
@@ -340,7 +369,7 @@ void Graphics::DrawLine(float x1, float y1, float x2, float y2, Color c)
 		for (float x = x1; x <= x2; x++)
 		{
 			float y = m * x + b;
-			PutPixel((int)x, (int)y, c);
+			PutPixel((int)(x + 0.5f), (int)(y + 0.5f), c);
 		}
 	}
 	else
@@ -357,12 +386,12 @@ void Graphics::DrawLine(float x1, float y1, float x2, float y2, Color c)
 		for (float y = y1; y <= y2; y++)
 		{
 			float x = m * y + b;
-			PutPixel((int)x, (int)y, c);
+			PutPixel((int)(x + 0.5f), (int)(y + 0.5f), c);
 		}
 	}
 }
 
-void Graphics::DrawCircle(float xpos, float ypos, float R, Color c)
+void Graphics::DrawCircle(float Ox, float Oy, float R, Color c)
 {
 	
 		if (R > 0.0)
@@ -373,35 +402,59 @@ void Graphics::DrawCircle(float xpos, float ypos, float R, Color c)
 				float x = (float)(R * std::cos(PI_F*theta / 180));
 				float y = (float)(R * std::sin(PI_F*theta / 180));
 
-				PutPixel((int)(xpos), (int)(ypos), Colors::White);
-				PutPixel((int)(x+0.5f + xpos), (int)(y+0.5f + ypos), c);
+				PutPixel((int)(Ox), (int)(Oy),c);
+				PutPixel((int)(x+0.5f + Ox), (int)(y+0.5f + Oy), c);
 			}
 		}
 		else
 		{
-			PutPixel(int(xpos), int(ypos), Colors::White);
+			PutPixel(int(Ox), int(Oy), c);
 		}
 
 	
 }
 
-void Graphics::DrawArc(float x1, float y1, float Ox, float Oy, float theta_begin, float theta_end, Color c)
+void Graphics::DrawCircle(float x1, float y1, float x2, float y2, float x3, float y3, Color c)
+{
+	// find slope of any two lines conecting points
+
+	// calculate perpendicular line slope...
+
+	// ...throught mid point
+
+	// find crossection of two lines
+
+	// Calculate radius using pair of centre and onarc points
+
+	//pass centre and radius to DrawCircle function
+
+
+}
+
+void Graphics::DrawArc(float Ox, float Oy, float R ,float theta_begin, float theta_end, Color c)
 {
 
 	bool theta_range = theta_end - theta_begin > 0.0;
-	float R = std::sqrt((Ox - x1)*(Ox - x1) + (Oy - y1)*(Oy - y1));
 
-	for (float theta = theta_begin;
-		theta_range ? theta < theta_end : theta > theta_end;
-		theta_range > 0.0 ? theta += 0.2 : theta -= 0.2	)
+
+	if (theta_begin == theta_end)
 	{
-		float x = (float)(R * std::cos(PI_F*theta / 180));
-		float y = (float)(R * std::sin(PI_F*theta / 180));
+		DrawCircle(Ox, Oy ,R,c);
+	}
+	else
+	{
+		for (float theta = theta_begin;
+			theta_range ? theta < theta_end : theta > theta_end;
+			theta_range ? theta += 0.2 : theta -= 0.2)
+		{
+			float x = (float)(R * std::cos(PI_F*theta / 180));
+			float y = (float)(R * std::sin(PI_F*theta / 180));
 
-		//Draw pixel at the begining of radius
-		PutPixel((int)(Ox), (int)(Oy), Colors::Red);
-		//Draw arc
-		PutPixel((int)(x + Ox), (int)(y + Oy), c);
+			//Draw pixel at the begining of radius
+			PutPixel((int)(Ox), (int)(Oy), Colors::Red);
+			//Draw arc
+			PutPixel((int)(x + 0.5f + Ox), (int)(y + 0.5f + Oy), c);
+		}
 	}
 }
 

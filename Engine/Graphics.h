@@ -71,15 +71,24 @@ public:
 
 	/*Draw Circle Functions*/
 	template<typename T2>
-	void DrawCircle(_Vec2<T2> vpos, T2 R, Color c)
+	void DrawCircle(_Vec2<T2> vO, T2 R, Color c)
 	{
-		DrawCircle((float)vpos.x, (float)vpos.y, c);
+		DrawCircle((float)vO.x, (float)vO.y, c);
 	}
-	void DrawCircle(float xpos, float ypos, float R, Color c);
-		
-	/*Draw Arc Functions*/
-	void DrawArc(float x1, float y1, float Ox, float Oy, float theta_begin,float theta_end, Color c);
+	void DrawCircle(float Ox, float Oy, float R, Color c);
+	//Three point circle
+	void DrawCircle(float x1, float y1, float x2, float y2, float x3, float y3, Color c); 	
 
+	/*Draw Arc Functions*/
+	void DrawArc(float Ox, float Oy,float R, float theta_begin,float theta_end, Color c);
+	template<typename T3>
+	void DrawArc(_Vec2<T3> vO, T3 R, Color c)
+	{
+		DrawArc((float)vO.x, (float)vO.y, (float)R, c);
+	}
+
+	/*Elipse Drawing functions*/
+	void DrawFlatEllipse(float Ox, float Oy, float Rx, float Ry, Color c);
 	
 
 	~Graphics();
@@ -98,6 +107,6 @@ private:
 	D3D11_MAPPED_SUBRESOURCE							mappedSysBufferTexture;
 	Color*                                              pSysBuffer = nullptr;
 public:
-	static constexpr int ScreenWidth = 1440;
+	static constexpr int ScreenWidth =1440;
 	static constexpr int ScreenHeight = 900;
 };

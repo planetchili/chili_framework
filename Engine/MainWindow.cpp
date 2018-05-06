@@ -41,7 +41,6 @@ MainWindow::MainWindow( HINSTANCE hInst,wchar_t * pArgs )
 
 	// create window & get hWnd
 	RECT wr;
-	MENUINFO;
 	wr.left = 350;
 	wr.right = Graphics::ScreenWidth + wr.left;
 	wr.top = 100;

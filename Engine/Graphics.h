@@ -73,7 +73,7 @@ public:
 	template<typename T2>
 	void DrawCircle(_Vec2<T2> vO, T2 R, Color c)
 	{
-		DrawCircle((float)vO.x, (float)vO.y, c);
+		DrawCircle((float)vO.x, (float)vO.y, (float)R, c);
 	}
 	void DrawCircle(float Ox, float Oy, float R, Color c);
 	//Three point circle

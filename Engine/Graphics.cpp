@@ -391,6 +391,11 @@ void Graphics::DrawLine(float x1, float y1, float x2, float y2, Color c)
 	}
 }
 
+void Graphics::DrawCircle(Vec2 vO, Vec2 Comp_Rad, Color c)
+{
+	DrawCircle(vO.x, vO.y, Comp_Rad.x, Comp_Rad.y, c);
+}
+
 void Graphics::DrawCircle(float Ox, float Oy, float R, Color c)
 {
 	
@@ -414,20 +419,59 @@ void Graphics::DrawCircle(float Ox, float Oy, float R, Color c)
 	
 }
 
+void Graphics::DrawCircle(float Ox, float Oy, float x1, float y1, Color c)
+{
+	
+	float Rx = std::abs(x1 - Ox);
+	float Ry = std::abs(y1 - Oy);
+	//calculate radius
+	float R = std::sqrt(Rx*Rx + Ry * Ry);
+
+	DrawCircle(Ox, Oy, R, c);
+}
+
 void Graphics::DrawCircle(float x1, float y1, float x2, float y2, float x3, float y3, Color c)
 {
-	// find slope of any two lines conecting points
+	// find slope of the line created by 2 points
 
-	// calculate perpendicular line slope...
+	float m1 = Slope(x1, y1, x3, y3);
+	float m2 = Slope(x2, y2, x3, y3);
 
-	// ...throught mid point
+	//If slopes are the same lines are parallel ,draw Line (infinite radius)		
+	if (m2 - m1 == 0)
+	{
+		DrawLine(x1,y1,x2,y2,c);
+	}
+	else
+	{
+		// calculate perpendicular line slope...
 
-	// find crossection of two lines
+		float m1_perp = -(1.0f / m1);
+		float m2_perp = -(1.0f / m2);
 
-	// Calculate radius using pair of centre and onarc points
+		//mid point of orginally inserted lines		
 
-	//pass centre and radius to DrawCircle function
+		float AC_x = (x3 + x1) / 2;
+		float AC_y = (y3 + y1) / 2;
+					  
+		float BC_x = (x3 + x2) / 2;
+		float BC_y = (y3 + y2) / 2;
+		
+		// y=mx+b find b part of perpendicular line
+		// y-y1 = m(x-x1)  = > y = mx - (mx1 - y1)
+		//https://www.varsitytutors.com/hotmath/hotmath_help/topics/point-slope-form.html
 
+		float a = -(m1_perp * AC_x - AC_y);
+		float b = -(m2_perp * BC_x - BC_y);
+
+		// find crossection
+		//http://www.ambrsoft.com/MathCalc/Line/TwoLinesIntersection/TwoLinesIntersection.htm
+
+		float x = (a-b) / (m2_perp - m1_perp);
+		float y = ((m2_perp * a) - (m1_perp * b) ) / (m2_perp - m1_perp );
+
+		DrawCircle(x,y,x3,y3,c);
+	}
 
 }
 

@@ -25,8 +25,8 @@
 #include "ChiliException.h"
 #include "Colors.h"
 #include "JezierVec2.h"
-#include  <type_traits>
-#include <assert.h>
+#include <math.h>
+
 
 class Graphics
 {
@@ -61,7 +61,8 @@ public:
 	}
 	void PutPixel( int x,int y,Color c );
 	
-	/*Draw Line Functions*/
+	/***** Start Draw Line Functions *****/
+
 	template<typename T>
 	void DrawLine(const _Vec2<T> v1, const _Vec2<T> v2, Color c)
 	{
@@ -69,15 +70,28 @@ public:
 	}
 	void DrawLine(float x1, float y1, float x2, float y2, Color c);
 
-	/*Draw Circle Functions*/
+	/***** END Draw Line Functions ****/
+
+
+	/***** Start Draw Circle Functions *****/
 	template<typename T2>
 	void DrawCircle(_Vec2<T2> vO, T2 R, Color c)
 	{
 		DrawCircle((float)vO.x, (float)vO.y, (float)R, c);
 	}
+	//Copmponet Radius circle
+	void DrawCircle(Vec2 vO,Vec2 Comp_Rad,Color c);
+	void DrawCircle(float Ox, float Oy, float x1, float y1, Color c);
 	void DrawCircle(float Ox, float Oy, float R, Color c);
-	//Three point circle
-	void DrawCircle(float x1, float y1, float x2, float y2, float x3, float y3, Color c); 	
+	
+	//Three point circle 
+	void DrawCircle(float x1, float y1, //first point
+		float x2, float y2, //second point
+		float x3, float y3, //curvature direction 
+		Color c); 	
+
+	/***** END Draw Circle Functions ****/
+
 
 	/*Draw Arc Functions*/
 	void DrawArc(float Ox, float Oy,float R, float theta_begin,float theta_end, Color c);

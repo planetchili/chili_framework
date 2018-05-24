@@ -20,16 +20,15 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
-#include "JezierVec2.h"
+#include "JC_Vector2.h"
+
 
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	xpos(720),
-	ypos(450),
-	x1(100),  y1(450), x2(1300), y2(300),
-	c(Colors::White)
+	P(720,450)
+	
 {
 }
 
@@ -43,31 +42,39 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	if (wnd.mouse.LeftIsPressed())
-	{
-		xpos = wnd.mouse.GetPosX();
-		ypos = wnd.mouse.GetPosY();
-		c = Colors::Yellow;
-	}
-	else
-		c = Colors::White;
-	if (wnd.kbd.KeyIsPressed(VK_UP))
-	{
-		y2--;
-		y1--;
-	}
-	if (wnd.kbd.KeyIsPressed(VK_DOWN))
-	{
-		y2++;
-		y1++;
-	}
+
+
 }
 
 void Game::ComposeFrame()
-{
 
-	gfx.DrawLine(x1, y1, x2, y2, Colors::White);
-	gfx.DrawCircle(xpos, ypos, 100, c);
-	gfx.DrawArc(520,450,720,450,45,120, Colors::White);
+{	/*
+	if (wnd.mouse.LeftIsPressed())
+	{
+		gfx.DrawLine((float)wnd.mouse.GetPosX(), (float)wnd.mouse.GetPosY(), 840, 330, Colors::White);
+		gfx.DrawLine((float)wnd.mouse.GetPosX(), (float)wnd.mouse.GetPosY(), 600, 570, Colors::White);
+		gfx.DrawCircle(600, 570, 840, 330, (float)wnd.mouse.GetPosX(), (float)wnd.mouse.GetPosY(), Colors::White);
+	}
+	else
+	{
+		gfx.DrawLine(600, 330, 840, 330, Colors::White);
+		gfx.DrawLine(600, 330, 600, 570, Colors::White);
+		gfx.DrawCircle(600, 570, 840, 330,600,330 , Colors::White);
+	}
+	
 
+	if (wnd.mouse.LeftIsPressed())
+	{
+		gfx.DrawLine(600, 450, (float)wnd.mouse.GetPosX(), (float)wnd.mouse.GetPosY(), Colors::White);
+		gfx.DrawLine(840, 450, (float)wnd.mouse.GetPosX(), (float)wnd.mouse.GetPosY(), Colors::White);
+		gfx.DrawCircle(600, 450, 840, 450, (float)wnd.mouse.GetPosX(), (float)wnd.mouse.GetPosY(), Colors::White);
+	}
+	else
+	{
+		gfx.DrawLine(600, 450, 720, 800, Colors::White);
+		gfx.DrawLine(840, 450, 720, 800, Colors::White);
+		gfx.DrawCircle(600, 450, 840, 450, 720, 800, Colors::White);
+	}*/
+
+	
 }

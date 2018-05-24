@@ -19,6 +19,9 @@
     <Filter Include="Added Sprites">
       <UniqueIdentifier>{7429fb29-146a-47ac-b5ad-e8731b226a6d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Shapes">
+      <UniqueIdentifier>{b9b4aa28-3d6d-4412-b8b4-6ff6c3af9881}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChiliWin.h">
@@ -60,10 +63,13 @@
     <ClInclude Include="COMInitializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="JezierMath.h">
+    <ClInclude Include="Circle.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="JC_Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="JezierVec2.h">
+    <ClInclude Include="JC_Vector2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

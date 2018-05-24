@@ -19,13 +19,15 @@
 *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
 ******************************************************************************************/
 #pragma once
-#include "ChiliWin.h"
 #include <d3d11.h>
 #include <wrl.h>
+#include <math.h>
+
+#include "ChiliWin.h"
 #include "ChiliException.h"
 #include "Colors.h"
-#include "JezierVec2.h"
-#include <math.h>
+#include "JC_Vector2.h"
+#include "JC_Math.h"
 
 
 class Graphics
@@ -64,7 +66,7 @@ public:
 	/***** Start Draw Line Functions *****/
 
 	template<typename T>
-	void DrawLine(const _Vec2<T> v1, const _Vec2<T> v2, Color c)
+	void DrawLine(const JC_Vector2<T> v1, const JC_Vector2<T> v2, Color c)
 	{
 		DrawLine((float)v1.x, (float)v1.y, (float)v2.x, (float)v2.y, c);
 	}
@@ -75,7 +77,7 @@ public:
 
 	/***** Start Draw Circle Functions *****/
 	template<typename T2>
-	void DrawCircle(_Vec2<T2> vO, T2 R, Color c)
+	void DrawCircle(JC_Vector2<T2> vO, T2 R, Color c)
 	{
 		DrawCircle((float)vO.x, (float)vO.y, (float)R, c);
 	}
@@ -85,10 +87,15 @@ public:
 	void DrawCircle(float Ox, float Oy, float R, Color c);
 	
 	//Three point circle 
-	void DrawCircle(float x1, float y1, //first point
+
+	/*
+	bool DrawCircle(
+		float x1, float y1, //first point
 		float x2, float y2, //second point
 		float x3, float y3, //curvature direction 
 		Color c); 	
+
+	*/
 
 	/***** END Draw Circle Functions ****/
 
@@ -96,7 +103,7 @@ public:
 	/*Draw Arc Functions*/
 	void DrawArc(float Ox, float Oy,float R, float theta_begin,float theta_end, Color c);
 	template<typename T3>
-	void DrawArc(_Vec2<T3> vO, T3 R, Color c)
+	void DrawArc(JC_Vector2<T3> vO, T3 R, Color c)
 	{
 		DrawArc((float)vO.x, (float)vO.y, (float)R, c);
 	}

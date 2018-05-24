@@ -1,0 +1,274 @@
+#pragma once
+
+
+
+template <typename T>
+class JC_Vector2
+{
+public:
+	T x;
+	T y;
+
+
+
+public:
+	inline JC_Vector2(){}
+	inline JC_Vector2(T inx, T iny)
+		:
+		x(inx),
+		y(iny)
+	{}
+	inline JC_Vector2 (const JC_Vector2& vect)
+		:
+		JC_Vector2 (vect.x,vect.y)
+	{}
+
+	template<typename T2>
+	explicit operator JC_Vector2<T2>() const
+	{
+		return { T2 x,T2 y };
+	}
+
+
+
+	/*	
+	inline JC_Vector2(const JC_Point& P , const JC_Point &Q)
+		:
+		JC_Vector2(P.x-Q.x, P.y-Q.y)
+	{}
+	*/
+
+
+	/*Vector Vector Operators*/
+
+	inline JC_Vector2 operator-()
+	{
+		return JC_Vector2(-x, -y);
+	}
+	inline JC_Vector2 operator= (const JC_Vector2 &rhs)
+	{
+		x = rhs.x;
+		y = rhs.y;
+		return *this;
+	}
+	
+	inline JC_Vector2 operator-(const JC_Vector2 &rhs)const
+	{
+		return JC_Vector2(x - rhs.x , y - rhs.y);
+	}
+	inline JC_Vector2& operator-=(const JC_Vector2 &rhs)
+	{
+		return *this = *this - rhs;
+
+	}
+
+	inline JC_Vector2 operator+(const JC_Vector2 &rhs)const
+	{
+		return JC_Vector2(x + rhs.x, y + rhs.y);
+	}
+	inline JC_Vector2& operator+=(const JC_Vector2 &rhs)
+	{
+		return *this = *this + rhs;
+	}
+
+	/*Vector scalar operators*/
+
+	inline JC_Vector2 operator*(const T rhs) const
+	{
+		return JC_Vector2(x * rhs, y * rhs);
+	}
+	inline JC_Vector2& operator*=(const T rhs)
+	{
+		return *this = *this * rhs;
+	}
+
+	inline JC_Vector2 operator/(const T rhs) const
+	{
+		return JC_Vector2(x / rhs, y / rhs);
+	}
+	inline JC_Vector2& operator/=(const T rhs)
+	{
+		return *this = *this / rhs;
+	}
+
+	/*Lenght operations*/
+
+	inline T GetLengthSq() const
+	{
+		return x * x + y * y;
+	}
+	
+	inline T GetLength() const
+	{
+		return std::sqrt(GetLengthSq());
+	}
+
+	/*Normalise operations*/
+
+	inline JC_Vector2& Normalize()
+	{
+		return *this = GetNormalize();
+	}
+	inline JC_Vector2 GetNormalize() const
+	{
+		const double len = GetLength();
+		if (len != 0.0)
+		{
+			return *this * (1.0 / len);
+		}
+		return len;
+	}
+
+	/*Boolean operators*/
+
+	inline bool operator==(const JC_Vector2 &rhs)const
+	{
+		return (x == rhs.x && y== rhs.y) ;
+	}
+	
+	inline bool operator!=(const JC_Vector2 &rhs)const
+	{
+		return (x != rhs.x || y != rhs.y);
+	}
+
+
+};
+
+typedef JC_Vector2<double> Ved2;
+typedef JC_Vector2<float> Vec2;
+typedef JC_Vector2<int> Vei2;
+
+
+template <typename T>
+class JC_Point2
+{
+public:
+	T x;
+	T y;
+
+public:
+	inline JC_Point2() {}
+	inline JC_Point2(T inx, T iny)
+		:
+		x(inx),
+		y(iny)
+	{}
+	inline JC_Point2(const JC_Point2& point)
+		:
+		JC_Point2(point.x, point.y)
+	{}
+
+	template<typename T2>
+	explicit operator JC_Point2<T2>() const
+	{
+		return { T2 x,T2 y };
+
+	}
+
+
+	inline JC_Point2 operator-()
+	{
+		return JC_Point2(-x, -y);
+	}
+	inline JC_Point2 operator= (const JC_Point2 &rhs)
+	{
+		x = rhs.x;
+		y = rhs.y;
+		return *this;
+	}
+
+	JC_Point2 operator+(const JC_Point2 &rhs) const
+	{
+		return JC_Point2(x + rhs.x, y + rhs.y);
+	}
+
+	/*JC_Point2 operator+(const JC_Vector2 &rhs) const
+	{
+	return JC_Point2(x + rhs.x, y + rhs.y);
+	}
+
+
+
+	JC_Point2 operator-(const JC_Vector2 &rhs) const
+	{
+	return JC_Point2(x - rhs.x, y - rhs.y);
+	}
+	*/
+
+
+	JC_Point2 operator*(T rhs)
+	{
+		return JC_Point2(p.x*rhs, p.y*rhs);
+	}
+
+
+
+	bool operator==(const JC_Point2 &rhs) const
+	{
+		return (x == rhs.x && y == rhs.y) ? true : false;
+	}
+
+	bool operator!=(const JC_Point2 &rhs) const
+	{
+		return (x != rhs.x || y != rhs.y);
+	}
+
+	bool operator<=(const JC_Point2 &rhs) const
+	{
+		// dictionary order
+		return ((x < rhs.x) ? true : ((x == rhs.x && y <= rhs.y) ? true : false));
+	}
+
+	bool operator>=(const JC_Point2 &rhs) const
+	{
+		// dictionary order
+		return ((x > rhs.x) ? true : ((x == rhs.x && y >= rhs.y) ? true : false));
+	}
+
+	bool operator<(const JC_Point2 &rhs) const
+	{
+		// dictionary order
+		return ((x < rhs.x) ? true : ((x == rhs.x && y < rhs.y) ? true : false));
+	}
+
+	bool operator>(const JC_Point2 &rhs) const
+	{
+		// dictionary order
+		return ((x > rhs.x) ? true : ((x == rhs.x && y > rhs.y) ? true : false));
+	}
+
+
+
+	inline T GetDistanceToSq() const
+	{
+		return x * x + y * y;
+	}
+
+	inline T GetDistance() const
+	{
+		return std::sqrt(GetDistanceToSq());
+	}
+
+
+	inline void Zero()
+	{
+		x = y = 0.0;
+	}
+
+	inline bool IsZero() const
+	{
+		return (x == 0.0 && y == 0.0);
+	}
+
+	inline bool IsNotZero() const
+	{
+		// the && (x == x && y == y) insures no coordinate is a Nan.
+		return (x != 0.0 || y != 0.0) && (x == x && y == y);
+	}
+
+
+};
+
+typedef JC_Point2<double> JC_Point2d;
+typedef JC_Point2<float> JC_Point2f;
+typedef JC_Point2<int> JC_Point2i;

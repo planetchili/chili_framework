@@ -23,7 +23,8 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
-#include "JezierVec2.h"
+#include "JC_Vector2.h"
+#include "Circle.h"
 
 class Game
 {
@@ -32,6 +33,8 @@ public:
 	Game( const Game& ) = delete;
 	Game& operator=( const Game& ) = delete;
 	void Go();
+
+	
 private:
 	void ComposeFrame();
 	void UpdateModel();
@@ -43,12 +46,8 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-
-	int xpos;
-	int ypos;
-	int x1,y1,x2,y2;
-	Color c;
-	
+	//std::vector<Circle> circles;
+	JC_Point2f P;
 	/********************************/
 
 };

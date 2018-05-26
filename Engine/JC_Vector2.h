@@ -18,10 +18,14 @@ public:
 		x(inx),
 		y(iny)
 	{}
+
+
+	/*
 	inline JC_Vector2 (const JC_Vector2& vect)
 		:
 		JC_Vector2 (vect.x,vect.y)
 	{}
+	*/
 
 	template<typename T2>
 	explicit operator JC_Vector2<T2>() const
@@ -30,13 +34,12 @@ public:
 	}
 
 
-
-	/*	
-	inline JC_Vector2(const JC_Point& P , const JC_Point &Q)
+	template<class PointType>
+	inline JC_Vector2(const PointType& P , const PointType& Q)
 		:
-		JC_Vector2(P.x-Q.x, P.y-Q.y)
+		JC_Vector2(P.x-Q.x , P.y-Q.y)
 	{}
-	*/
+	
 
 
 	/*Vector Vector Operators*/
@@ -45,12 +48,14 @@ public:
 	{
 		return JC_Vector2(-x, -y);
 	}
+	/*
 	inline JC_Vector2 operator= (const JC_Vector2 &rhs)
 	{
 		x = rhs.x;
 		y = rhs.y;
 		return *this;
 	}
+	*/
 	
 	inline JC_Vector2 operator-(const JC_Vector2 &rhs)const
 	{
@@ -134,9 +139,9 @@ public:
 
 };
 
-typedef JC_Vector2<double> Ved2;
-typedef JC_Vector2<float> Vec2;
-typedef JC_Vector2<int> Vei2;
+typedef JC_Vector2<double> JC_Vector2d;
+typedef JC_Vector2<float> JC_Vector2f;
+typedef JC_Vector2<int> JC_Vector2i;
 
 
 template <typename T>

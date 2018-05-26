@@ -391,7 +391,7 @@ void Graphics::DrawLine(float x1, float y1, float x2, float y2, Color c)
 	}
 }
 
-void Graphics::DrawCircle(Vec2 vO, Vec2 Comp_Rad, Color c)
+void Graphics::DrawCircle(JC_Vector2f vO, JC_Vector2f Comp_Rad, Color c)
 {
 	DrawCircle(vO.x, vO.y, Comp_Rad.x, Comp_Rad.y, c);
 }
@@ -429,7 +429,7 @@ void Graphics::DrawCircle(float Ox, float Oy, float x1, float y1, Color c)
 
 	DrawCircle(Ox, Oy, R, c);
 }
-/*
+
 bool Graphics::DrawCircle(float x1, float y1, float x2, float y2, float x3, float y3, Color c)
 {
 	// find slope of the line created by 2 points
@@ -477,7 +477,7 @@ bool Graphics::DrawCircle(float x1, float y1, float x2, float y2, float x3, floa
 			float mid_BC_y = (y3 + y2) / 2;
 
 			// y=mx+b find b part of perpendicular line
-			// y-y1 = m(x-x1)  = > y = mx - (m*x1 + y1)
+			// y-y1 = m(x-x1)  = > y = mx - m*x1 + y1
 			//https://www.varsitytutors.com/hotmath/hotmath_help/topics/point-slope-form.html
 
 			float a = (-m1_perp * mid_AC_x + mid_AC_y);
@@ -487,7 +487,7 @@ bool Graphics::DrawCircle(float x1, float y1, float x2, float y2, float x3, floa
 			//http://www.ambrsoft.com/MathCalc/Line/TwoLinesIntersection/TwoLinesIntersection.htm
 
 			float x = (a - b) / (m2_perp - m1_perp);
-			float y = ((m1_perp * b) - (m2_perp * a)) / (m1_perp - m2_perp);
+			float y = -((m2_perp * a) - (m1_perp * b)) / (m1_perp - m2_perp);
 
 			DrawCircle(x, y, x3, y3, c);
 			return true;
@@ -497,7 +497,7 @@ bool Graphics::DrawCircle(float x1, float y1, float x2, float y2, float x3, floa
 	return false;
 
 }
-*/
+
 void Graphics::DrawArc(float Ox, float Oy, float R ,float theta_begin, float theta_end, Color c)
 {
 

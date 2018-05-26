@@ -48,6 +48,8 @@ private:
 	/*  User Variables              */
 	//std::vector<Circle> circles;
 	JC_Point2f P;
+	JC_Point2f Q;
+	JC_Vector2f V;
 	/********************************/
 
 };

@@ -27,7 +27,9 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	P(720,450)
+	P(720,450),
+	Q(840, 570),
+	V(P,Q)
 	
 {
 }
@@ -60,7 +62,7 @@ void Game::ComposeFrame()
 		gfx.DrawLine(600, 330, 840, 330, Colors::White);
 		gfx.DrawLine(600, 330, 600, 570, Colors::White);
 		gfx.DrawCircle(600, 570, 840, 330,600,330 , Colors::White);
-	}
+	}*/
 	
 
 	if (wnd.mouse.LeftIsPressed())
@@ -71,10 +73,9 @@ void Game::ComposeFrame()
 	}
 	else
 	{
-		gfx.DrawLine(600, 450, 720, 800, Colors::White);
-		gfx.DrawLine(840, 450, 720, 800, Colors::White);
-		gfx.DrawCircle(600, 450, 840, 450, 720, 800, Colors::White);
-	}*/
+		gfx.DrawLine(600, 450, 720, 600, Colors::White);
+		gfx.DrawLine(840, 450, 720, 600, Colors::White);
+		gfx.DrawCircle(600, 450, 840, 450, 720, 600, Colors::White);
+	}
 
-	
 }

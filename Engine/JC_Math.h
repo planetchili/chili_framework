@@ -19,16 +19,9 @@ inline float Slope(const float x1, const float y1, const float x2, const float y
 {
 	float dx = x2 - x1;
 	float dy = y2 - y1;
-	if (abs(dx) > abs(dy))
-	{
-		float m = dy / dx;
-		return m;
-	}
-	else
-	{
 
-		float m = dx / dy;
-		return m;
-	}
+	float m = dy / dx;
+	return m;
+	
 }
 

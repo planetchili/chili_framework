@@ -82,20 +82,20 @@ public:
 		DrawCircle((float)vO.x, (float)vO.y, (float)R, c);
 	}
 	//Copmponet Radius circle
-	void DrawCircle(Vec2 vO,Vec2 Comp_Rad,Color c);
+	void DrawCircle(JC_Vector2f vO, JC_Vector2f Comp_Rad,Color c);
 	void DrawCircle(float Ox, float Oy, float x1, float y1, Color c);
 	void DrawCircle(float Ox, float Oy, float R, Color c);
 	
 	//Three point circle 
 
-	/*
+	
 	bool DrawCircle(
 		float x1, float y1, //first point
 		float x2, float y2, //second point
 		float x3, float y3, //curvature direction 
 		Color c); 	
 
-	*/
+	
 
 	/***** END Draw Circle Functions ****/
 

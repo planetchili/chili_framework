@@ -26,6 +26,8 @@
 #include "JC_Vector2.h"
 #include "Circle.h"
 
+
+
 class Game
 {
 public:
@@ -34,6 +36,12 @@ public:
 	Game& operator=( const Game& ) = delete;
 	void Go();
 
+	enum class Shapes
+	{
+		Circle2Point,
+		Circle3point,
+		FlatEllipse
+	};
 	
 private:
 	void ComposeFrame();
@@ -46,10 +54,10 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-	//std::vector<Circle> circles;
-	JC_Point2f P;
-	JC_Point2f Q;
-	JC_Vector2f V;
+	std::vector<Circle> circles;
+	Shapes shapes = Shapes::Circle2Point;
+	JC_Point2d P, Q, R;
+	int input = 0;
 	/********************************/
 
 };

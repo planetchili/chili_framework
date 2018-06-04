@@ -21,16 +21,16 @@
 #include "MainWindow.h"
 #include "Game.h"
 #include "JC_Vector2.h"
+#include "Mouse.h"
 
 
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	P(720,450),
-	Q(840, 570),
-	V(P,Q)
-	
+	P (600,450),
+	Q(840,450),
+	R (720,330)
 {
 }
 
@@ -44,6 +44,19 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	while (!wnd.mouse.IsEmpty())
+	{
+		const auto e = wnd.mouse.Read();
+		
+		if (e.GetType() == Mouse::Event::Type::LPress)
+		{
+			input++;
+
+			if (input <= 2)
+				input = 0;
+		}
+	}
+
 
 
 }
@@ -62,7 +75,7 @@ void Game::ComposeFrame()
 		gfx.DrawLine(600, 330, 840, 330, Colors::White);
 		gfx.DrawLine(600, 330, 600, 570, Colors::White);
 		gfx.DrawCircle(600, 570, 840, 330,600,330 , Colors::White);
-	}*/
+	}
 	
 
 	if (wnd.mouse.LeftIsPressed())
@@ -77,5 +90,16 @@ void Game::ComposeFrame()
 		gfx.DrawLine(840, 450, 720, 600, Colors::White);
 		gfx.DrawCircle(600, 450, 840, 450, 720, 600, Colors::White);
 	}
+	*/
+
+	circles.emplace_back(P, Q);
+	circles.emplace_back(P, Q, R);
+
+	for (auto i : circles)
+	{
+		i.Draw(gfx);
+	}
+	
+	P.GetDistanceTo(Q);
 
 }

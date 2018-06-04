@@ -1,6 +1,7 @@
 #pragma once
 
-
+#include <math.h>
+#include <assert.h>
 
 template <typename T>
 class JC_Vector2
@@ -136,6 +137,15 @@ public:
 		return (x != rhs.x || y != rhs.y);
 	}
 
+	inline double Vector_Slope(const JC_Vector2& V)
+	{
+
+		assert(V.x == 0.0f);
+		float m = V.y / V.x;
+		
+		return m;
+
+	}
 
 };
 
@@ -182,28 +192,50 @@ public:
 		return *this;
 	}
 
-	JC_Point2 operator+(const JC_Point2 &rhs) const
+	inline JC_Point2 operator+(const JC_Point2 &rhs) const
 	{
 		return JC_Point2(x + rhs.x, y + rhs.y);
 	}
-
-	/*JC_Point2 operator+(const JC_Vector2 &rhs) const
+	inline JC_Point2& operator+=(const JC_Point2 &rhs)
 	{
-	return JC_Point2(x + rhs.x, y + rhs.y);
+		return *this = *this + rhs;
+
 	}
 
 
-
-	JC_Point2 operator-(const JC_Vector2 &rhs) const
+	inline JC_Point2 operator- (const JC_Point2 &rhs) const
 	{
-	return JC_Point2(x - rhs.x, y - rhs.y);
+		return JC_Point2(x - rhs.x, y - rhs.y)
 	}
-	*/
+	inline JC_Point2& operator-=(const JC_Point2 &rhs)
+	{
+		return *this = *this - rhs;
+
+	}
+
+	inline JC_Point2 operator*(const T rhs) const
+	{
+		return JC_Point2(x * rhs, y * rhs);
+	}
+	inline JC_Point2& operator*=(const T rhs)
+	{
+		return *this = *this * rhs;
+	}
+
+	inline JC_Point2 operator/(const T rhs) const
+	{
+		return JC_Point2(x / rhs, y / rhs);
+	}
+	inline JC_Point2& operator/=(const T rhs)
+	{
+		return *this = *this / rhs;
+	}
+	
 
 
 	JC_Point2 operator*(T rhs)
 	{
-		return JC_Point2(p.x*rhs, p.y*rhs);
+		return JC_Point2(x*rhs, y*rhs);
 	}
 
 
@@ -244,16 +276,20 @@ public:
 
 
 
-	inline T GetDistanceToSq() const
+	inline T GetDistanceToSq( const JC_Point2 &rhs) const
 	{
-		return x * x + y * y;
+		return ((this->x-rhs.x) * (this->x - rhs.x) + (this->y - rhs.y) * (this->y - rhs.y));
 	}
 
-	inline T GetDistance() const
+	inline T GetDistanceTo(const JC_Point2 &rhs) const
 	{
-		return std::sqrt(GetDistanceToSq());
+		return std::sqrt(GetDistanceToSq(rhs));
 	}
 
+	inline JC_Point2 GetMidPoint(const JC_Point2& rhs) const
+	{
+		return JC_Point2((*this+rhs)/2);
+	}
 
 	inline void Zero()
 	{

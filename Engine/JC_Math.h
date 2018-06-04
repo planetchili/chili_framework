@@ -1,6 +1,8 @@
 #pragma once
 
-#include "math.h"
+#include "JC_Vector2.h"
+#include <assert.h>
+
 
 constexpr double PI_F = 3.1415926536;
 constexpr double PI_D = 3.1415926535897932;
@@ -25,3 +27,32 @@ inline float Slope(const float x1, const float y1, const float x2, const float y
 	
 }
 
+inline double LineSlopeBetween2Points(const  JC_Point2d& P, const JC_Point2d& Q) 
+{
+	double dx = Q.x - P.x;
+	double dy = Q.y - P.y;
+
+	assert(dx != 0.0);
+
+	double m = dy / dx;
+
+	
+
+	return m;
+
+}
+
+inline double InverceLineSlope(const double& m) 
+{
+	assert(m != 0.0f);
+
+	return -1 / m;
+}
+
+inline double CalculateRadius(const  JC_Point2d& P, const JC_Point2d& Q)
+{
+	double Rx = std::abs(P.x - Q.x);
+	double Ry = std::abs(P.y - Q.y);
+	//calculate radius
+	return std::sqrt(Rx * Rx + Ry * Ry);
+}

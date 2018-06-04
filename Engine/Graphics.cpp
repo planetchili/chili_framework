@@ -346,10 +346,10 @@ void Graphics::PutPixel( int x,int y,Color c )
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
 }
 
-void Graphics::DrawLine(float x1, float y1, float x2, float y2, Color c)
+void Graphics::DrawLine(double x1, double y1, double x2, double y2, Color c)
 {
-	const float dx = x2 - x1;
-	const float dy = y2 - y1;
+	const double dx = x2 - x1;
+	const double dy = y2 - y1;
 
 	if (dx == 0.0f && dy == 0.0f)
 	{
@@ -363,12 +363,12 @@ void Graphics::DrawLine(float x1, float y1, float x2, float y2, Color c)
 			std::swap(y1, y2);
 		}
 
-		float m = dy / dx;
-		float b = y1 - m * x1;
+		double m = dy / dx;
+		double b = y1 - m * x1;
 
-		for (float x = x1; x <= x2; x++)
+		for (double x = x1; x <= x2; x++)
 		{
-			float y = m * x + b;
+			double y = m * x + b;
 			PutPixel((int)(x + 0.5f), (int)(y + 0.5f), c);
 		}
 	}
@@ -380,23 +380,23 @@ void Graphics::DrawLine(float x1, float y1, float x2, float y2, Color c)
 			std::swap(y1, y2);
 		}
 
-		float m = dx / dy;
-		float b = x1 - m * y1;
+		double m = dx / dy;
+		double b = x1 - m * y1;
 
-		for (float y = y1; y <= y2; y++)
+		for (double y = y1; y <= y2; y++)
 		{
-			float x = m * y + b;
+			double x = m * y + b;
 			PutPixel((int)(x + 0.5f), (int)(y + 0.5f), c);
 		}
 	}
 }
 
-void Graphics::DrawCircle(JC_Vector2f vO, JC_Vector2f Comp_Rad, Color c)
+void Graphics::DrawCircle(JC_Point2d& P, JC_Point2d& Q, Color& c)
 {
-	DrawCircle(vO.x, vO.y, Comp_Rad.x, Comp_Rad.y, c);
+	DrawCircle(P.x, P.y, Q.x, Q.y, c);
 }
 
-void Graphics::DrawCircle(float Ox, float Oy, float R, Color c)
+void Graphics::DrawCircle(double Ox, double Oy, double R, Color& c)
 {
 	
 		if (R > 0.0)
@@ -404,10 +404,10 @@ void Graphics::DrawCircle(float Ox, float Oy, float R, Color c)
 
 			for (double theta = 0; theta < 360; theta += 0.2)
 			{
-				float x = (float)(R * std::cos(PI_F*theta / 180));
-				float y = (float)(R * std::sin(PI_F*theta / 180));
+				double x = (double)(R * std::cos(PI_D*theta / 180));
+				double y = (double)(R * std::sin(PI_D*theta / 180));
 
-				PutPixel((int)(Ox), (int)(Oy),c);
+				
 				PutPixel((int)(x+0.5f + Ox), (int)(y+0.5f + Oy), c);
 			}
 		}
@@ -419,13 +419,13 @@ void Graphics::DrawCircle(float Ox, float Oy, float R, Color c)
 	
 }
 
-void Graphics::DrawCircle(float Ox, float Oy, float x1, float y1, Color c)
+void Graphics::DrawCircle(double Ox, double Oy, double x1, double y1, Color& c)
 {
 	
-	float Rx = std::abs(x1 - Ox);
-	float Ry = std::abs(y1 - Oy);
+	double Rx = std::abs(x1 - Ox);
+	double Ry = std::abs(y1 - Oy);
 	//calculate radius
-	float R = std::sqrt(Rx*Rx + Ry * Ry);
+	double R = std::sqrt(Rx*Rx + Ry * Ry);
 
 	DrawCircle(Ox, Oy, R, c);
 }
@@ -487,7 +487,7 @@ bool Graphics::DrawCircle(float x1, float y1, float x2, float y2, float x3, floa
 			//http://www.ambrsoft.com/MathCalc/Line/TwoLinesIntersection/TwoLinesIntersection.htm
 
 			float x = (a - b) / (m2_perp - m1_perp);
-			float y = -((m2_perp * a) - (m1_perp * b)) / (m1_perp - m2_perp);
+			float y = ((m1_perp * b) - (m2_perp * a)) / (m1_perp - m2_perp);
 
 			DrawCircle(x, y, x3, y3, c);
 			return true;
@@ -498,7 +498,7 @@ bool Graphics::DrawCircle(float x1, float y1, float x2, float y2, float x3, floa
 
 }
 
-void Graphics::DrawArc(float Ox, float Oy, float R ,float theta_begin, float theta_end, Color c)
+void Graphics::DrawArc(double Ox, double Oy, double R , double theta_begin, double theta_end, Color c)
 {
 
 	bool theta_range = theta_end - theta_begin > 0.0;
@@ -510,15 +510,14 @@ void Graphics::DrawArc(float Ox, float Oy, float R ,float theta_begin, float the
 	}
 	else
 	{
-		for (float theta = theta_begin;
+		for (double theta = theta_begin;
 			theta_range ? theta < theta_end : theta > theta_end;
 			theta_range ? theta += 0.2 : theta -= 0.2)
 		{
-			float x = (float)(R * std::cos(PI_F*theta / 180));
-			float y = (float)(R * std::sin(PI_F*theta / 180));
+			double x = (double)(R * std::cos(PI_F*theta / 180));
+			double y = (double)(R * std::sin(PI_F*theta / 180));
 
-			//Draw pixel at the begining of radius
-			PutPixel((int)(Ox), (int)(Oy), Colors::Red);
+				
 			//Draw arc
 			PutPixel((int)(x + 0.5f + Ox), (int)(y + 0.5f + Oy), c);
 		}

@@ -66,51 +66,55 @@ public:
 	/***** Start Draw Line Functions *****/
 
 	template<typename T>
-	void DrawLine(const JC_Vector2<T> v1, const JC_Vector2<T> v2, Color c)
+	void DrawLine(const JC_Point2<T>& P, const JC_Point2<T>& Q, Color c)
 	{
-		DrawLine((float)v1.x, (float)v1.y, (float)v2.x, (float)v2.y, c);
+		DrawLine((double)P.x, (double)P.y, (double)Q.x, (double)Q.y, c);
 	}
-	void DrawLine(float x1, float y1, float x2, float y2, Color c);
+	void DrawLine(double x1, double y1, double x2, double y2, Color c);
 
 	/***** END Draw Line Functions ****/
 
 
 	/***** Start Draw Circle Functions *****/
 	template<typename T2>
-	void DrawCircle(JC_Vector2<T2> vO, T2 R, Color c)
+	void DrawCircle(JC_Point2<T2> vO, T2 R, Color c)
 	{
 		DrawCircle((float)vO.x, (float)vO.y, (float)R, c);
 	}
-	//Copmponet Radius circle
-	void DrawCircle(JC_Vector2f vO, JC_Vector2f Comp_Rad,Color c);
-	void DrawCircle(float Ox, float Oy, float x1, float y1, Color c);
-	void DrawCircle(float Ox, float Oy, float R, Color c);
+	 
+	void DrawCircle(JC_Point2d& P, JC_Point2d& Q, Color& c);
+	void DrawCircle(double Ox, double Oy, double x1, double y1, Color& c);
+	void DrawCircle(double Ox, double Oy, double R, Color& c);
 	
 	//Three point circle 
-
-	
 	bool DrawCircle(
 		float x1, float y1, //first point
 		float x2, float y2, //second point
 		float x3, float y3, //curvature direction 
 		Color c); 	
-
 	
-
 	/***** END Draw Circle Functions ****/
 
-
-	/*Draw Arc Functions*/
-	void DrawArc(float Ox, float Oy,float R, float theta_begin,float theta_end, Color c);
+	
+	/***** Start Draw Arc Functions *****/
+	
+	void DrawArc(double Ox, double Oy, double R, double theta_begin, double theta_end, Color c);
 	template<typename T3>
-	void DrawArc(JC_Vector2<T3> vO, T3 R, Color c)
+	void DrawArc(JC_Point2d& P, T3 R, Color c)
 	{
 		DrawArc((float)vO.x, (float)vO.y, (float)R, c);
 	}
+	
+	/***** End Draw Arc Functions *****/
 
-	/*Elipse Drawing functions*/
+
+
+	/***** Start Draw Ellipse Functions *****/
+	
 	void DrawFlatEllipse(float Ox, float Oy, float Rx, float Ry, Color c);
 	
+	/***** End Draw Ellipse Functions *****/
+
 
 	~Graphics();
 private:

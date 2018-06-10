@@ -76,34 +76,23 @@ public:
 
 
 	/***** Start Draw Circle Functions *****/
+
 	template<typename T2>
 	void DrawCircle(JC_Point2<T2> vO, T2 R, Color c)
 	{
-		DrawCircle((float)vO.x, (float)vO.y, (float)R, c);
+		DrawCircle((double)vO.x, (double)vO.y, (double)R, c);
 	}
 	 
 	void DrawCircle(JC_Point2d& P, JC_Point2d& Q, Color& c);
 	void DrawCircle(double Ox, double Oy, double x1, double y1, Color& c);
 	void DrawCircle(double Ox, double Oy, double R, Color& c);
-	
-	//Three point circle 
-	bool DrawCircle(
-		float x1, float y1, //first point
-		float x2, float y2, //second point
-		float x3, float y3, //curvature direction 
-		Color c); 	
-	
+
 	/***** END Draw Circle Functions ****/
 
 	
 	/***** Start Draw Arc Functions *****/
 	
 	void DrawArc(double Ox, double Oy, double R, double theta_begin, double theta_end, Color c);
-	template<typename T3>
-	void DrawArc(JC_Point2d& P, T3 R, Color c)
-	{
-		DrawArc((float)vO.x, (float)vO.y, (float)R, c);
-	}
 	
 	/***** End Draw Arc Functions *****/
 

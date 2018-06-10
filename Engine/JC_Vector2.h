@@ -103,7 +103,6 @@ public:
 	{
 		return x * x + y * y;
 	}
-	
 	inline T GetLength() const
 	{
 		return std::sqrt(GetLengthSq());
@@ -140,7 +139,7 @@ public:
 	inline double Vector_Slope(const JC_Vector2& V)
 	{
 
-		assert(V.x == 0.0f);
+		assert(V.x != 0.0f);
 		float m = V.y / V.x;
 		
 		return m;
@@ -233,10 +232,27 @@ public:
 	
 
 
-	JC_Point2 operator*(T rhs)
+	inline JC_Point2 operator+(const JC_Vector2<T> &rhs) const
 	{
-		return JC_Point2(x*rhs, y*rhs);
+		return JC_Point2(x + rhs.x, y + rhs.y);
 	}
+	inline JC_Point2& operator+=(const JC_Vector2<T> &rhs)
+	{
+		return *this = *this + rhs;
+
+	}
+
+
+	inline JC_Point2 operator- (const JC_Vector2<T> &rhs) const
+	{
+		return JC_Point2(x - rhs.x, y - rhs.y)
+	}
+	inline JC_Point2& operator-=(const JC_Vector2<T> &rhs)
+	{
+		return *this = *this - rhs;
+
+	}
+
 
 
 
@@ -275,15 +291,14 @@ public:
 	}
 
 
-
 	inline T GetDistanceToSq( const JC_Point2 &rhs) const
 	{
-		return ((this->x-rhs.x) * (this->x - rhs.x) + (this->y - rhs.y) * (this->y - rhs.y));
+		return (T)((this->x-rhs.x) * (this->x - rhs.x) + (this->y - rhs.y) * (this->y - rhs.y));
 	}
 
 	inline T GetDistanceTo(const JC_Point2 &rhs) const
 	{
-		return std::sqrt(GetDistanceToSq(rhs));
+		return (T)std::sqrt(GetDistanceToSq(rhs));
 	}
 
 	inline JC_Point2 GetMidPoint(const JC_Point2& rhs) const

@@ -14,8 +14,6 @@ inline auto Sq(const T& x)
 	return x * x;
 }
 
-//TO DO
-// function two points as parameter retuens slope of the coresponding line
 
 inline float Slope(const float x1, const float y1, const float x2, const float y2)
 {
@@ -36,8 +34,6 @@ inline double LineSlopeBetween2Points(const  JC_Point2d& P, const JC_Point2d& Q)
 
 	double m = dy / dx;
 
-	
-
 	return m;
 
 }
@@ -49,10 +45,5 @@ inline double InverceLineSlope(const double& m)
 	return -1 / m;
 }
 
-inline double CalculateRadius(const  JC_Point2d& P, const JC_Point2d& Q)
-{
-	double Rx = std::abs(P.x - Q.x);
-	double Ry = std::abs(P.y - Q.y);
-	//calculate radius
-	return std::sqrt(Rx * Rx + Ry * Ry);
-}
+
+

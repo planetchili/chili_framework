@@ -141,14 +141,14 @@ LRESULT MainWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		hMenu = CreateMenu();
 
 		hSubMenu = CreatePopupMenu();
-		AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT)hSubMenu, L"&File");
+		AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT_PTR)hSubMenu, L"&File");
 		{
 			AppendMenu(hSubMenu, MF_STRING, ID_FILE_EXIT, L"E&xit");
 		}
 
 		hSubMenu = CreatePopupMenu();
 		
-		AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT)hSubMenu, L"&Stuff");
+		AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT_PTR)hSubMenu, L"&Stuff");
 		{
 			AppendMenu(hSubMenu, MF_STRING, ID_STUFF_GO, L"&Go");
 		}

@@ -20,13 +20,13 @@ public:
 		y(iny)
 	{}
 
-
-	/*
-	inline JC_Vector2 (const JC_Vector2& vect)
+	template<typename C>
+	JC_Vector2(const JC_Vector2<C>& src)
 		:
-		JC_Vector2 (vect.x,vect.y)
+		x((T)src.x),
+		y((T)src.y)
 	{}
-	*/
+	
 
 	template<typename T2>
 	explicit operator JC_Vector2<T2>() const
@@ -105,7 +105,7 @@ public:
 	}
 	inline T GetLength() const
 	{
-		return std::sqrt(GetLengthSq());
+		return (T)std::sqrt(GetLengthSq());
 	}
 
 	/*Normalise operations*/
@@ -117,9 +117,9 @@ public:
 	inline JC_Vector2 GetNormalize() const
 	{
 		const double len = GetLength();
-		if (len != 0.0)
+		if (len != (T)0)
 		{
-			return *this * (1.0 / len);
+			return *this * ((T)1 / len);
 		}
 		return len;
 	}
@@ -172,12 +172,21 @@ public:
 		JC_Point2(point.x, point.y)
 	{}
 
+	template<typename C>
+	JC_Point2(const JC_Point2<C>& src)
+		:
+		x((T)src.x),
+		y((T)src.y)
+	{}
+
 	template<typename T2>
 	explicit operator JC_Point2<T2>() const
 	{
 		return { T2 x,T2 y };
 
 	}
+
+
 
 
 	inline JC_Point2 operator-()

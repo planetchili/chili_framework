@@ -28,10 +28,11 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	P (600,450),
-	Q(840,450),
-	R (720,330)
+	ct(gfx)
 {
+	circles.emplace_back(JC_Point2d{ 0,0 }, JC_Point2d{ 300,300 });
+	circles.emplace_back(JC_Point2d{ 600,450 }, JC_Point2d{ 840,450 },JC_Point2d{ 720,330 });
+	circles.emplace_back(JC_Point2d{ 200,200 }, JC_Point2d{ 300,300 }, JC_Point2d{ 400,450 });
 }
 
 void Game::Go()
@@ -52,7 +53,7 @@ void Game::UpdateModel()
 		{
 			input++;
 
-			if (input <= 2)
+			if (input >= 2)
 				input = 0;
 		}
 	}
@@ -62,44 +63,10 @@ void Game::UpdateModel()
 }
 
 void Game::ComposeFrame()
-
-{	/*
-	if (wnd.mouse.LeftIsPressed())
+{
+	for (auto c : circles)
 	{
-		gfx.DrawLine((float)wnd.mouse.GetPosX(), (float)wnd.mouse.GetPosY(), 840, 330, Colors::White);
-		gfx.DrawLine((float)wnd.mouse.GetPosX(), (float)wnd.mouse.GetPosY(), 600, 570, Colors::White);
-		gfx.DrawCircle(600, 570, 840, 330, (float)wnd.mouse.GetPosX(), (float)wnd.mouse.GetPosY(), Colors::White);
-	}
-	else
-	{
-		gfx.DrawLine(600, 330, 840, 330, Colors::White);
-		gfx.DrawLine(600, 330, 600, 570, Colors::White);
-		gfx.DrawCircle(600, 570, 840, 330,600,330 , Colors::White);
+		c.Draw(ct);
 	}
 	
-
-	if (wnd.mouse.LeftIsPressed())
-	{
-		gfx.DrawLine(600, 450, (float)wnd.mouse.GetPosX(), (float)wnd.mouse.GetPosY(), Colors::White);
-		gfx.DrawLine(840, 450, (float)wnd.mouse.GetPosX(), (float)wnd.mouse.GetPosY(), Colors::White);
-		gfx.DrawCircle(600, 450, 840, 450, (float)wnd.mouse.GetPosX(), (float)wnd.mouse.GetPosY(), Colors::White);
-	}
-	else
-	{
-		gfx.DrawLine(600, 450, 720, 600, Colors::White);
-		gfx.DrawLine(840, 450, 720, 600, Colors::White);
-		gfx.DrawCircle(600, 450, 840, 450, 720, 600, Colors::White);
-	}
-	*/
-
-	circles.emplace_back(P, Q);
-	circles.emplace_back(P, Q, R);
-
-	for (auto i : circles)
-	{
-		i.Draw(gfx);
-	}
-	
-	P.GetDistanceTo(Q);
-
 }

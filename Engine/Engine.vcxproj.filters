@@ -75,6 +75,9 @@
     <ClInclude Include="JC_Vector2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CordinateTrasformerh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DXErr.cpp">

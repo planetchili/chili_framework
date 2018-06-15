@@ -25,7 +25,8 @@
 #include "Graphics.h"
 #include "JC_Vector2.h"
 #include "Circle.h"
-
+#include "CordinateTrasformerh.h"
+//#include "boost\any.hpp"
 
 
 class Game
@@ -36,12 +37,7 @@ public:
 	Game& operator=( const Game& ) = delete;
 	void Go();
 
-	enum class Shapes
-	{
-		Circle2Point,
-		Circle3point,
-		FlatEllipse
-	};
+
 	
 private:
 	void ComposeFrame();
@@ -54,10 +50,12 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+	CoordinateTrasformer ct;
+
+
 	std::vector<Circle> circles;
-	Shapes shapes = Shapes::Circle2Point;
-	JC_Point2d P, Q, R;
-	int input = 0;
+	//std::vector<boost::any> selected;
+	unsigned short input = 0;
 	/********************************/
 
 };

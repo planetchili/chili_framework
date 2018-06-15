@@ -18,18 +18,19 @@ Circle::Circle(const JC_Point2d& P, const JC_Point2d& Q, const JC_Point2d& R, Co
 	C(color)
 {}
 
-void Circle::Draw(Graphics & gfx)
+void Circle::Draw(CoordinateTrasformer& ct)
 {
-	gfx.DrawCircle(pos, radius, C);
+	ct.DrawCircle(pos, radius, C);
 }
 
-/*
+
+
 Circle Circle::GetCircle() 
 {
 	selected = true;
 	return *this;
 }
-*/
+
 JC_Point2d Circle::CalculatCentre(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R)
 {
 	{

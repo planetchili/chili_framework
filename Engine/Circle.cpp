@@ -5,7 +5,7 @@
 Circle::Circle(const JC_Point2d& P, const JC_Point2d& Q, Color color)
 	:
 	pos(P),
-	radius(P.GetDistanceTo(Q)),
+	radius(GetDistanceTo(P,Q)),
 	C(color)
 {}
 
@@ -14,7 +14,7 @@ Circle::Circle(const JC_Point2d& P, const JC_Point2d& Q, Color color)
 Circle::Circle(const JC_Point2d& P, const JC_Point2d& Q, const JC_Point2d& R, Color color)
 	:
 	pos(CalculatCentre(P, Q, R)),
-	radius(pos.GetDistanceTo(R)),
+	radius(GetDistanceTo(pos,R)),
 	C(color)
 {}
 
@@ -24,12 +24,13 @@ void Circle::Draw(CoordinateTrasformer& ct)
 }
 
 
-
+/*
 Circle Circle::GetCircle() 
 {
 	selected = true;
 	return *this;
 }
+*/
 
 JC_Point2d Circle::CalculatCentre(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R)
 {
@@ -89,9 +90,9 @@ JC_Point2d Circle::CalculateSpecificCentre(const JC_Point2d & P, const JC_Point2
 
 		//mid point of orginally inserted lines		
 
-		JC_Point2d mid_PR = P.GetMidPoint(R);
+		JC_Point2d mid_PR = GetMidPoint(P,R); 
 
-		JC_Point2d mid_QR = Q.GetMidPoint(R);
+		JC_Point2d mid_QR = GetMidPoint(Q,R);
 
 
 		// y=mx+b find b part of perpendicular line

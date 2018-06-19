@@ -4,6 +4,7 @@
 #include "JC_Vector2.h"
 #include "CordinateTrasformerh.h"
 
+
 class Circle
 {
 public:
@@ -14,18 +15,19 @@ public:
 	void Draw(CoordinateTrasformer& ct);
 
 	//void CalculateSelectCircle(const JC_Point2i& mouse_imput);
-	Circle GetCircle();
+	//Circle GetCircle();
 
 public:
 	JC_Point2d CalculatCentre(const  JC_Point2d& P, const  JC_Point2d& Q, const JC_Point2d& R);
-	double GetRadius()
+
+	double GetRadius()const
 	{
 		return radius;
-	}
-	JC_Point2d GetPos()
+	} 
+	JC_Point2d GetPos()const
 	{
 		return pos;
-	}
+	} 
 private:
 	JC_Point2d CalculateSpecificCentre(const  JC_Point2d& P, const  JC_Point2d& Q, const JC_Point2d& R);
 	

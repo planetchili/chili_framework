@@ -20,7 +20,6 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
-#include "JC_Vector2.h"
 #include "Mouse.h"
 
 
@@ -31,8 +30,10 @@ Game::Game(MainWindow& wnd)
 	ct(gfx)
 {
 	circles.emplace_back(JC_Point2d{ 0,0 }, JC_Point2d{ 300,300 });
-	circles.emplace_back(JC_Point2d{ 600,450 }, JC_Point2d{ 840,450 },JC_Point2d{ 720,330 });
+	circles.emplace_back(JC_Point2d{ 100,0 }, JC_Point2d{ 0,100 },JC_Point2d{ 0,0 });
 	circles.emplace_back(JC_Point2d{ 200,200 }, JC_Point2d{ 300,300 }, JC_Point2d{ 400,450 });
+
+	
 }
 
 void Game::Go()
@@ -68,5 +69,7 @@ void Game::ComposeFrame()
 	{
 		c.Draw(ct);
 	}
-	
+
+	ct.DrawClosedPolyline(Star::Make(200, 75.0,7), Colors::Red);
 }
+

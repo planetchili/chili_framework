@@ -23,10 +23,13 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
+#include "CordinateTrasformerh.h"
+
 #include "JC_Vector2.h"
 #include "Circle.h"
-#include "CordinateTrasformerh.h"
-//#include "boost\any.hpp"
+#include "Star.h"
+
+
 
 
 class Game
@@ -54,7 +57,8 @@ private:
 
 
 	std::vector<Circle> circles;
-	//std::vector<boost::any> selected;
+
+
 	unsigned short input = 0;
 	/********************************/
 

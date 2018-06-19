@@ -22,6 +22,7 @@
 #include <d3d11.h>
 #include <wrl.h>
 #include <math.h>
+#include <vector>
 
 #include "ChiliWin.h"
 #include "ChiliException.h"
@@ -62,13 +63,15 @@ public:
 		PutPixel( x,y,{ unsigned char( r ),unsigned char( g ),unsigned char( b ) } );
 	}
 	void PutPixel( int x,int y,Color c );
+
+	void DrawClosedPolyline(const std::vector<JC_Point2d>& verts, Color c);
 	
 	/***** Start Draw Line Functions *****/
 
-	template<typename T>
-	void DrawLine(const JC_Point2<T>& P, const JC_Point2<T>& Q, Color c)
+	
+	void DrawLine(const JC_Point2d& P, const JC_Point2d& Q, Color c)
 	{
-		DrawLine((double)P.x, (double)P.y, (double)Q.x, (double)Q.y, c);
+		DrawLine(P.x, P.y, Q.x, Q.y, c);
 	}
 	void DrawLine(double x1, double y1, double x2, double y2, Color c);
 

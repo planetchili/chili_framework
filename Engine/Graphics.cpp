@@ -346,6 +346,16 @@ void Graphics::PutPixel( int x,int y,Color c )
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
 }
 
+
+void Graphics::DrawClosedPolyline(const std::vector<JC_Point2d>& verts, Color c)
+{
+	for (auto i = verts.begin(); i != std::prev(verts.end()); i++)
+	{
+		DrawLine(*i, *std::next(i), c);
+	}
+	DrawLine(verts.back(), verts.front(), c);
+}
+
 void Graphics::DrawLine(double x1, double y1, double x2, double y2, Color c)
 {
 	const double dx = x2 - x1;

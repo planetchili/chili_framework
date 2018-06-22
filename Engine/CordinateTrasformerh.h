@@ -38,6 +38,14 @@ public:
 		gfx.DrawClosedPolyline(poly, c);
 	}
 	
+	template <typename T> JC_Point2<T> CreatePoint(JC_Point2<T> input )
+	{
+		JC_Vector2d offset = { (T)(Graphics::ScreenWidth / 2), (T)(Graphics::ScreenHeight / 2) };
+		
+		input -= offset;
+		input.y *= -1;
+		return input;
+	}
 
 private:
 	Graphics& gfx;

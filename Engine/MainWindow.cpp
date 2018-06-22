@@ -148,9 +148,9 @@ LRESULT MainWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 		hSubMenu = CreatePopupMenu();
 		
-		AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT_PTR)hSubMenu, L"&Stuff");
+		AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT_PTR)hSubMenu, L"&Shapes");
 		{
-			AppendMenu(hSubMenu, MF_STRING, ID_STUFF_GO, L"&Go");
+			AppendMenu(hSubMenu, MF_STRING, ID_SHAPES_TwoPointCircle, L"&Circle from 2 points");
 		}
 
 		SetMenu(hWnd, hMenu);
@@ -164,8 +164,9 @@ LRESULT MainWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case ID_FILE_EXIT:
 			PostMessage(hWnd, WM_CLOSE, 0, 0);
 			break;
-		case ID_STUFF_GO:
-			ShowMessageBox(L"You clicked Go!", L"Woo!");
+		case ID_SHAPES_TwoPointCircle:
+			//Game::Shape::TwoPointCircle;
+			ShowMessageBox(L"Info",L"Enter 2 Points");
 
 			break;
 		}

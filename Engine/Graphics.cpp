@@ -401,10 +401,6 @@ void Graphics::DrawLine(double x1, double y1, double x2, double y2, Color c)
 	}
 }
 
-void Graphics::DrawCircle(JC_Point2d& P, JC_Point2d& Q, Color& c)
-{
-	DrawCircle(P.x, P.y, Q.x, Q.y, c);
-}
 
 void Graphics::DrawCircle(double Ox, double Oy, double R, Color& c)
 {
@@ -462,16 +458,7 @@ void Graphics::DrawCircle(double Ox, double Oy, double R, Color& c)
 	
 }
 
-void Graphics::DrawCircle(double Ox, double Oy, double x1, double y1, Color& c)
-{
-	
-	double Rx = std::abs(x1 - Ox);
-	double Ry = std::abs(y1 - Oy);
-	//calculate radius
-	double R = std::sqrt(Rx*Rx + Ry * Ry);
 
-	DrawCircle(Ox, Oy, R, c);
-}
 
 
 

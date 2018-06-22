@@ -21,6 +21,7 @@
 #include "MainWindow.h"
 #include "Game.h"
 #include "Mouse.h"
+#include "CordinateTrasformerh.h"
 
 
 Game::Game(MainWindow& wnd)
@@ -29,10 +30,12 @@ Game::Game(MainWindow& wnd)
 	gfx(wnd),
 	ct(gfx)
 {
-	circles.emplace_back(JC_Point2d{ 0,0 }, JC_Point2d{ 300,300 });
-	circles.emplace_back(JC_Point2d{ 100,0 }, JC_Point2d{ 0,100 },JC_Point2d{ 0,0 });
-	circles.emplace_back(JC_Point2d{ 200,200 }, JC_Point2d{ 300,300 }, JC_Point2d{ 400,450 });
+	//circles.emplace_back(JC_Point2d{ 0,0 }, JC_Point2d{ 300,300 });
+	//circles.emplace_back(JC_Point2d{ 100,0 }, JC_Point2d{ 0,100 },JC_Point2d{ 0,0 });
+	//circles.emplace_back(JC_Point2d{ 200,200 }, JC_Point2d{ 300,300 }, JC_Point2d{ 400,450 });
 
+
+	//circles.emplace_back(JC_Point2d{ -100,0 }, JC_Point2d{ 100,0 }, JC_Point2d{ 0,100 },Colors::Magenta);
 	
 }
 
@@ -46,20 +49,66 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	while (!wnd.mouse.IsEmpty())
+	switch (shape)
 	{
-		const auto e = wnd.mouse.Read();
-		
-		if (e.GetType() == Mouse::Event::Type::LPress)
+		case Shape::TwoPointCircle :
 		{
-			input++;
+			while (!wnd.mouse.IsEmpty())
+			{
+				const auto e = wnd.mouse.Read();
 
-			if (input >= 2)
-				input = 0;
+				if (e.GetType() == Mouse::Event::Type::LPress)
+				{
+					if (input == 0)
+					{
+						P.x = (double)wnd.mouse.GetPosX();
+						P.y = (double)wnd.mouse.GetPosY();
+						engaged = true;
+						P = ct.CreatePoint(P);
+					}
+					if (input == 1)
+					{
+						Q.x = (double)wnd.mouse.GetPosX();
+						Q.y = (double)wnd.mouse.GetPosY();
+						Q = ct.CreatePoint(Q);
+						circles.emplace_back(P, Q);
+					}
+
+					input++;
+
+					if (input >= 2)
+					{
+						input = 0;
+						engaged = false;
+					}
+
+
+				}
+				if (e.GetType() == Mouse::Event::Type::RPress)
+				{
+					input = 0;
+					engaged = false;
+				}
+
+			}
+			if (engaged)
+			{
+				Q.x = (double)wnd.mouse.GetPosX();
+				Q.y = (double)wnd.mouse.GetPosY();
+				Q = ct.CreatePoint(Q);
+				ct.DrawCircle(P, GetDistanceTo(P, Q), Colors::Red);
+			}
+			break;
 		}
+
 	}
 
-
+	if (wnd.kbd.KeyIsPressed(VK_ESCAPE))
+	{
+		input = 0;
+		Shape::Null;
+	}
+	
 
 }
 

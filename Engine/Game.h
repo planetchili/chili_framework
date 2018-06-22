@@ -30,8 +30,6 @@
 #include "Star.h"
 
 
-
-
 class Game
 {
 public:
@@ -40,13 +38,23 @@ public:
 	Game& operator=( const Game& ) = delete;
 	void Go();
 
+	enum class Shape
+	{
+		Null,
+		TwoPointCircle,
+		ThreePointCircle,
+		Count
+	};
+	Shape shape = Shape::Null;
 
-	
 private:
 	void ComposeFrame();
 	void UpdateModel();
 	/********************************/
 	/*  User Functions              */
+
+
+
 	/********************************/
 private:
 	MainWindow& wnd;
@@ -54,12 +62,12 @@ private:
 	/********************************/
 	/*  User Variables              */
 	CoordinateTrasformer ct;
-
-
 	std::vector<Circle> circles;
-
-
 	unsigned short input = 0;
+
+	bool engaged = false;
+
+	JC_Point2d P, Q, R;
 	/********************************/
 
 };

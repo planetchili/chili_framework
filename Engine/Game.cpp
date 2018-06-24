@@ -49,9 +49,9 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	switch (shape)
+	switch (wnd.shape)
 	{
-		case Shape::TwoPointCircle :
+	case MainWindow::Shape::TwoPointCircle :
 		{
 			while (!wnd.mouse.IsEmpty())
 			{
@@ -100,13 +100,13 @@ void Game::UpdateModel()
 			}
 			break;
 		}
-
+		break;
 	}
 
 	if (wnd.kbd.KeyIsPressed(VK_ESCAPE))
 	{
 		input = 0;
-		Shape::Null;
+		wnd.shape = MainWindow::Shape::Null;
 	}
 	
 

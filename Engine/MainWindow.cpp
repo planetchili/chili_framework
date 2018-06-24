@@ -165,8 +165,8 @@ LRESULT MainWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			PostMessage(hWnd, WM_CLOSE, 0, 0);
 			break;
 		case ID_SHAPES_TwoPointCircle:
-			//Game::Shape::TwoPointCircle;
-			ShowMessageBox(L"Info",L"Enter 2 Points");
+			shape = Shape::TwoPointCircle ;
+			ShowMessageBox(L"Info",L"Create circle form 2 points");
 
 			break;
 		}

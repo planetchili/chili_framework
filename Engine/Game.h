@@ -38,14 +38,7 @@ public:
 	Game& operator=( const Game& ) = delete;
 	void Go();
 
-	enum class Shape
-	{
-		Null,
-		TwoPointCircle,
-		ThreePointCircle,
-		Count
-	};
-	Shape shape = Shape::Null;
+
 
 private:
 	void ComposeFrame();

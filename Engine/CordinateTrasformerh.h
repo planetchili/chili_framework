@@ -40,8 +40,7 @@ public:
 	
 	template <typename T> JC_Point2<T> CreatePoint(JC_Point2<T> input )
 	{
-		JC_Vector2d offset = { (T)(Graphics::ScreenWidth / 2), (T)(Graphics::ScreenHeight / 2) };
-		
+		JC_Vector2<T> offset = { (T)(Graphics::ScreenWidth / 2), (T)(Graphics::ScreenHeight / 2) };
 		input -= offset;
 		input.y *= -1;
 		return input;

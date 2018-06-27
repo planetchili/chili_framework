@@ -23,14 +23,30 @@ void Circle::Draw(CoordinateTrasformer& ct)
 	ct.DrawCircle(pos, radius, C);
 }
 
-
-/*
-Circle Circle::GetCircle() 
+void Circle::UpdateColor()
 {
-	selected = true;
-	return *this;
+	if (selectedflag)
+		C = Colors::Yellow;
+	else
+		C = Colors::White;
 }
-*/
+
+void Circle::SetSelectionFlag(const JC_Point2i& mousein)
+{
+	JC_Point2d mouseind;
+	mouseind.x = (double)mousein.x;
+	mouseind.y = (double)mousein.y;
+	double distance = GetDistanceTo(pos, mouseind);
+	if (distance <= (radius + halfwidth)&&
+		distance >= (radius - halfwidth))
+		selectedflag = true;
+}
+
+void Circle::ResetSelectionFlag()
+{
+	selectedflag = false;
+}
+
 
 JC_Point2d Circle::CalculatCentre(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R)
 {
@@ -72,6 +88,28 @@ JC_Point2d Circle::CalculatCentre(const JC_Point2d & P, const JC_Point2d & Q, co
 		}
 	}
 }
+
+double Circle::GetRadius() const
+{
+	
+	return radius;
+	
+}
+
+JC_Point2d Circle::GetPos() const
+{
+	return pos;
+}
+
+
+
+void Circle::SetRemovalFlag()
+{
+	removalflag = true;
+
+}
+
+
 
 JC_Point2d Circle::CalculateSpecificCentre(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R)
 {

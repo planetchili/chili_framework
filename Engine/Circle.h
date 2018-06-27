@@ -13,21 +13,22 @@ public:
 	Circle(const JC_Point2d& P, const JC_Point2d& Q, const JC_Point2d& R, Color color = Colors::White);
 	
 	void Draw(CoordinateTrasformer& ct);
-
-	//void CalculateSelectCircle(const JC_Point2i& mouse_imput);
-	//Circle GetCircle();
+	void UpdateColor();
+	
+	void SetSelectionFlag(const JC_Point2i& mousein);
+	void ResetSelectionFlag();
 
 public:
 	JC_Point2d CalculatCentre(const  JC_Point2d& P, const  JC_Point2d& Q, const JC_Point2d& R);
 
-	double GetRadius()const
-	{
-		return radius;
-	} 
-	JC_Point2d GetPos()const
-	{
-		return pos;
-	} 
+	double GetRadius()const;
+	JC_Point2d GetPos()const;
+	
+
+	void SetRemovalFlag();
+	
+	
+
 private:
 	JC_Point2d CalculateSpecificCentre(const  JC_Point2d& P, const  JC_Point2d& Q, const JC_Point2d& R);
 	
@@ -35,7 +36,12 @@ private:
 	JC_Point2d pos;
 	double radius;
 	static constexpr double halfwidth = 4.0;
-	bool selected = false;
+	bool selectedflag = false;
+	bool removalflag = false;
 	Color C ;
 };
 
+//	if (flag == true)
+//{
+//	
+//}

@@ -43,6 +43,7 @@ public:
 private:
 	void ComposeFrame();
 	void UpdateModel();
+	void ProcesInput();
 	/********************************/
 	/*  User Functions              */
 
@@ -61,6 +62,7 @@ private:
 	bool engaged = false;
 
 	JC_Point2d P, Q, R;
+	JC_Point2i T;
 	/********************************/
 
 };

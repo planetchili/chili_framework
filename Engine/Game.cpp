@@ -42,12 +42,13 @@ Game::Game(MainWindow& wnd)
 void Game::Go()
 {
 	gfx.BeginFrame();	
+	ProcesInput();
 	UpdateModel();
 	ComposeFrame();
 	gfx.EndFrame();
 }
 
-void Game::UpdateModel()
+void Game::ProcesInput()
 {
 	switch (wnd.shape)
 	{
@@ -100,25 +101,63 @@ void Game::UpdateModel()
 			}
 			break;
 		}
+	case MainWindow::Shape::Null:
+	{
+		while (!wnd.mouse.IsEmpty())
+		{
+			const auto e = wnd.mouse.Read();
+
+			if (e.GetType() == Mouse::Event::Type::LPress)
+			{
+				for (auto i = circles.begin() , j = circles.end(); i != j; ++i)
+				{
+					
+					i->SetSelectionFlag(ct.CreatePoint(wnd.mouse.GetPos()));
+					
+				}
+			}
+		
+
+		}
+		break;
+	}
 		break;
 	}
 
 	if (wnd.kbd.KeyIsPressed(VK_ESCAPE))
 	{
-		input = 0;
+		
 		wnd.shape = MainWindow::Shape::Null;
+		
+		input = 0;
+		
+		for (auto &c : circles)
+		{
+			c.ResetSelectionFlag();
+		}
 	}
-	
+}
+
+
+void Game::UpdateModel()
+{
+
+	for (auto &c : circles)
+	{
+		c.UpdateColor();
+	}
 
 }
 
+
+
 void Game::ComposeFrame()
 {
-	for (auto c : circles)
+	for (auto &c : circles)
 	{
 		c.Draw(ct);
 	}
 
-	ct.DrawClosedPolyline(Star::Make(200, 75.0,7), Colors::Red);
+	//ct.DrawClosedPolyline(Star::Make(200, 75.0,7), Colors::Red);
 }
 

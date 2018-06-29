@@ -47,6 +47,11 @@ void Circle::ResetSelectionFlag()
 	selectedflag = false;
 }
 
+bool Circle::ReadyForRemoval() const
+{
+	return selectedflag;
+}
+
 
 JC_Point2d Circle::CalculatCentre(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R)
 {
@@ -87,26 +92,6 @@ JC_Point2d Circle::CalculatCentre(const JC_Point2d & P, const JC_Point2d & Q, co
 
 		}
 	}
-}
-
-double Circle::GetRadius() const
-{
-	
-	return radius;
-	
-}
-
-JC_Point2d Circle::GetPos() const
-{
-	return pos;
-}
-
-
-
-void Circle::SetRemovalFlag()
-{
-	removalflag = true;
-
 }
 
 

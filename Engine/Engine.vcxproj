@@ -145,6 +145,7 @@
     <ClInclude Include="DXErr.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="ChiliUtil.h" />
     <ClInclude Include="JC_Math.h" />
     <ClInclude Include="JC_Vector2.h" />
     <ClInclude Include="Keyboard.h" />

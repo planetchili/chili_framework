@@ -18,16 +18,11 @@ public:
 	void SetSelectionFlag(const JC_Point2i& mousein);
 	void ResetSelectionFlag();
 
+	bool ReadyForRemoval() const;
+
 public:
 	JC_Point2d CalculatCentre(const  JC_Point2d& P, const  JC_Point2d& Q, const JC_Point2d& R);
-
-	double GetRadius()const;
-	JC_Point2d GetPos()const;
-	
-
-	void SetRemovalFlag();
-	
-	
+			
 
 private:
 	JC_Point2d CalculateSpecificCentre(const  JC_Point2d& P, const  JC_Point2d& Q, const JC_Point2d& R);
@@ -37,7 +32,6 @@ private:
 	double radius;
 	static constexpr double halfwidth = 4.0;
 	bool selectedflag = false;
-	bool removalflag = false;
 	Color C ;
 };
 

@@ -22,21 +22,16 @@
 #include "Game.h"
 #include "Mouse.h"
 #include "CordinateTrasformerh.h"
+#include "ChiliUtil.h"
 
+#include <functional>
 
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
 	ct(gfx)
-{
-	//circles.emplace_back(JC_Point2d{ 0,0 }, JC_Point2d{ 300,300 });
-	//circles.emplace_back(JC_Point2d{ 100,0 }, JC_Point2d{ 0,100 },JC_Point2d{ 0,0 });
-	//circles.emplace_back(JC_Point2d{ 200,200 }, JC_Point2d{ 300,300 }, JC_Point2d{ 400,450 });
-
-
-	//circles.emplace_back(JC_Point2d{ -100,0 }, JC_Point2d{ 100,0 }, JC_Point2d{ 0,100 },Colors::Magenta);
-	
+{	
 }
 
 void Game::Go()
@@ -136,17 +131,21 @@ void Game::ProcesInput()
 			c.ResetSelectionFlag();
 		}
 	}
+
+	if (wnd.kbd.KeyIsPressed(VK_DELETE))
+	{
+		remove_erase_if(circles, std::mem_fn(&Circle::ReadyForRemoval));
+
+	}	
 }
 
 
 void Game::UpdateModel()
 {
-
 	for (auto &c : circles)
 	{
 		c.UpdateColor();
 	}
-
 }
 
 

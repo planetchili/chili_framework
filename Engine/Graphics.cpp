@@ -346,10 +346,20 @@ void Graphics::PutPixel( int x,int y,Color c )
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
 }
 
-void Graphics::DrawLine(float x1, float y1, float x2, float y2, Color c)
+
+void Graphics::DrawClosedPolyline(const std::vector<JC_Point2d>& verts, Color c)
 {
-	const float dx = x2 - x1;
-	const float dy = y2 - y1;
+	for (auto i = verts.begin(); i != std::prev(verts.end()); i++)
+	{
+		DrawLine(*i, *std::next(i), c);
+	}
+	DrawLine(verts.back(), verts.front(), c);
+}
+
+void Graphics::DrawLine(double x1, double y1, double x2, double y2, Color c)
+{
+	const double dx = x2 - x1;
+	const double dy = y2 - y1;
 
 	if (dx == 0.0f && dy == 0.0f)
 	{
@@ -363,12 +373,12 @@ void Graphics::DrawLine(float x1, float y1, float x2, float y2, Color c)
 			std::swap(y1, y2);
 		}
 
-		float m = dy / dx;
-		float b = y1 - m * x1;
+		double m = dy / dx;
+		double b = y1 - m * x1;
 
-		for (float x = x1; x <= x2; x++)
+		for (double x = x1; x <= x2; x++)
 		{
-			float y = m * x + b;
+			double y = m * x + b;
 			PutPixel((int)(x + 0.5f), (int)(y + 0.5f), c);
 		}
 	}
@@ -380,58 +390,79 @@ void Graphics::DrawLine(float x1, float y1, float x2, float y2, Color c)
 			std::swap(y1, y2);
 		}
 
-		float m = dx / dy;
-		float b = x1 - m * y1;
+		double m = dx / dy;
+		double b = x1 - m * y1;
 
-		for (float y = y1; y <= y2; y++)
+		for (double y = y1; y <= y2; y++)
 		{
-			float x = m * y + b;
+			double x = m * y + b;
 			PutPixel((int)(x + 0.5f), (int)(y + 0.5f), c);
 		}
 	}
 }
 
-void Graphics::DrawCircle(float Ox, float Oy, float R, Color c)
+
+void Graphics::DrawCircle(double Ox, double Oy, double R, Color& c)
 {
+	/*for (double theta = 0; theta < 360; theta += 0.2)
+	{
+		double x = (double)(R * std::cos(PI_D*theta / 180));
+		double y = (double)(R * std::sin(PI_D*theta / 180));
+
+		int xi = (int)(x + 0.5f + Ox);
+		int yi = (int)(y + 0.5f + Oy);
+
+		if (xi >= 0 && xi < ScreenWidth && yi >= 0 && yi < ScreenHeight)
+			PutPixel(xi, yi, c);
+	}
+	*/
+
+	double x = 0.7071067811865475;
 	
-		if (R > 0.0)
-		{
+	double Rx = (x * R) + 0.5;
+	
+	double radsqr = R * R;
+	
+	//draw Circle with per pixel clipping
 
-			for (double theta = 0; theta < 360; theta += 0.2)
-			{
-				float x = (float)(R * std::cos(PI_F*theta / 180));
-				float y = (float)(R * std::sin(PI_F*theta / 180));
+	for (int xi = 0; xi <= (int)Rx; xi++)
+	{
+		int yi = (int)(std::sqrt(radsqr - (xi*xi)) + 0.5f);
 
-				PutPixel((int)(Ox), (int)(Oy),c);
-				PutPixel((int)(x+0.5f + Ox), (int)(y+0.5f + Oy), c);
-			}
-		}
-		else
-		{
-			PutPixel(int(Ox), int(Oy), c);
-		}
 
+		if (Ox + xi >= 0 && Ox + xi < ScreenWidth && Oy + yi >= 0 && Oy + yi < ScreenHeight)
+			PutPixel((int)Ox + xi, (int)Oy + yi, c);
+
+		if (Ox + yi >= 0 && Ox + yi < ScreenWidth && Oy + xi >= 0 && Oy + xi < ScreenHeight)
+			PutPixel((int)Ox + yi, (int)Oy + xi, c);
+
+		if (Ox -xi >= 0 && Ox -xi < ScreenWidth && Oy + yi >= 0 && Oy + yi < ScreenHeight)
+			PutPixel((int)Ox - xi, (int)Oy + yi, c);
+
+		if (Ox -yi >= 0 && Ox -yi < ScreenWidth && Oy + xi >= 0 && Oy + xi < ScreenHeight)
+			PutPixel((int)Ox - yi, (int)Oy + xi, c);
+
+		if (Ox -xi >= 0 && Ox -xi < ScreenWidth && Oy -yi >= 0 && Oy -yi < ScreenHeight)
+			PutPixel((int)Ox - xi, (int)Oy - yi, c);
+
+		if (Ox -yi >= 0 && Ox-yi < ScreenWidth && Oy -xi >= 0 && Oy -xi < ScreenHeight)
+			PutPixel((int)Ox - yi, (int)Oy - xi, c);
+
+		if (Ox + xi >= 0 && Ox + xi < ScreenWidth && Oy -yi >= 0 && Oy -yi < ScreenHeight)
+			PutPixel((int)Ox + xi, (int)Oy - yi, c);
+
+		if (Ox + yi >= 0 && Ox + yi < ScreenWidth && Oy -xi >= 0 && Oy -xi < ScreenHeight)
+			PutPixel((int)Ox + yi, (int)Oy - xi, c);
+	}
+		       
 	
 }
 
-void Graphics::DrawCircle(float x1, float y1, float x2, float y2, float x3, float y3, Color c)
-{
-	// find slope of any two lines conecting points
-
-	// calculate perpendicular line slope...
-
-	// ...throught mid point
-
-	// find crossection of two lines
-
-	// Calculate radius using pair of centre and onarc points
-
-	//pass centre and radius to DrawCircle function
 
 
-}
 
-void Graphics::DrawArc(float Ox, float Oy, float R ,float theta_begin, float theta_end, Color c)
+
+void Graphics::DrawArc(double Ox, double Oy, double R , double theta_begin, double theta_end, Color c)
 {
 
 	bool theta_range = theta_end - theta_begin > 0.0;
@@ -443,15 +474,14 @@ void Graphics::DrawArc(float Ox, float Oy, float R ,float theta_begin, float the
 	}
 	else
 	{
-		for (float theta = theta_begin;
+		for (double theta = theta_begin;
 			theta_range ? theta < theta_end : theta > theta_end;
 			theta_range ? theta += 0.2 : theta -= 0.2)
 		{
-			float x = (float)(R * std::cos(PI_F*theta / 180));
-			float y = (float)(R * std::sin(PI_F*theta / 180));
+			double x = (double)(R * std::cos(PI_F*theta / 180));
+			double y = (double)(R * std::sin(PI_F*theta / 180));
 
-			//Draw pixel at the begining of radius
-			PutPixel((int)(Ox), (int)(Oy), Colors::Red);
+				
 			//Draw arc
 			PutPixel((int)(x + 0.5f + Ox), (int)(y + 0.5f + Oy), c);
 		}

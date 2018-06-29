@@ -50,6 +50,15 @@ public:
 		virtual std::wstring GetExceptionType() const override { return L"Windows Exception"; }
 	};
 public:
+	enum class Shape
+	{
+		Null,
+		TwoPointCircle,
+		ThreePointCircle,
+		Count
+	};
+	Shape shape = Shape::Null;
+
 	MainWindow( HINSTANCE hInst,wchar_t* pArgs );
 	MainWindow( const MainWindow& ) = delete;
 	MainWindow& operator=( const MainWindow& ) = delete;

@@ -19,14 +19,17 @@
 *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
 ******************************************************************************************/
 #pragma once
-#include "ChiliWin.h"
 #include <d3d11.h>
 #include <wrl.h>
+#include <math.h>
+#include <vector>
+
+#include "ChiliWin.h"
 #include "ChiliException.h"
 #include "Colors.h"
-#include "JezierVec2.h"
-#include  <type_traits>
-#include <assert.h>
+#include "JC_Vector2.h"
+#include "JC_Math.h"
+
 
 class Graphics
 {
@@ -60,36 +63,49 @@ public:
 		PutPixel( x,y,{ unsigned char( r ),unsigned char( g ),unsigned char( b ) } );
 	}
 	void PutPixel( int x,int y,Color c );
+
+	void DrawClosedPolyline(const std::vector<JC_Point2d>& verts, Color c);
 	
-	/*Draw Line Functions*/
-	template<typename T>
-	void DrawLine(const _Vec2<T> v1, const _Vec2<T> v2, Color c)
-	{
-		DrawLine((float)v1.x, (float)v1.y, (float)v2.x, (float)v2.y, c);
-	}
-	void DrawLine(float x1, float y1, float x2, float y2, Color c);
+	/***** Start Draw Line Functions *****/
 
-	/*Draw Circle Functions*/
+	
+	void DrawLine(const JC_Point2d& P, const JC_Point2d& Q, Color c)
+	{
+		DrawLine(P.x, P.y, Q.x, Q.y, c);
+	}
+	void DrawLine(double x1, double y1, double x2, double y2, Color c);
+
+	/***** END Draw Line Functions ****/
+
+
+	/***** Start Draw Circle Functions *****/
+
 	template<typename T2>
-	void DrawCircle(_Vec2<T2> vO, T2 R, Color c)
+	void DrawCircle(JC_Point2<T2> vO, T2 R, Color c)
 	{
-		DrawCircle((float)vO.x, (float)vO.y, c);
+		DrawCircle((double)vO.x, (double)vO.y, (double)R, c);
 	}
-	void DrawCircle(float Ox, float Oy, float R, Color c);
-	//Three point circle
-	void DrawCircle(float x1, float y1, float x2, float y2, float x3, float y3, Color c); 	
+	 
 
-	/*Draw Arc Functions*/
-	void DrawArc(float Ox, float Oy,float R, float theta_begin,float theta_end, Color c);
-	template<typename T3>
-	void DrawArc(_Vec2<T3> vO, T3 R, Color c)
-	{
-		DrawArc((float)vO.x, (float)vO.y, (float)R, c);
-	}
+	void DrawCircle(double Ox, double Oy, double R, Color& c);
 
-	/*Elipse Drawing functions*/
+	/***** END Draw Circle Functions ****/
+
+	
+	/***** Start Draw Arc Functions *****/
+	
+	void DrawArc(double Ox, double Oy, double R, double theta_begin, double theta_end, Color c);
+	
+	/***** End Draw Arc Functions *****/
+
+
+
+	/***** Start Draw Ellipse Functions *****/
+	
 	void DrawFlatEllipse(float Ox, float Oy, float Rx, float Ry, Color c);
 	
+	/***** End Draw Ellipse Functions *****/
+
 
 	~Graphics();
 private:

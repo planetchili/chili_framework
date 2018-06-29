@@ -23,7 +23,12 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
-#include "JezierVec2.h"
+#include "CordinateTrasformerh.h"
+
+#include "JC_Vector2.h"
+#include "Circle.h"
+#include "Star.h"
+
 
 class Game
 {
@@ -32,23 +37,32 @@ public:
 	Game( const Game& ) = delete;
 	Game& operator=( const Game& ) = delete;
 	void Go();
+
+
+
 private:
 	void ComposeFrame();
 	void UpdateModel();
+	void ProcesInput();
 	/********************************/
 	/*  User Functions              */
+
+
+
 	/********************************/
 private:
 	MainWindow& wnd;
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+	CoordinateTrasformer ct;
+	std::vector<Circle> circles;
+	unsigned short input = 0;
 
-	int xpos;
-	int ypos;
-	int x1,y1,x2,y2;
-	Color c;
-	
+	bool engaged = false;
+
+	JC_Point2d P, Q, R;
+	JC_Point2i T;
 	/********************************/
 
 };

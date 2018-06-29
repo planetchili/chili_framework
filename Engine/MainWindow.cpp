@@ -41,7 +41,6 @@ MainWindow::MainWindow( HINSTANCE hInst,wchar_t * pArgs )
 
 	// create window & get hWnd
 	RECT wr;
-	MENUINFO;
 	wr.left = 350;
 	wr.right = Graphics::ScreenWidth + wr.left;
 	wr.top = 100;
@@ -142,16 +141,16 @@ LRESULT MainWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		hMenu = CreateMenu();
 
 		hSubMenu = CreatePopupMenu();
-		AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT)hSubMenu, L"&File");
+		AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT_PTR)hSubMenu, L"&File");
 		{
 			AppendMenu(hSubMenu, MF_STRING, ID_FILE_EXIT, L"E&xit");
 		}
 
 		hSubMenu = CreatePopupMenu();
 		
-		AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT)hSubMenu, L"&Stuff");
+		AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT_PTR)hSubMenu, L"&Shapes");
 		{
-			AppendMenu(hSubMenu, MF_STRING, ID_STUFF_GO, L"&Go");
+			AppendMenu(hSubMenu, MF_STRING, ID_SHAPES_TwoPointCircle, L"&Circle from 2 points");
 		}
 
 		SetMenu(hWnd, hMenu);
@@ -165,8 +164,9 @@ LRESULT MainWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case ID_FILE_EXIT:
 			PostMessage(hWnd, WM_CLOSE, 0, 0);
 			break;
-		case ID_STUFF_GO:
-			ShowMessageBox(L"You clicked Go!", L"Woo!");
+		case ID_SHAPES_TwoPointCircle:
+			shape = Shape::TwoPointCircle ;
+			ShowMessageBox(L"Info",L"Create circle form 2 points");
 
 			break;
 		}

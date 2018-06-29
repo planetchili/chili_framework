@@ -20,54 +20,143 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
-#include "JezierVec2.h"
+#include "Mouse.h"
+#include "CordinateTrasformerh.h"
+#include "ChiliUtil.h"
+
+#include <functional>
 
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	xpos(720),
-	ypos(450),
-	x1(100),  y1(450), x2(1300), y2(300),
-	c(Colors::White)
-{
+	ct(gfx)
+{	
 }
 
 void Game::Go()
 {
 	gfx.BeginFrame();	
+	ProcesInput();
 	UpdateModel();
 	ComposeFrame();
 	gfx.EndFrame();
 }
 
+void Game::ProcesInput()
+{
+	switch (wnd.shape)
+	{
+	case MainWindow::Shape::TwoPointCircle :
+		{
+			while (!wnd.mouse.IsEmpty())
+			{
+				const auto e = wnd.mouse.Read();
+
+				if (e.GetType() == Mouse::Event::Type::LPress)
+				{
+					if (input == 0)
+					{
+						P.x = (double)wnd.mouse.GetPosX();
+						P.y = (double)wnd.mouse.GetPosY();
+						engaged = true;
+						P = ct.CreatePoint(P);
+					}
+					if (input == 1)
+					{
+						Q.x = (double)wnd.mouse.GetPosX();
+						Q.y = (double)wnd.mouse.GetPosY();
+						Q = ct.CreatePoint(Q);
+						circles.emplace_back(P, Q);
+					}
+
+					input++;
+
+					if (input >= 2)
+					{
+						input = 0;
+						engaged = false;
+					}
+
+
+				}
+				if (e.GetType() == Mouse::Event::Type::RPress)
+				{
+					input = 0;
+					engaged = false;
+				}
+
+			}
+			if (engaged)
+			{
+				Q.x = (double)wnd.mouse.GetPosX();
+				Q.y = (double)wnd.mouse.GetPosY();
+				Q = ct.CreatePoint(Q);
+				ct.DrawCircle(P, GetDistanceTo(P, Q), Colors::Red);
+			}
+			break;
+		}
+	case MainWindow::Shape::Null:
+	{
+		while (!wnd.mouse.IsEmpty())
+		{
+			const auto e = wnd.mouse.Read();
+
+			if (e.GetType() == Mouse::Event::Type::LPress)
+			{
+				for (auto i = circles.begin() , j = circles.end(); i != j; ++i)
+				{
+					
+					i->SetSelectionFlag(ct.CreatePoint(wnd.mouse.GetPos()));
+					
+				}
+			}
+		
+
+		}
+		break;
+	}
+		break;
+	}
+
+	if (wnd.kbd.KeyIsPressed(VK_ESCAPE))
+	{
+		
+		wnd.shape = MainWindow::Shape::Null;
+		
+		input = 0;
+		
+		for (auto &c : circles)
+		{
+			c.ResetSelectionFlag();
+		}
+	}
+
+	if (wnd.kbd.KeyIsPressed(VK_DELETE))
+	{
+		remove_erase_if(circles, std::mem_fn(&Circle::ReadyForRemoval));
+
+	}	
+}
+
+
 void Game::UpdateModel()
 {
-	if (wnd.mouse.LeftIsPressed())
+	for (auto &c : circles)
 	{
-		xpos = wnd.mouse.GetPosX();
-		ypos = wnd.mouse.GetPosY();
-		c = Colors::Yellow;
-	}
-	else
-		c = Colors::White;
-	if (wnd.kbd.KeyIsPressed(VK_UP))
-	{
-		y2--;
-		y1--;
-	}
-	if (wnd.kbd.KeyIsPressed(VK_DOWN))
-	{
-		y2++;
-		y1++;
+		c.UpdateColor();
 	}
 }
+
+
 
 void Game::ComposeFrame()
 {
+	for (auto &c : circles)
+	{
+		c.Draw(ct);
+	}
 
-	gfx.DrawLine(x1, y1, x2, y2, Colors::White);
-	gfx.DrawCircle(xpos, ypos, 100, c);
-	gfx.DrawArc(520,450,720,450,45,120, Colors::White);
-
+	//ct.DrawClosedPolyline(Star::Make(200, 75.0,7), Colors::Red);
 }
+

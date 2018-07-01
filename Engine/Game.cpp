@@ -57,15 +57,15 @@ void Game::ProcesInput()
 				{
 					if (input == 0)
 					{
-						P.x = (double)wnd.mouse.GetPosX();
-						P.y = (double)wnd.mouse.GetPosY();
+						
+						P = wnd.mouse.GetPos();
 						engaged = true;
 						P = ct.CreatePoint(P);
 					}
 					if (input == 1)
 					{
-						Q.x = (double)wnd.mouse.GetPosX();
-						Q.y = (double)wnd.mouse.GetPosY();
+						
+						Q = wnd.mouse.GetPos();
 						Q = ct.CreatePoint(Q);
 						circles.emplace_back(P, Q);
 					}
@@ -89,8 +89,7 @@ void Game::ProcesInput()
 			}
 			if (engaged)
 			{
-				Q.x = (double)wnd.mouse.GetPosX();
-				Q.y = (double)wnd.mouse.GetPosY();
+				Q = wnd.mouse.GetPos();
 				Q = ct.CreatePoint(Q);
 				ct.DrawCircle(P, GetDistanceTo(P, Q), Colors::Red);
 			}

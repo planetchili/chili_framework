@@ -13,6 +13,23 @@ template<class T> struct JC_Point2
 		x(xin),
 		y(yin)
 	{}
+
+	
+	//template<class U>explicit JC_Point2(const JC_Point2<U>& other)
+	//	:
+	//	x(T(other.x)), y(T(other.y))
+	//{}
+
+	// point to point conversion equals operator
+	template<class U>
+	JC_Point2& operator=(const JC_Point2<U>& other)
+	{
+		x = T(other.x);
+		y = T(other.y);
+		return *this;
+	}
+
+	
 	T x, y;
 };
 template<class T> struct JC_Vector2
@@ -23,6 +40,24 @@ template<class T> struct JC_Vector2
 		x(xin),
 		y(yin)
 	{}
+
+
+	// vector to vector conversion equals operator
+	template<class U>
+	JC_Vector2& operator=(const JC_Vector2<U>& other)
+	{
+		x = T(other.x);
+		y = T(other.y);
+		return *this;
+	}
+
+
+	//template<class U>explicit JC_Vector2(const JC_Vector2<U>& other)
+	//	:
+	//	x(T(other.x)), y(T(other.y))
+	//{}
+
+
 	T x, y;
 };
 

@@ -71,7 +71,7 @@ public:
 		{
 			return type;
 		}
-		std::pair<int,int> GetPos() const
+		JC_Point2i GetPos() const
 		{
 			return{ x,y };
 		}

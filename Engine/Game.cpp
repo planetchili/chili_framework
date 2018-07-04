@@ -30,7 +30,8 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	ct(gfx)
+	ct(gfx),
+	cam(ct)
 {	
 }
 
@@ -47,54 +48,54 @@ void Game::ProcesInput()
 {
 	switch (wnd.shape)
 	{
-	case MainWindow::Shape::TwoPointCircle :
+	case MainWindow::Shape::TwoPointCircle:
+	{
+		while (!wnd.mouse.IsEmpty())
 		{
-			while (!wnd.mouse.IsEmpty())
+			const auto e = wnd.mouse.Read();
+
+			if (e.GetType() == Mouse::Event::Type::LPress)
 			{
-				const auto e = wnd.mouse.Read();
-
-				if (e.GetType() == Mouse::Event::Type::LPress)
+				if (input == 0)
 				{
-					if (input == 0)
-					{
-						
-						P = wnd.mouse.GetPos();
-						engaged = true;
-						P = ct.CreatePoint(P);
-					}
-					if (input == 1)
-					{
-						
-						Q = wnd.mouse.GetPos();
-						Q = ct.CreatePoint(Q);
-						circles.emplace_back(P, Q);
-					}
 
-					input++;
-
-					if (input >= 2)
-					{
-						input = 0;
-						engaged = false;
-					}
-
-
+					P = wnd.mouse.GetPos();
+					engaged = true;
+					P = cam.TrasformPoint(P);
 				}
-				if (e.GetType() == Mouse::Event::Type::RPress)
+				if (input == 1)
+				{
+
+					Q = wnd.mouse.GetPos();
+					Q = cam.TrasformPoint(Q);
+					circles.emplace_back(P, Q);
+				}
+
+				input++;
+
+				if (input >= 2)
 				{
 					input = 0;
 					engaged = false;
 				}
 
+
 			}
-			if (engaged)
+			if (e.GetType() == Mouse::Event::Type::RPress)
 			{
-				Q = wnd.mouse.GetPos();
-				Q = ct.CreatePoint(Q);
-				ct.DrawCircle(P, GetDistanceTo(P, Q), Colors::Red);
+				input = 0;
+				engaged = false;
 			}
-			break;
+
 		}
+		if (engaged)
+		{
+			Q = wnd.mouse.GetPos();
+			Q = cam.TrasformPoint(Q);
+			cam.DrawCircle(P, GetDistanceTo(P, Q), Colors::Red);
+		}
+		break;
+	}
 	case MainWindow::Shape::Null:
 	{
 		while (!wnd.mouse.IsEmpty())
@@ -103,28 +104,28 @@ void Game::ProcesInput()
 
 			if (e.GetType() == Mouse::Event::Type::LPress)
 			{
-				for (auto i = circles.begin() , j = circles.end(); i != j; ++i)
+				for (auto i = circles.begin(), j = circles.end(); i != j; ++i)
 				{
-					
-					i->SetSelectionFlag(ct.CreatePoint(wnd.mouse.GetPos()));
-					
+
+					i->SetSelectionFlag(static_cast<JC_Point2d>(cam.TrasformPoint(wnd.mouse.GetPos())));
+
 				}
 			}
-		
+
 
 		}
 		break;
 	}
-		break;
+	break;
 	}
 
 	if (wnd.kbd.KeyIsPressed(VK_ESCAPE))
 	{
-		
+
 		wnd.shape = MainWindow::Shape::Null;
-		
+
 		input = 0;
-		
+
 		for (auto &c : circles)
 		{
 			c.ResetSelectionFlag();
@@ -135,7 +136,26 @@ void Game::ProcesInput()
 	{
 		remove_erase_if(circles, std::mem_fn(&Circle::ReadyForRemoval));
 
-	}	
+	}
+
+	const float speed = 3.0f;
+	if (wnd.kbd.KeyIsPressed(VK_DOWN))
+	{
+		cam.MoveBy({ 0.0f,-speed });
+	}
+	if (wnd.kbd.KeyIsPressed(VK_UP))
+	{
+		cam.MoveBy({ 0.0f,speed });
+	}
+	if (wnd.kbd.KeyIsPressed(VK_LEFT))
+	{
+		cam.MoveBy({ -speed,0.0f });
+	}
+	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
+	{
+		cam.MoveBy({ speed,0.0f });
+	}
+
 }
 
 
@@ -153,7 +173,7 @@ void Game::ComposeFrame()
 {
 	for (auto &c : circles)
 	{
-		c.Draw(ct);
+		c.Draw(cam);
 	}
 
 	//ct.DrawClosedPolyline(Star::Make(200, 75.0,7), Colors::Red);

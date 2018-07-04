@@ -2,7 +2,7 @@
 
 #include "Graphics.h"
 #include "JC_Vector2.h"
-#include "CordinateTrasformerh.h"
+#include "Camera.h"
 
 
 class Circle
@@ -12,10 +12,10 @@ public:
 	Circle(const JC_Point2d& P, const JC_Point2d& Q,Color color = Colors::White);
 	Circle(const JC_Point2d& P, const JC_Point2d& Q, const JC_Point2d& R, Color color = Colors::White);
 	
-	void Draw(CoordinateTrasformer& ct);
+	void Draw(Camera cam);
 	void UpdateColor();
 	
-	void SetSelectionFlag(const JC_Point2i& mousein);
+	void SetSelectionFlag(const JC_Point2d& mousein);
 	void ResetSelectionFlag();
 
 	bool ReadyForRemoval() const;
@@ -34,8 +34,3 @@ private:
 	bool selectedflag = false;
 	Color C ;
 };
-
-//	if (flag == true)
-//{
-//	
-//}

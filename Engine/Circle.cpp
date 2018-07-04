@@ -18,9 +18,9 @@ Circle::Circle(const JC_Point2d& P, const JC_Point2d& Q, const JC_Point2d& R, Co
 	C(color)
 {}
 
-void Circle::Draw(CoordinateTrasformer& ct)
+void Circle::Draw(Camera cam)
 {
-	ct.DrawCircle(pos, radius, C);
+	cam.DrawCircle(pos, radius, C);
 }
 
 void Circle::UpdateColor()
@@ -31,12 +31,9 @@ void Circle::UpdateColor()
 		C = Colors::White;
 }
 
-void Circle::SetSelectionFlag(const JC_Point2i& mousein)
+void Circle::SetSelectionFlag(const JC_Point2d& mousein)
 {
-	JC_Point2d mouseind;
-	mouseind.x = (double)mousein.x;
-	mouseind.y = (double)mousein.y;
-	double distance = GetDistanceTo(pos, mouseind);
+	double distance = GetDistanceTo(pos, mousein);
 	if (distance <= (radius + halfwidth)&&
 		distance >= (radius - halfwidth))
 		selectedflag = true;

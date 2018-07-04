@@ -24,6 +24,8 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "CordinateTrasformerh.h"
+#include "Camera.h"
+
 
 #include "JC_Vector2.h"
 #include "Circle.h"
@@ -56,6 +58,8 @@ private:
 	/********************************/
 	/*  User Variables              */
 	CoordinateTrasformer ct;
+	Camera cam;
+
 	std::vector<Circle> circles;
 	unsigned short input = 0;
 

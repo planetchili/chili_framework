@@ -41,7 +41,8 @@ public:
 
 	template <typename T> JC_Point2<T> TrasformPoint(JC_Point2<T> input)
 	{
-		input.x += (T)(Camera_Pos.x);
+		//fixes disconection between screen and math coordinates
+		input.x += (T)(Camera_Pos.x); 
 		input.y -= (T)(Camera_Pos.y);
 
 		JC_Vector2<T> offset = { (T)(Graphics::ScreenWidth / 2), (T)(Graphics::ScreenHeight / 2) };

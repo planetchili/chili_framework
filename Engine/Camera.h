@@ -50,7 +50,18 @@ public:
 		return input;
 	}
 
+	void SetScale(double new_scale)
+	{
+		scale = new_scale;
+	}
+
+	double GetScale() const
+	{
+		return scale;
+	}
+
 private:
+	double scale = 1.0;
 	JC_Point2d Camera_Pos = { 0.0,0.0 };
 	CoordinateTrasformer& ct;
 

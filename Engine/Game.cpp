@@ -31,7 +31,8 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	ct(gfx),
-	cam(ct)
+	cam(ct),
+	camCtrl(wnd.mouse,cam)
 {	
 }
 

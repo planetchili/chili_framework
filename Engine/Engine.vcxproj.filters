@@ -90,6 +90,9 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files\CameraPipeline</Filter>
     </ClInclude>
+    <ClInclude Include="MouseCameraControler.h">
+      <Filter>Header Files\CameraPipeline</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DXErr.cpp">

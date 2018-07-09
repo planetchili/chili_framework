@@ -225,6 +225,7 @@ LRESULT MainWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				mouse.OnMouseLeave();
 				mouse.OnLeftReleased(pt.x, pt.y);
 				mouse.OnRightReleased(pt.x, pt.y);
+				mouse.OnWheelReleased(pt.x, pt.y);
 			}
 		}
 		break;

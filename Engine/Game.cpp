@@ -49,7 +49,7 @@ void Game::ProcesInput()
 {
 	switch (wnd.shape)
 	{
-	case MainWindow::Shape::TwoPointCircle:
+	case MainWindow::MWShapeState::TwoPointCircle:
 	{
 		while (!wnd.mouse.IsEmpty())
 		{
@@ -97,7 +97,7 @@ void Game::ProcesInput()
 		}
 		break;
 	}
-	case MainWindow::Shape::Null:
+	case MainWindow::MWShapeState::Null:
 	{
 		while (!wnd.mouse.IsEmpty())
 		{
@@ -130,7 +130,7 @@ void Game::ProcesInput()
 	if (wnd.kbd.KeyIsPressed(VK_ESCAPE))
 	{
 
-		wnd.shape = MainWindow::Shape::Null;
+		wnd.shape = MainWindow::MWShapeState::Null;
 
 		input = 0;
 

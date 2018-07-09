@@ -31,7 +31,7 @@ void Circle::UpdateColor()
 		C = Colors::White;
 }
 
-void Circle::SetSelectionFlag(const JC_Point2d& mousein)
+void Circle::SetTrueSelectionFlag(const JC_Point2d& mousein)
 {
 	double distance = GetDistanceTo(pos, mousein);
 	if (distance <= (radius + halfwidth)&&

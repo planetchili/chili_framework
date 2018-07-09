@@ -15,22 +15,20 @@ public:
 	void Draw(Camera cam);
 	void UpdateColor();
 	
-	void SetSelectionFlag(const JC_Point2d& mousein);
+	void SetTrueSelectionFlag(const JC_Point2d& mousein);
 	void ResetSelectionFlag();
 
 	bool ReadyForRemoval() const;
 
-public:
-	JC_Point2d CalculatCentre(const  JC_Point2d& P, const  JC_Point2d& Q, const JC_Point2d& R);
-			
 
 private:
+	JC_Point2d CalculatCentre(const  JC_Point2d& P, const  JC_Point2d& Q, const JC_Point2d& R);
 	JC_Point2d CalculateSpecificCentre(const  JC_Point2d& P, const  JC_Point2d& Q, const JC_Point2d& R);
 	
 private:
 	JC_Point2d pos;
 	double radius;
-	static constexpr double halfwidth = 4.0;
+	static constexpr double halfwidth = 10.0;
 	bool selectedflag = false;
 	Color C ;
 };

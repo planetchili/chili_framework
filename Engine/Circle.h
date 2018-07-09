@@ -15,8 +15,9 @@ public:
 	void Draw(Camera cam);
 	void UpdateColor();
 	
-	void SetTrueSelectionFlag(const JC_Point2d& mousein);
-	void ResetSelectionFlag();
+	void SetSelectionFlag(bool flag);
+	
+	bool IsInRange(JC_Point2d mousein);
 
 	bool ReadyForRemoval() const;
 

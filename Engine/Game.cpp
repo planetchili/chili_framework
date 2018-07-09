@@ -107,9 +107,16 @@ void Game::ProcesInput()
 			{
 				for (auto i = circles.begin(), j = circles.end(); i != j; ++i)
 				{
-
-					i->SetTrueSelectionFlag(static_cast<JC_Point2d>(cam.TrasformPoint(wnd.mouse.GetPos())));
-
+					if (wnd.kbd.KeyIsPressed(VK_SHIFT))
+					{
+						if (i->IsInRange(static_cast<JC_Point2d>(cam.TrasformPoint(wnd.mouse.GetPos()))))
+						i->SetSelectionFlag(false);
+					}
+					else
+					{
+						if (i->IsInRange(static_cast<JC_Point2d>(cam.TrasformPoint(wnd.mouse.GetPos()))))
+							i->SetSelectionFlag(true);
+					}
 				}
 			}
 
@@ -129,7 +136,7 @@ void Game::ProcesInput()
 
 		for (auto &c : circles)
 		{
-			c.ResetSelectionFlag();
+			c.SetSelectionFlag(false);
 		}
 	}
 

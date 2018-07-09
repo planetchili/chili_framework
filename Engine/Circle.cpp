@@ -31,18 +31,19 @@ void Circle::UpdateColor()
 		C = Colors::White;
 }
 
-void Circle::SetTrueSelectionFlag(const JC_Point2d& mousein)
+void Circle::SetSelectionFlag( bool flag)
 {
-	double distance = GetDistanceTo(pos, mousein);
-	if (distance <= (radius + halfwidth)&&
-		distance >= (radius - halfwidth))
-		selectedflag = true;
+	selectedflag = flag;
 }
 
-void Circle::ResetSelectionFlag()
+bool Circle::IsInRange(JC_Point2d mousein)
 {
-	selectedflag = false;
+	double distance = GetDistanceTo(pos, mousein);
+	return (distance <= (radius + halfwidth) &&
+		distance >= (radius - halfwidth));
 }
+
+
 
 bool Circle::ReadyForRemoval() const
 {

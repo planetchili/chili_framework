@@ -108,7 +108,7 @@ void Game::ProcesInput()
 				for (auto i = circles.begin(), j = circles.end(); i != j; ++i)
 				{
 
-					i->SetSelectionFlag(static_cast<JC_Point2d>(cam.TrasformPoint(wnd.mouse.GetPos())));
+					i->SetTrueSelectionFlag(static_cast<JC_Point2d>(cam.TrasformPoint(wnd.mouse.GetPos())));
 
 				}
 			}

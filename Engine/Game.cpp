@@ -59,17 +59,15 @@ void Game::ProcesInput()
 			{
 				if (input == 0)
 				{
-
 					P = wnd.mouse.GetPos();
 					engaged = true;
 					P = cam.TrasformPoint(P);
 				}
 				if (input == 1)
 				{
-
 					Q = wnd.mouse.GetPos();
 					Q = cam.TrasformPoint(Q);
-					circles.emplace_back(P, Q);
+					Shapes.push_back(std::make_unique<Circle(P, Q)>);
 				}
 
 				input++;
@@ -79,15 +77,12 @@ void Game::ProcesInput()
 					input = 0;
 					engaged = false;
 				}
-
-
 			}
 			if (e.GetType() == Mouse::Event::Type::RPress)
 			{
 				input = 0;
 				engaged = false;
 			}
-
 		}
 		if (engaged)
 		{
@@ -105,7 +100,7 @@ void Game::ProcesInput()
 
 			if (e.GetType() == Mouse::Event::Type::LPress)
 			{
-				for (auto i = circles.begin(), j = circles.end(); i != j; ++i)
+				for (auto i = Shapes.begin(), j = Shapes.end(); i != j; ++i)
 				{
 					if (wnd.kbd.KeyIsPressed(VK_SHIFT))
 					{
@@ -119,8 +114,6 @@ void Game::ProcesInput()
 					}
 				}
 			}
-
-
 		}
 		break;
 	}
@@ -134,7 +127,7 @@ void Game::ProcesInput()
 
 		input = 0;
 
-		for (auto &c : circles)
+		for (auto &c : Shapes)
 		{
 			c.SetSelectionFlag(false);
 		}
@@ -142,48 +135,44 @@ void Game::ProcesInput()
 
 	if (wnd.kbd.KeyIsPressed(VK_DELETE))
 	{
-		remove_erase_if(circles, std::mem_fn(&Circle::ReadyForRemoval));
-
+		remove_erase_if(Shapes, std::mem_fn(&Shape::ReadyForRemoval));
 	}
 
-	const float speed = 3.0f;
-	if (wnd.kbd.KeyIsPressed(VK_DOWN))
-	{
-		cam.MoveBy({ 0.0f,-speed });
-	}
-	if (wnd.kbd.KeyIsPressed(VK_UP))
-	{
-		cam.MoveBy({ 0.0f,speed });
-	}
-	if (wnd.kbd.KeyIsPressed(VK_LEFT))
-	{
-		cam.MoveBy({ -speed,0.0f });
-	}
-	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
-	{
-		cam.MoveBy({ speed,0.0f });
-	}
+	
+	//const float speed = 3.0f;
+	//if (wnd.kbd.KeyIsPressed(VK_DOWN))
+	//{
+	//	cam.MoveBy({ 0.0f,-speed });
+	//}
+	//if (wnd.kbd.KeyIsPressed(VK_UP))
+	//{
+	//	cam.MoveBy({ 0.0f,speed });
+	//}
+	//if (wnd.kbd.KeyIsPressed(VK_LEFT))
+	//{
+	//	cam.MoveBy({ -speed,0.0f });
+	//}
+	//if (wnd.kbd.KeyIsPressed(VK_RIGHT))
+	//{
+	//	cam.MoveBy({ speed,0.0f });
+	//}
 
 }
 
-
 void Game::UpdateModel()
 {
-	for (auto &c : circles)
+	for (auto &c : Shapes)
 	{
 		c.UpdateColor();
 	}
 }
 
-
-
 void Game::ComposeFrame()
 {
-	for (auto &c : circles)
+	for (auto &c : Shapes)
 	{
 		c.Draw(cam);
 	}
-
 	//ct.DrawClosedPolyline(Star::Make(200, 75.0,7), Colors::Red);
 }
 

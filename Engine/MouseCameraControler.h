@@ -17,11 +17,11 @@ public:
 			const auto e = mouse.Read();
 			switch (e.GetType())
 			{
-			case Mouse::Event::Type::LPress:
+			case Mouse::Event::Type::WheelPress:
 				engaged = true;
 				lastPos = e.GetPos();
 				break;
-			case Mouse::Event::Type::LRelease:
+			case Mouse::Event::Type::WheelRelease:
 				engaged = false;
 				break;
 			case Mouse::Event::Type::WheelUp:

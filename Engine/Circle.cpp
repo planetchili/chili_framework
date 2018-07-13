@@ -4,51 +4,34 @@
 
 Circle::Circle(const JC_Point2d& P, const JC_Point2d& Q, Color color)
 	:
-	pos(P),
-	radius(GetDistanceTo(P,Q)),
-	C(color)
+	Shape(P,color),
+	radius(GetDistanceTo(P, Q))
 {}
 
 
 
 Circle::Circle(const JC_Point2d& P, const JC_Point2d& Q, const JC_Point2d& R, Color color)
 	:
-	pos(CalculatCentre(P, Q, R)),
-	radius(GetDistanceTo(pos,R)),
-	C(color)
+	Shape(CalculatCentre(P, Q, R), color),
+	radius(GetDistanceTo(Centre, R))
 {}
 
 void Circle::Draw(Camera cam)
 {
-	cam.DrawCircle(pos, radius, C);
+	cam.DrawCircle(Centre, radius, C);
 }
 
-void Circle::UpdateColor()
-{
-	if (selectedflag)
-		C = Colors::Yellow;
-	else
-		C = Colors::White;
-}
 
-void Circle::SetSelectionFlag( bool flag)
-{
-	selectedflag = flag;
-}
 
 bool Circle::IsInRange(JC_Point2d mousein)
 {
-	double distance = GetDistanceTo(pos, mousein);
+	double distance = GetDistanceTo(Centre, mousein);
 	return (distance <= (radius + halfwidth) &&
 		distance >= (radius - halfwidth));
 }
 
 
 
-bool Circle::ReadyForRemoval() const
-{
-	return selectedflag;
-}
 
 
 JC_Point2d Circle::CalculatCentre(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R)

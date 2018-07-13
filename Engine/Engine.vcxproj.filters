@@ -19,14 +19,14 @@
     <Filter Include="Added Sprites">
       <UniqueIdentifier>{7429fb29-146a-47ac-b5ad-e8731b226a6d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Shapes">
-      <UniqueIdentifier>{b9b4aa28-3d6d-4412-b8b4-6ff6c3af9881}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Shapes">
       <UniqueIdentifier>{a1ba54ce-e6f2-47b3-93dd-e28c6615d142}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\CameraPipeline">
       <UniqueIdentifier>{991129b5-249e-4da4-bad5-8426e98a3a3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Geometric shapes">
+      <UniqueIdentifier>{b9b4aa28-3d6d-4412-b8b4-6ff6c3af9881}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -70,7 +70,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Circle.h">
-      <Filter>Header Files\Shapes</Filter>
+      <Filter>Header Files\Geometric shapes</Filter>
     </ClInclude>
     <ClInclude Include="JC_Math.h">
       <Filter>Header Files</Filter>
@@ -79,7 +79,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Star.h">
-      <Filter>Header Files\Shapes</Filter>
+      <Filter>Header Files\Geometric shapes</Filter>
     </ClInclude>
     <ClInclude Include="ChiliUtil.h">
       <Filter>Header Files</Filter>
@@ -92,6 +92,9 @@
     </ClInclude>
     <ClInclude Include="MouseCameraControler.h">
       <Filter>Header Files\CameraPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape.h">
+      <Filter>Header Files\Geometric shapes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="Circle.cpp">
       <Filter>Source Files\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Shape.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

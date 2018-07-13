@@ -20,6 +20,8 @@
  ******************************************************************************************/
 #pragma once
 
+#include <memory>
+
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
@@ -29,6 +31,7 @@
 
 #include "JC_Vector2.h"
 #include "Circle.h"
+#include "Shape.h"
 #include "Star.h"
 
 
@@ -60,7 +63,7 @@ private:
 	CoordinateTrasformer ct;
 	Camera cam;
 	MouseCameraController camCtrl;
-	std::vector<Circle> circles;
+	std::vector<std::unique_ptr<Shape>> Shapes;
 	unsigned short input = 0;
 
 	bool engaged = false;

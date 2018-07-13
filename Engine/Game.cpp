@@ -67,7 +67,7 @@ void Game::ProcesInput()
 				{
 					Q = wnd.mouse.GetPos();
 					Q = cam.TrasformPoint(Q);
-					Shapes.push_back(std::make_unique<Circle(P, Q)>);
+					Shapes.push_back(std::make_unique<Circle>(P, Q));
 				}
 
 				input++;
@@ -100,17 +100,17 @@ void Game::ProcesInput()
 
 			if (e.GetType() == Mouse::Event::Type::LPress)
 			{
-				for (auto i = Shapes.begin(), j = Shapes.end(); i != j; ++i)
+				for (auto&& i : Shapes)
 				{
 					if (wnd.kbd.KeyIsPressed(VK_SHIFT))
 					{
-						if (i->IsInRange(static_cast<JC_Point2d>(cam.TrasformPoint(wnd.mouse.GetPos()))))
-						i->SetSelectionFlag(false);
+						if (i.get()->IsInRange(static_cast<JC_Point2d>(cam.TrasformPoint(wnd.mouse.GetPos()))))
+							i.get()->SetSelectionFlag(false);
 					}
 					else
 					{
-						if (i->IsInRange(static_cast<JC_Point2d>(cam.TrasformPoint(wnd.mouse.GetPos()))))
-							i->SetSelectionFlag(true);
+						if (i.get()->IsInRange(static_cast<JC_Point2d>(cam.TrasformPoint(wnd.mouse.GetPos()))))
+							i.get()->SetSelectionFlag(true);
 					}
 				}
 			}
@@ -129,7 +129,7 @@ void Game::ProcesInput()
 
 		for (auto &c : Shapes)
 		{
-			c.SetSelectionFlag(false);
+			c.get()->SetSelectionFlag(false);
 		}
 	}
 
@@ -163,7 +163,7 @@ void Game::UpdateModel()
 {
 	for (auto &c : Shapes)
 	{
-		c.UpdateColor();
+		c.get()->UpdateColor();
 	}
 }
 
@@ -171,7 +171,7 @@ void Game::ComposeFrame()
 {
 	for (auto &c : Shapes)
 	{
-		c.Draw(cam);
+		c.get()->Draw(cam);
 	}
 	//ct.DrawClosedPolyline(Star::Make(200, 75.0,7), Colors::Red);
 }

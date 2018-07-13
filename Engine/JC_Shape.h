@@ -2,7 +2,7 @@
 #include "JC_Vector2.h"
 #include "Camera.h"
 
-class Shape
+class JC_Shape
 
 {
 public:
@@ -16,7 +16,7 @@ public:
 
 protected:
 
-	Shape(JC_Point2d pos_in, Color& c)
+	JC_Shape(JC_Point2d pos_in, Color& c)
 		:
 		Centre(pos_in),
 		C(c)

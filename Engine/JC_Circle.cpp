@@ -1,29 +1,29 @@
-#include "Circle.h"
+#include "JC_Circle.h"
 #include "JC_Math.h"
 #include <math.h>
 
-Circle::Circle(const JC_Point2d& P, const JC_Point2d& Q, Color color)
+JC_Circle::JC_Circle(const JC_Point2d& P, const JC_Point2d& Q, Color color)
 	:
-	Shape(P,color),
+	JC_Shape(P,color),
 	radius(GetDistanceTo(P, Q))
 {}
 
 
 
-Circle::Circle(const JC_Point2d& P, const JC_Point2d& Q, const JC_Point2d& R, Color color)
+JC_Circle::JC_Circle(const JC_Point2d& P, const JC_Point2d& Q, const JC_Point2d& R, Color color)
 	:
-	Shape(CalculatCentre(P, Q, R), color),
+	JC_Shape(CalculatCentre(P, Q, R), color),
 	radius(GetDistanceTo(Centre, R))
 {}
 
-void Circle::Draw(Camera cam)
+void JC_Circle::Draw(Camera cam)
 {
 	cam.DrawCircle(Centre, radius, C);
 }
 
 
 
-bool Circle::IsInRange(JC_Point2d mousein)
+bool JC_Circle::IsInRange(JC_Point2d mousein)
 {
 	double distance = GetDistanceTo(Centre, mousein);
 	return (distance <= (radius + halfwidth) &&
@@ -34,7 +34,7 @@ bool Circle::IsInRange(JC_Point2d mousein)
 
 
 
-JC_Point2d Circle::CalculatCentre(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R)
+JC_Point2d JC_Circle::CalculatCentre(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R)
 {
 	{
 		//when we have 2 flat lines in order  under right angle
@@ -75,9 +75,7 @@ JC_Point2d Circle::CalculatCentre(const JC_Point2d & P, const JC_Point2d & Q, co
 	}
 }
 
-
-
-JC_Point2d Circle::CalculateSpecificCentre(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R)
+JC_Point2d JC_Circle::CalculateSpecificCentre(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R)
 {
 	{
 

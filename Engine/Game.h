@@ -30,8 +30,8 @@
 #include "MouseCameraControler.h"
 
 #include "JC_Vector2.h"
-#include "Circle.h"
-#include "Shape.h"
+#include "JC_Circle.h"
+#include "JC_Shape.h"
 #include "Star.h"
 
 
@@ -63,7 +63,7 @@ private:
 	CoordinateTrasformer ct;
 	Camera cam;
 	MouseCameraController camCtrl;
-	std::vector<std::unique_ptr<Shape>> Shapes;
+	std::vector<std::unique_ptr<JC_Shape>> Shapes;
 	unsigned short input = 0;
 
 	bool engaged = false;

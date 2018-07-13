@@ -1,18 +1,18 @@
 #pragma once
 
 
-#include "Shape.h"
+#include "JC_Shape.h"
 #include "Graphics.h"
 #include "JC_Vector2.h"
 #include "Camera.h"
 
 
-class Circle : public Shape
+class JC_Circle : public JC_Shape
 {
 public:
 
-	Circle(const JC_Point2d& P, const JC_Point2d& Q,Color color = Colors::White);
-	Circle(const JC_Point2d& P, const JC_Point2d& Q, const JC_Point2d& R, Color color = Colors::White);
+	JC_Circle(const JC_Point2d& P, const JC_Point2d& Q,Color color = Colors::White);
+	JC_Circle(const JC_Point2d& P, const JC_Point2d& Q, const JC_Point2d& R, Color color = Colors::White);
 	
 	void Draw(Camera cam) override;
 	bool IsInRange(JC_Point2d mousein) override;

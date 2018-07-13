@@ -139,7 +139,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ChiliException.h" />
     <ClInclude Include="ChiliWin.h" />
-    <ClInclude Include="Circle.h" />
+    <ClInclude Include="JC_Circle.h" />
     <ClInclude Include="Colors.h" />
     <ClInclude Include="COMInitializer.h" />
     <ClInclude Include="CordinateTrasformerh.h" />
@@ -147,6 +147,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="ChiliUtil.h" />
+    <ClInclude Include="JC_Line.h" />
     <ClInclude Include="JC_Math.h" />
     <ClInclude Include="JC_Vector2.h" />
     <ClInclude Include="Keyboard.h" />
@@ -154,13 +155,13 @@
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="MouseCameraControler.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="Shape.h" />
+    <ClInclude Include="JC_Shape.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundEffect.h" />
     <ClInclude Include="Star.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Circle.cpp" />
+    <ClCompile Include="JC_Circle.cpp" />
     <ClCompile Include="COMInitializer.cpp" />
     <ClCompile Include="DXErr.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -169,7 +170,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Mouse.cpp" />
-    <ClCompile Include="Shape.cpp" />
+    <ClCompile Include="JC_Shape.cpp" />
     <ClCompile Include="Sound.cpp" />
   </ItemGroup>
   <ItemGroup>

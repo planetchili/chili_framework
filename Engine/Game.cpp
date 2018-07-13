@@ -47,7 +47,7 @@ void Game::Go()
 
 void Game::ProcesInput()
 {
-	switch (wnd.shape)
+	switch (wnd.ShapeState)
 	{
 	case MainWindow::MWShapeState::TwoPointCircle:
 	{
@@ -67,7 +67,7 @@ void Game::ProcesInput()
 				{
 					Q = wnd.mouse.GetPos();
 					Q = cam.TrasformPoint(Q);
-					Shapes.push_back(std::make_unique<Circle>(P, Q));
+					Shapes.push_back(std::make_unique<JC_Circle>(P, Q));
 				}
 
 				input++;
@@ -100,7 +100,7 @@ void Game::ProcesInput()
 
 			if (e.GetType() == Mouse::Event::Type::LPress)
 			{
-				for (auto&& i : Shapes)
+				for (auto& i : Shapes)
 				{
 					if (wnd.kbd.KeyIsPressed(VK_SHIFT))
 					{
@@ -123,7 +123,7 @@ void Game::ProcesInput()
 	if (wnd.kbd.KeyIsPressed(VK_ESCAPE))
 	{
 
-		wnd.shape = MainWindow::MWShapeState::Null;
+		wnd.ShapeState = MainWindow::MWShapeState::Null;
 
 		input = 0;
 
@@ -135,7 +135,7 @@ void Game::ProcesInput()
 
 	if (wnd.kbd.KeyIsPressed(VK_DELETE))
 	{
-		remove_erase_if(Shapes, std::mem_fn(&Shape::ReadyForRemoval));
+		remove_erase_if(Shapes, std::mem_fn(&JC_Shape::ReadyForRemoval));
 	}
 
 	

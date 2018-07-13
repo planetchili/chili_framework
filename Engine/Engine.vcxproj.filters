@@ -69,12 +69,6 @@
     <ClInclude Include="COMInitializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Circle.h">
-      <Filter>Header Files\Geometric shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="JC_Math.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="JC_Vector2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -93,7 +87,16 @@
     <ClInclude Include="MouseCameraControler.h">
       <Filter>Header Files\CameraPipeline</Filter>
     </ClInclude>
-    <ClInclude Include="Shape.h">
+    <ClInclude Include="JC_Line.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JC_Math.h">
+      <Filter>Header Files\Geometric shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="JC_Circle.h">
+      <Filter>Header Files\Geometric shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="JC_Shape.h">
       <Filter>Header Files\Geometric shapes</Filter>
     </ClInclude>
   </ItemGroup>
@@ -125,11 +128,11 @@
     <ClCompile Include="COMInitializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Circle.cpp">
+    <ClCompile Include="JC_Shape.cpp">
       <Filter>Source Files\Shapes</Filter>
     </ClCompile>
-    <ClCompile Include="Shape.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="JC_Circle.cpp">
+      <Filter>Source Files\Shapes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

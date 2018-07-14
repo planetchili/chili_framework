@@ -2,30 +2,34 @@
 #include "JC_Math.h"
 #include <math.h>
 
-JC_Circle::JC_Circle(const JC_Point2d& P, const JC_Point2d& Q, Color color)
+JC_Circle::JC_Circle(const JC_Point2d& P_in, const JC_Point2d& Q_in, Color color_in)
 	:
-	JC_Shape(P,color),
-	radius(GetDistanceTo(P, Q))
+	JC_Shape(color_in),
+	O(P_in),
+	radius(GetDistanceTo(P_in, Q_in))
+	
 {}
 
 
 
-JC_Circle::JC_Circle(const JC_Point2d& P, const JC_Point2d& Q, const JC_Point2d& R, Color color)
+JC_Circle::JC_Circle(const JC_Point2d& P_in, const JC_Point2d& Q_in, const JC_Point2d& R_in, Color color_in)
 	:
-	JC_Shape(CalculatCentre(P, Q, R), color),
-	radius(GetDistanceTo(Centre, R))
+	JC_Shape(color_in),
+	O(CalculatCentre(P_in, Q_in, R_in)),
+	radius(GetDistanceTo(P_in, R_in))
+
 {}
 
-void JC_Circle::Draw(Camera cam)
+void JC_Circle::Draw(Camera cam_in)
 {
-	cam.DrawCircle(Centre, radius, C);
+	cam_in.DrawCircle(O, radius, Base_Color);
 }
 
 
 
-bool JC_Circle::IsInRange(JC_Point2d mousein)
+bool JC_Circle::IsInRange(const JC_Point2d& mouse_in)
 {
-	double distance = GetDistanceTo(Centre, mousein);
+	double distance = GetDistanceTo(O, mouse_in);
 	return (distance <= (radius + halfwidth) &&
 		distance >= (radius - halfwidth));
 }

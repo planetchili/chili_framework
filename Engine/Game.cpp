@@ -89,6 +89,7 @@ void Game::ProcesInput()
 			Q = wnd.mouse.GetPos();
 			Q = cam.TrasformPoint(Q);
 			cam.DrawCircle(P, GetDistanceTo(P, Q), Colors::Red);
+			cam.DrawLine(P, Q, Colors::Red);
 		}
 		break;
 	}
@@ -139,23 +140,23 @@ void Game::ProcesInput()
 	}
 
 	
-	//const float speed = 3.0f;
-	//if (wnd.kbd.KeyIsPressed(VK_DOWN))
-	//{
-	//	cam.MoveBy({ 0.0f,-speed });
-	//}
-	//if (wnd.kbd.KeyIsPressed(VK_UP))
-	//{
-	//	cam.MoveBy({ 0.0f,speed });
-	//}
-	//if (wnd.kbd.KeyIsPressed(VK_LEFT))
-	//{
-	//	cam.MoveBy({ -speed,0.0f });
-	//}
-	//if (wnd.kbd.KeyIsPressed(VK_RIGHT))
-	//{
-	//	cam.MoveBy({ speed,0.0f });
-	//}
+	const float speed = 7.0f;
+	if (wnd.kbd.KeyIsPressed(VK_DOWN))
+	{
+		cam.MoveBy({ 0.0f,speed });
+	}
+	if (wnd.kbd.KeyIsPressed(VK_UP))
+	{
+		cam.MoveBy({ 0.0f,-speed });
+	}
+	if (wnd.kbd.KeyIsPressed(VK_LEFT))
+	{
+		cam.MoveBy({ speed,0.0f });
+	}
+	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
+	{
+		cam.MoveBy({ -speed,0.0f });
+	}
 
 }
 

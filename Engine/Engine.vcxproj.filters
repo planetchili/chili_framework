@@ -87,16 +87,16 @@
     <ClInclude Include="MouseCameraControler.h">
       <Filter>Header Files\CameraPipeline</Filter>
     </ClInclude>
-    <ClInclude Include="JC_Line.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="JC_Math.h">
-      <Filter>Header Files\Geometric shapes</Filter>
-    </ClInclude>
     <ClInclude Include="JC_Circle.h">
       <Filter>Header Files\Geometric shapes</Filter>
     </ClInclude>
     <ClInclude Include="JC_Shape.h">
+      <Filter>Header Files\Geometric shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="JC_Math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JC_Line.h">
       <Filter>Header Files\Geometric shapes</Filter>
     </ClInclude>
   </ItemGroup>
@@ -127,9 +127,6 @@
     </ClCompile>
     <ClCompile Include="COMInitializer.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="JC_Shape.cpp">
-      <Filter>Source Files\Shapes</Filter>
     </ClCompile>
     <ClCompile Include="JC_Circle.cpp">
       <Filter>Source Files\Shapes</Filter>

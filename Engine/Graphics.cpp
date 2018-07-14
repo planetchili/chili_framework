@@ -356,6 +356,11 @@ void Graphics::DrawClosedPolyline(const std::vector<JC_Point2d>& verts, Color c)
 	DrawLine(verts.back(), verts.front(), c);
 }
 
+
+// line with per pixel clipping
+
+
+
 void Graphics::DrawLine(double x1, double y1, double x2, double y2, Color c)
 {
 	const double dx = x2 - x1;
@@ -363,6 +368,7 @@ void Graphics::DrawLine(double x1, double y1, double x2, double y2, Color c)
 
 	if (dx == 0.0f && dy == 0.0f)
 	{
+		if (x1 >= 0 && x1 < ScreenWidth && y1 >= 0 && y1  < ScreenHeight)
 		PutPixel((int)x1, (int)y1, Colors::Red);
 	}
 	else if (abs(dx)>abs(dy))
@@ -378,8 +384,12 @@ void Graphics::DrawLine(double x1, double y1, double x2, double y2, Color c)
 
 		for (double x = x1; x <= x2; x++)
 		{
+
 			double y = m * x + b;
-			PutPixel((int)(x + 0.5f), (int)(y + 0.5f), c);
+			// issue! why there is need for substraction of one ?
+			if (x >= 0 && x < ScreenWidth-1 && y >= 0 && y  < ScreenHeight-1)
+				PutPixel((int)(x + 0.5), (int)(y + 0.5), c);
+			
 		}
 	}
 	else
@@ -396,7 +406,9 @@ void Graphics::DrawLine(double x1, double y1, double x2, double y2, Color c)
 		for (double y = y1; y <= y2; y++)
 		{
 			double x = m * y + b;
-			PutPixel((int)(x + 0.5f), (int)(y + 0.5f), c);
+			// issue! why there is need for substraction of one ?
+			if (x >= 0 && x < ScreenWidth-1 && y >= 0 && y  < ScreenHeight-1)
+				PutPixel((int)(x + 0.5), (int)(y + 0.5), c);
 		}
 	}
 }
@@ -404,6 +416,8 @@ void Graphics::DrawLine(double x1, double y1, double x2, double y2, Color c)
 
 void Graphics::DrawCircle(double Ox, double Oy, double R, Color& c)
 {
+	//issue with continuity drawing for large circles
+	
 	/*for (double theta = 0; theta < 360; theta += 0.2)
 	{
 		double x = (double)(R * std::cos(PI_D*theta / 180));

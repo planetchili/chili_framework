@@ -31,6 +31,7 @@
 
 #include "JC_Vector2.h"
 #include "JC_Circle.h"
+#include "JC_Line.h"
 #include "JC_Shape.h"
 #include "Star.h"
 

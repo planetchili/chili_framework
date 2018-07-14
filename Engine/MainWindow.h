@@ -55,9 +55,10 @@ public:
 		Null,
 		TwoPointCircle,
 		ThreePointCircle,
+		LineSegment,
 		Count
 	};
-	MWShapeState shape = MWShapeState::Null;
+	MWShapeState ShapeState = MWShapeState::Null;
 
 	MainWindow( HINSTANCE hInst,wchar_t* pArgs );
 	MainWindow( const MainWindow& ) = delete;

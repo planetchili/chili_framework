@@ -147,11 +147,17 @@ LRESULT MainWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		}
 
 		hSubMenu = CreatePopupMenu();
-		
+
 		AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT_PTR)hSubMenu, L"&Shapes");
 		{
 			AppendMenu(hSubMenu, MF_STRING, ID_SHAPES_TwoPointCircle, L"&Circle from 2 points");
+			AppendMenu(hSubMenu, MF_SEPARATOR, NULL, NULL);
+			AppendMenu(hSubMenu, MF_STRING, ID_SHAPES_ThreePointCircle, L"&Circle from 3 points");
+			AppendMenu(hSubMenu, MF_SEPARATOR, NULL, NULL);
+			AppendMenu(hSubMenu, MF_STRING, ID_SHAPES_LineSegment, L"&Line Segment");
 		}
+
+	
 
 		SetMenu(hWnd, hMenu);
 
@@ -165,8 +171,21 @@ LRESULT MainWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			PostMessage(hWnd, WM_CLOSE, 0, 0);
 			break;
 		case ID_SHAPES_TwoPointCircle:
-			shape = MWShapeState::TwoPointCircle ;
+			ShapeState = MWShapeState::TwoPointCircle ;
 			ShowMessageBox(L"Info",L"Create circle form 2 points");
+
+			break;
+
+		case ID_SHAPES_ThreePointCircle:
+			ShapeState = MWShapeState::ThreePointCircle;
+			ShowMessageBox(L"Info", L"Create circle form 3 points");
+
+			break;
+	
+
+		case ID_SHAPES_LineSegment:
+			ShapeState = MWShapeState::LineSegment;
+			ShowMessageBox(L"Info", L"Create line Segment");
 
 			break;
 		}

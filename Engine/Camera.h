@@ -29,11 +29,17 @@ public:
 		Camera_Pos = pos_in;
 	}
 
+	void DrawLine(JC_Point2d P_in, JC_Point2d Q_in, Color Color_in)
+	{
+		P_in -= Camera_Pos;
+		Q_in -= Camera_Pos;
+		ct.DrawLine(std::move(P_in), std::move(Q_in), std::move(Color_in));
+	}
 	
-	void DrawCircle(JC_Point2d pos, double radius, Color c)
+	void DrawCircle(JC_Point2d pos, double radius, Color Color_in)
 	{
 		pos -= Camera_Pos;
-		ct.DrawCircle(std::move(pos), std::move(radius), c);
+		ct.DrawCircle(std::move(pos), std::move(radius), Color_in);
 	}
 	
 

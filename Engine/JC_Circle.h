@@ -26,7 +26,7 @@ private:
 	//**When we can Determine slope of both lines, then we proces points in seen order.
 	//**When we can't determine slope of any of lines (parallel to the window sides) 
 	//   in this situation we are calculating centre using line mid point rule
-	//**When we are unable to tetermine solope of one from the lines
+	//**When we are unable to determine solope of one from the lines
 	//   in this situation we are simply swaping order of the points.
 	JC_Point2d CalculatCentre(const  JC_Point2d& P, const  JC_Point2d& Q, const JC_Point2d& R);
 

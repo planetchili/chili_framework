@@ -68,6 +68,7 @@ void Game::ProcesInput()
 					Q = wnd.mouse.GetPos();
 					Q = cam.TrasformPoint(Q);
 					Shapes.push_back(std::make_unique<JC_Circle>(P, Q));
+					//Shapes.push_back(std::make_unique<JC_Line>(P, Q));
 				}
 
 				input++;

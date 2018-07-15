@@ -16,7 +16,7 @@ JC_Circle::JC_Circle(const JC_Point2d& P_in, const JC_Point2d& Q_in, const JC_Po
 	:
 	JC_Shape(color_in),
 	O(CalculatCentre(P_in, Q_in, R_in)),
-	radius(GetDistanceTo(P_in, R_in))
+	radius(GetDistanceTo(O, R_in))
 
 {}
 

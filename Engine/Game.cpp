@@ -59,9 +59,9 @@ void Game::ProcesInput()
 			{
 				if (input == 0)
 				{
-					P = wnd.mouse.GetPos();
+					
 					engaged = true;
-					P = cam.TrasformPoint(P);
+					P = cam.TrasformPoint(wnd.mouse.GetPos());
 				}
 				if (input == 1)
 				{
@@ -87,9 +87,51 @@ void Game::ProcesInput()
 		}
 		if (engaged)
 		{
-			Q = wnd.mouse.GetPos();
-			Q = cam.TrasformPoint(Q);
+			
+			Q = cam.TrasformPoint(wnd.mouse.GetPos());
 			cam.DrawCircle(P, GetDistanceTo(P, Q), Colors::Red);
+			cam.DrawLine(P, Q, Colors::Red);
+		}
+		break;
+	}
+
+	case MainWindow::MWShapeState::LineSegment:
+	{
+		while (!wnd.mouse.IsEmpty())
+		{
+			const auto e = wnd.mouse.Read();
+
+			if (e.GetType() == Mouse::Event::Type::LPress)
+			{
+				if (input == 0)
+				{
+					engaged = true;
+					P = cam.TrasformPoint(wnd.mouse.GetPos());
+				}
+				if (input == 1)
+				{
+					engaged = false;
+					Q = cam.TrasformPoint(wnd.mouse.GetPos());
+					Shapes.push_back(std::make_unique<JC_Line>(P, Q));
+				}
+
+				input++;
+
+				if (input >= 2)
+				{
+					input = 0;
+					engaged = false;
+				}
+			}
+			if (e.GetType() == Mouse::Event::Type::RPress)
+			{
+		
+				engaged = false;
+			}
+		}
+		if (engaged)
+		{
+			Q = cam.TrasformPoint(wnd.mouse.GetPos());
 			cam.DrawLine(P, Q, Colors::Red);
 		}
 		break;
@@ -175,6 +217,6 @@ void Game::ComposeFrame()
 	{
 		c.get()->Draw(cam);
 	}
-	//ct.DrawClosedPolyline(Star::Make(200, 75.0,7), Colors::Red);
+	cam.DrawClosedPolyline(Star::Make(200, 75.0,7), Colors::Red);
 }
 

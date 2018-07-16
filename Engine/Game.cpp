@@ -95,6 +95,67 @@ void Game::ProcesInput()
 		break;
 	}
 
+
+	case MainWindow::MWShapeState::ThreePointCircle:
+	{
+		while (!wnd.mouse.IsEmpty())
+		{
+			const auto e = wnd.mouse.Read();
+
+			if (e.GetType() == Mouse::Event::Type::LPress)
+			{
+				if (input == 0)
+				{
+					
+					P = cam.TrasformPoint(wnd.mouse.GetPos());
+				}
+
+				if (input == 1)
+				{
+					engaged = true;
+					Q = cam.TrasformPoint(wnd.mouse.GetPos());
+				}
+
+				if (input == 2)
+				{
+					R = cam.TrasformPoint(wnd.mouse.GetPos());
+					if (P != Q && Q != R)
+						Shapes.push_back(std::make_unique<JC_Circle>(P, Q, R));
+				}
+
+				input++;
+
+				if (input >= 3)
+				{
+					input = 0;
+					engaged = false;
+				}
+			}
+			if (e.GetType() == Mouse::Event::Type::RPress)
+			{
+				input = 0;
+				engaged = false;
+			}
+		}
+		if (engaged)
+		{
+
+			R = cam.TrasformPoint(wnd.mouse.GetPos());
+			if (P == Q)
+			{
+				input = 0;
+				engaged = false;
+			}
+			else if (Q != R)
+			{
+				cam.DrawCircle(CalculateCentre(P, Q, R), GetDistanceTo(CalculateCentre(P, Q, R), R), Colors::Red);
+				//cam.DrawLine(CalculateCentre(P, Q, R), R, Colors::Red);
+			}
+				
+		}
+		break;
+	}
+
 	case MainWindow::MWShapeState::LineSegment:
 	{
 		while (!wnd.mouse.IsEmpty())
@@ -170,6 +231,7 @@ void Game::ProcesInput()
 		wnd.ShapeState = MainWindow::MWShapeState::Null;
 
 		input = 0;
+		engaged = false;
 
 		for (auto &c : Shapes)
 		{
@@ -186,19 +248,19 @@ void Game::ProcesInput()
 	const float speed = 7.0f;
 	if (wnd.kbd.KeyIsPressed(VK_DOWN))
 	{
-		cam.MoveBy({ 0.0f,speed });
+		cam.MoveBy({ 0.0f,-speed });
 	}
 	if (wnd.kbd.KeyIsPressed(VK_UP))
 	{
-		cam.MoveBy({ 0.0f,-speed });
+		cam.MoveBy({ 0.0f,speed });
 	}
 	if (wnd.kbd.KeyIsPressed(VK_LEFT))
 	{
-		cam.MoveBy({ speed,0.0f });
+		cam.MoveBy({ -speed,0.0f });
 	}
 	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
 	{
-		cam.MoveBy({ -speed,0.0f });
+		cam.MoveBy({ speed,0.0f });
 	}
 
 }
@@ -217,6 +279,6 @@ void Game::ComposeFrame()
 	{
 		c.get()->Draw(cam);
 	}
-	cam.DrawClosedPolyline(Star::Make(200, 75.0,7), Colors::Red);
+	//cam.DrawClosedPolyline(Star::Make(200, 75.0,7), Colors::Red);
 }
 

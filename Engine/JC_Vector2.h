@@ -67,6 +67,18 @@ using JC_Vector2f = JC_Vector2<float>;
 using JC_Vector2i = JC_Vector2<int>;
 
 
+
+template<class T> bool operator== (const JC_Point2<T>& lhs, const JC_Point2<T>& rhs)
+{
+	return ((lhs.x == rhs.x) && (lhs.y == rhs.y));
+}
+template<class T> bool operator!= (const JC_Point2<T>& lhs, const JC_Point2<T>& rhs)
+{
+	return ((lhs.x != rhs.x) || (lhs.y != rhs.y));
+}
+
+
+
 template<class T> JC_Vector2<T>& operator+=(JC_Vector2<T>& lhs, const JC_Vector2<T>& rhs)
 {
 	lhs.x += rhs.x;

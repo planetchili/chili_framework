@@ -30,6 +30,7 @@
 #include "MouseCameraControler.h"
 
 #include "JC_Vector2.h"
+#include "JC_Math.h"
 #include "JC_Circle.h"
 #include "JC_Line.h"
 #include "JC_Shape.h"
@@ -70,7 +71,6 @@ private:
 	bool engaged = false;
 
 	JC_Point2d P, Q, R;
-	JC_Point2i T;
 	/********************************/
 
 };

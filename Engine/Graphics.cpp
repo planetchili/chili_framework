@@ -358,9 +358,6 @@ void Graphics::DrawClosedPolyline(const std::vector<JC_Point2d>& verts, Color c)
 
 
 // line with per pixel clipping
-
-
-
 void Graphics::DrawLine(double x1, double y1, double x2, double y2, Color c)
 {
 	const double dx = x2 - x1;
@@ -444,28 +441,28 @@ void Graphics::DrawCircle(double Ox, double Oy, double R, Color& c)
 		int yi = (int)(std::sqrt(radsqr - (xi*xi)) + 0.5f);
 
 
-		if (Ox + xi >= 0 && Ox + xi < ScreenWidth && Oy + yi >= 0 && Oy + yi < ScreenHeight)
-			PutPixel((int)Ox + xi, (int)Oy + yi, c);
+		if (Ox + xi >= 0 && Ox + xi < ScreenWidth - 1 && Oy + yi >= 0 && Oy + yi < ScreenHeight-1)
+			PutPixel((int)Ox + xi, (int)Oy + yi, c);									   
+																						   
+		if (Ox + yi >= 0 && Ox + yi < ScreenWidth - 1 && Oy + xi >= 0 && Oy + xi < ScreenHeight-1)
+			PutPixel((int)Ox + yi, (int)Oy + xi, c);									   
+																						   
+		if (Ox -xi >= 0 && Ox -xi < ScreenWidth - 1 && Oy + yi >= 0 && Oy + yi <   ScreenHeight-1)
+			PutPixel((int)Ox - xi, (int)Oy + yi, c);									   
+																						   
+		if (Ox -yi >= 0 && Ox -yi < ScreenWidth - 1 && Oy + xi >= 0 && Oy + xi <   ScreenHeight-1)
+			PutPixel((int)Ox - yi, (int)Oy + xi, c);									   
+																						   
+		if (Ox -xi >= 0 && Ox -xi < ScreenWidth - 1 && Oy -yi >= 0 && Oy -yi <     ScreenHeight-1)
+			PutPixel((int)Ox - xi, (int)Oy - yi, c);									   
+																						   
+		if (Ox -yi >= 0 && Ox-yi < ScreenWidth - 1 && Oy -xi >= 0 && Oy -xi <	   ScreenHeight-1)
+			PutPixel((int)Ox - yi, (int)Oy - xi, c);									   
+																						   
+		if (Ox + xi >= 0 && Ox + xi < ScreenWidth-1 && Oy -yi >= 0 && Oy -yi < ScreenHeight-1)
+			PutPixel((int)Ox + xi, (int)Oy - yi, c);									   
 
-		if (Ox + yi >= 0 && Ox + yi < ScreenWidth && Oy + xi >= 0 && Oy + xi < ScreenHeight)
-			PutPixel((int)Ox + yi, (int)Oy + xi, c);
-
-		if (Ox -xi >= 0 && Ox -xi < ScreenWidth && Oy + yi >= 0 && Oy + yi < ScreenHeight)
-			PutPixel((int)Ox - xi, (int)Oy + yi, c);
-
-		if (Ox -yi >= 0 && Ox -yi < ScreenWidth && Oy + xi >= 0 && Oy + xi < ScreenHeight)
-			PutPixel((int)Ox - yi, (int)Oy + xi, c);
-
-		if (Ox -xi >= 0 && Ox -xi < ScreenWidth && Oy -yi >= 0 && Oy -yi < ScreenHeight)
-			PutPixel((int)Ox - xi, (int)Oy - yi, c);
-
-		if (Ox -yi >= 0 && Ox-yi < ScreenWidth && Oy -xi >= 0 && Oy -xi < ScreenHeight)
-			PutPixel((int)Ox - yi, (int)Oy - xi, c);
-
-		if (Ox + xi >= 0 && Ox + xi < ScreenWidth && Oy -yi >= 0 && Oy -yi < ScreenHeight)
-			PutPixel((int)Ox + xi, (int)Oy - yi, c);
-
-		if (Ox + yi >= 0 && Ox + yi < ScreenWidth && Oy -xi >= 0 && Oy -xi < ScreenHeight)
+		if (Ox + yi >= 0 && Ox + yi < ScreenWidth-1 && Oy -xi >= 0 && Oy -xi < ScreenHeight-1)
 			PutPixel((int)Ox + yi, (int)Oy - xi, c);
 	}
 		       

@@ -28,6 +28,12 @@
     <Filter Include="Header Files\Geometric shapes">
       <UniqueIdentifier>{b9b4aa28-3d6d-4412-b8b4-6ff6c3af9881}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\MathLib">
+      <UniqueIdentifier>{ab08727f-c0bc-4aac-a38c-7a209aa66dcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MathLib">
+      <UniqueIdentifier>{85608aef-b314-4019-9eef-58cd5dee7256}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChiliWin.h">
@@ -69,9 +75,6 @@
     <ClInclude Include="COMInitializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="JC_Vector2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Star.h">
       <Filter>Header Files\Geometric shapes</Filter>
     </ClInclude>
@@ -93,11 +96,14 @@
     <ClInclude Include="JC_Shape.h">
       <Filter>Header Files\Geometric shapes</Filter>
     </ClInclude>
-    <ClInclude Include="JC_Math.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="JC_Line.h">
       <Filter>Header Files\Geometric shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="JC_Math.h">
+      <Filter>Header Files\MathLib</Filter>
+    </ClInclude>
+    <ClInclude Include="JC_Vector2.h">
+      <Filter>Header Files\MathLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +136,9 @@
     </ClCompile>
     <ClCompile Include="JC_Circle.cpp">
       <Filter>Source Files\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="JC_Math.cpp">
+      <Filter>Source Files\MathLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

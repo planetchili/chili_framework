@@ -64,13 +64,16 @@ private:
 	/*  User Variables              */
 	CoordinateTrasformer ct;
 	Camera cam;
-	MouseCameraController camCtrl;
+	//MouseCameraController camCtrl;
 	std::vector<std::unique_ptr<JC_Shape>> Shapes;
 	unsigned short input = 0;
 
-	bool engaged = false;
+	bool first_point_engagement = false;
+	bool second_point_engagement = false;
 
 	JC_Point2d P, Q, R;
+
+	
 	/********************************/
 
 };

@@ -31,8 +31,8 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	ct(gfx),
-	cam(ct),
-	camCtrl(wnd.mouse,cam)
+	cam(ct)//,
+	//camCtrl(wnd.mouse,cam)
 {	
 }
 
@@ -60,7 +60,7 @@ void Game::ProcesInput()
 				if (input == 0)
 				{
 					
-					engaged = true;
+					first_point_engagement = true;
 					P = cam.TrasformPoint(wnd.mouse.GetPos());
 				}
 				if (input == 1)
@@ -76,16 +76,16 @@ void Game::ProcesInput()
 				if (input >= 2)
 				{
 					input = 0;
-					engaged = false;
+					first_point_engagement = false;
 				}
 			}
 			if (e.GetType() == Mouse::Event::Type::RPress)
 			{
 				input = 0;
-				engaged = false;
+				first_point_engagement = false;
 			}
 		}
-		if (engaged)
+		if (first_point_engagement)
 		{
 			
 			Q = cam.TrasformPoint(wnd.mouse.GetPos());
@@ -106,13 +106,13 @@ void Game::ProcesInput()
 			{
 				if (input == 0)
 				{
-					
+					first_point_engagement = true;
 					P = cam.TrasformPoint(wnd.mouse.GetPos());
 				}
 
 				if (input == 1)
 				{
-					engaged = true;
+					second_point_engagement = true;
 					Q = cam.TrasformPoint(wnd.mouse.GetPos());
 				}
 
@@ -128,27 +128,36 @@ void Game::ProcesInput()
 				if (input >= 3)
 				{
 					input = 0;
-					engaged = false;
+					second_point_engagement = false;
 				}
 			}
 			if (e.GetType() == Mouse::Event::Type::RPress)
 			{
 				input = 0;
-				engaged = false;
+				first_point_engagement = false;
+				second_point_engagement = false;
 			}
 		}
-		if (engaged)
+		if (first_point_engagement)
 		{
-
+			Q = cam.TrasformPoint(wnd.mouse.GetPos());
+			cam.DrawLine(P, Q, Colors::Red);
+		}
+		if (second_point_engagement)
+		{
+			first_point_engagement = false;
 			R = cam.TrasformPoint(wnd.mouse.GetPos());
 			if (P == Q)
 			{
 				input = 0;
-				engaged = false;
+				second_point_engagement = false;
 			}
 			else if (Q != R)
 			{
 				cam.DrawCircle(CalculateCentre(P, Q, R), GetDistanceTo(CalculateCentre(P, Q, R), R), Colors::Red);
+				cam.DrawCircle(P, 10, Colors::Red);
+				cam.DrawCircle(Q, 10, Colors::Red);
+				cam.DrawCircle(R, 10, Colors::Red);
 				//cam.DrawLine(CalculateCentre(P, Q, R), R, Colors::Red);
 			}
 				
@@ -166,12 +175,12 @@ void Game::ProcesInput()
 			{
 				if (input == 0)
 				{
-					engaged = true;
+					first_point_engagement = true;
 					P = cam.TrasformPoint(wnd.mouse.GetPos());
 				}
 				if (input == 1)
 				{
-					engaged = false;
+					first_point_engagement = false;
 					Q = cam.TrasformPoint(wnd.mouse.GetPos());
 					Shapes.push_back(std::make_unique<JC_Line>(P, Q));
 				}
@@ -181,16 +190,16 @@ void Game::ProcesInput()
 				if (input >= 2)
 				{
 					input = 0;
-					engaged = false;
+					first_point_engagement = false;
 				}
 			}
 			if (e.GetType() == Mouse::Event::Type::RPress)
 			{
 		
-				engaged = false;
+				first_point_engagement = false;
 			}
 		}
-		if (engaged)
+		if (first_point_engagement)
 		{
 			Q = cam.TrasformPoint(wnd.mouse.GetPos());
 			cam.DrawLine(P, Q, Colors::Red);
@@ -231,7 +240,8 @@ void Game::ProcesInput()
 		wnd.ShapeState = MainWindow::MWShapeState::Null;
 
 		input = 0;
-		engaged = false;
+		first_point_engagement = false;
+		second_point_engagement = false;
 
 		for (auto &c : Shapes)
 		{

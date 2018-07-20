@@ -42,6 +42,14 @@ public:
 		ct.DrawCircle(std::move(pos), std::move(radius), Color_in);
 	}
 	
+	void DrawClosedPolyline(std::vector<JC_Point2d> poly, Color c)
+	{
+		for (auto& v : poly)
+		{
+			v -= Camera_Pos;
+		}
+		ct.DrawClosedPolyline(std::move(poly), c);
+	}
 
 	// trasforms Point screen coordinates to mathematical coordinates regardles from cmaera position
 

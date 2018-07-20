@@ -94,8 +94,6 @@ void Game::ProcesInput()
 		}
 		break;
 	}
-
-
 	case MainWindow::MWShapeState::ThreePointCircle:
 	{
 		while (!wnd.mouse.IsEmpty())
@@ -141,7 +139,8 @@ void Game::ProcesInput()
 		if (first_point_engagement)
 		{
 			Q = cam.TrasformPoint(wnd.mouse.GetPos());
-			cam.DrawLine(P, Q, Colors::Red);
+			auto Temp = GetMidPoint(P, Q);
+			cam.DrawCircle(Temp, GetDistanceTo(Temp, Q), Colors::Red);
 		}
 		if (second_point_engagement)
 		{
@@ -154,7 +153,8 @@ void Game::ProcesInput()
 			}
 			else if (Q != R)
 			{
-				cam.DrawCircle(CalculateCentre(P, Q, R), GetDistanceTo(CalculateCentre(P, Q, R), R), Colors::Red);
+				auto Temp = CalculateCentre(P, Q, R);
+				cam.DrawCircle(Temp, GetDistanceTo(Temp, R), Colors::Red);
 				cam.DrawCircle(P, 10, Colors::Red);
 				cam.DrawCircle(Q, 10, Colors::Red);
 				cam.DrawCircle(R, 10, Colors::Red);
@@ -164,7 +164,6 @@ void Game::ProcesInput()
 		}
 		break;
 	}
-
 	case MainWindow::MWShapeState::LineSegment:
 	{
 		while (!wnd.mouse.IsEmpty())

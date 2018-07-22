@@ -11,7 +11,6 @@ JC_Circle::JC_Circle(const JC_Point2d& P_in, const JC_Point2d& Q_in, Color color
 {}
 
 
-
 JC_Circle::JC_Circle(const JC_Point2d& P_in, const JC_Point2d& Q_in, const JC_Point2d& R_in, Color color_in)
 	:
 	JC_Shape(color_in),
@@ -20,11 +19,11 @@ JC_Circle::JC_Circle(const JC_Point2d& P_in, const JC_Point2d& Q_in, const JC_Po
 
 {}
 
+
 void JC_Circle::Draw(Camera cam_in)
 {
 	cam_in.DrawCircle(O, radius, Base_Color);
 }
-
 
 
 bool JC_Circle::IsInRange(const JC_Point2d& mouse_in)

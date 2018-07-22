@@ -29,6 +29,9 @@ public:
 	{
 		return selectedflag;
 	}
+
+
+
 protected:
 
 	JC_Shape( Color& color_in)

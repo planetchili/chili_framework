@@ -29,6 +29,16 @@ public:
 		Camera_Pos = pos_in;
 	}
 
+	void SetScale(double new_scale)
+	{
+		scale = new_scale;
+	}
+
+	double GetScale() const
+	{
+		return scale;
+	}
+
 	void DrawLine(JC_Point2d P_in, JC_Point2d Q_in, Color Color_in)
 	{
 		P_in -= Camera_Pos;
@@ -39,16 +49,7 @@ public:
 	void DrawCircle(JC_Point2d pos, double radius, Color Color_in)
 	{
 		pos -= Camera_Pos;
-		ct.DrawCircle(std::move(pos), std::move(radius), Color_in);
-	}
-	
-	void DrawClosedPolyline(std::vector<JC_Point2d> poly, Color c)
-	{
-		for (auto& v : poly)
-		{
-			v -= Camera_Pos;
-		}
-		ct.DrawClosedPolyline(std::move(poly), c);
+		ct.DrawCircle(std::move(pos), std::move(radius), std::move(Color_in));
 	}
 
 	// trasforms Point screen coordinates to mathematical coordinates regardles from cmaera position
@@ -64,17 +65,7 @@ public:
 		input.y *= -1;
 		return input;
 	}
-
-	void SetScale(double new_scale)
-	{
-		scale = new_scale;
-	}
-
-	double GetScale() const
-	{
-		return scale;
-	}
-
+	
 private:
 	double scale = 1.0;
 	JC_Point2d Camera_Pos = { 0.0,0.0 };

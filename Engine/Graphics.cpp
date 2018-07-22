@@ -241,35 +241,6 @@ Graphics::Graphics( HWNDKey& key )
 		_aligned_malloc( sizeof( Color ) * Graphics::ScreenWidth * Graphics::ScreenHeight,16u ) );
 }
 
-void Graphics::DrawFlatEllipse(float Ox, float Oy, float Rx, float Ry, Color c)
-{
-	if (Ry==0.0)
-	{
-		DrawLine(Ox - Rx, Oy, Ox + Rx, Oy, c);
-	}
-	else if (Rx==0.0)
-	{
-
-		DrawLine(Ox, Oy - Ry, Ox, Oy + Ry, c);
-	}
-	else if (Rx == 0.0 && Ry == 0.0)
-	{
-		PutPixel((int)(Ox), (int)(Oy), c);
-	}
-	else
-	{
-		for (double theta = 0; theta < 360; theta += 0.2)
-		{
-			float x = (float)(Rx * std::cos(PI_F*theta / 180));
-			float y = (float)(Ry * std::sin(PI_F*theta / 180));
-
-			PutPixel((int)(Ox), (int)(Oy), c);
-			PutPixel((int)(x + 0.5f + Ox), (int)(y + 0.5f + Oy), c);
-		}
-	}
-
-}
-
 Graphics::~Graphics()
 {
 	// free sysbuffer memory (aligned free)
@@ -344,16 +315,6 @@ void Graphics::PutPixel( int x,int y,Color c )
 	assert( y >= 0 );
 	assert( y < int( Graphics::ScreenHeight ) );
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
-}
-
-
-void Graphics::DrawClosedPolyline(const std::vector<JC_Point2d>& verts, Color c)
-{
-	for (auto i = verts.begin(); i != std::prev(verts.end()); i++)
-	{
-		DrawLine(*i, *std::next(i), c);
-	}
-	DrawLine(verts.back(), verts.front(), c);
 }
 
 

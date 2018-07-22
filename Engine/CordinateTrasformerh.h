@@ -40,20 +40,6 @@ public:
 		gfx.DrawCircle(pos, radius, c);
 	}
 
-
-	void DrawClosedPolyline(std::vector<JC_Point2d> poly, Color c)
-	{
-		JC_Vector2d offset = { double(Graphics::ScreenWidth / 2),double(Graphics::ScreenHeight / 2) };
-		for (auto& v : poly)
-		{
-			v.y *= -1.0;
-			v += offset;
-		}
-		gfx.DrawClosedPolyline(poly, c);
-	}
-	
-
-
 private:
 	Graphics& gfx;
 

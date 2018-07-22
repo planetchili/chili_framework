@@ -21,7 +21,7 @@ public:
 	
 	void Draw(Camera cam_in) override;
 	bool IsInRange(const JC_Point2d& mouse_in) override;
-
+								 
 private:
 	JC_Point2d O;
 	double radius;

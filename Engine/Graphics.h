@@ -64,7 +64,6 @@ public:
 	}
 	void PutPixel( int x,int y,Color c );
 
-	void DrawClosedPolyline(const std::vector<JC_Point2d>& verts, Color c);
 	
 	/***** Start Draw Line Functions *****/
 
@@ -97,15 +96,6 @@ public:
 	void DrawArc(double Ox, double Oy, double R, double theta_begin, double theta_end, Color c);
 	
 	/***** End Draw Arc Functions *****/
-
-
-
-	/***** Start Draw Ellipse Functions *****/
-	
-	void DrawFlatEllipse(float Ox, float Oy, float Rx, float Ry, Color c);
-	
-	/***** End Draw Ellipse Functions *****/
-
 
 	~Graphics();
 private:

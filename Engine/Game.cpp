@@ -117,7 +117,7 @@ void Game::ProcesInput()
 				if (input == 2)
 				{
 					R = cam.TrasformPoint(wnd.mouse.GetPos());
-					if (P != Q && Q != R)
+					if (P != Q && Q != R && !(LineSlopeBetween2Points(P, R) == LineSlopeBetween2Points(R, Q)))
 						Shapes.push_back(std::make_unique<JC_Circle>(P, Q, R));
 				}
 
@@ -136,6 +136,7 @@ void Game::ProcesInput()
 				second_point_engagement = false;
 			}
 		}
+		//Draw circle from two points when left mouse button is pressed for the first time
 		if (first_point_engagement)
 		{
 			Q = cam.TrasformPoint(wnd.mouse.GetPos());
@@ -151,7 +152,7 @@ void Game::ProcesInput()
 				input = 0;
 				second_point_engagement = false;
 			}
-			else if (Q != R)
+			else if (Q != R && !(LineSlopeBetween2Points(P, R) == LineSlopeBetween2Points(R, Q)))
 			{
 				auto Temp = CalculateCentre(P, Q, R);
 				cam.DrawCircle(Temp, GetDistanceTo(Temp, R), Colors::Red);
@@ -271,7 +272,6 @@ void Game::ProcesInput()
 	{
 		cam.MoveBy({ speed,0.0f });
 	}
-
 }
 
 void Game::UpdateModel()

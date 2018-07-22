@@ -2,37 +2,33 @@
 
 JC_Point2d CalculateCentre(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R)
 {
-	
 	//when we have 2 flat lines in order under right angle
 	if (std::abs(P.x) == std::abs(R.x) && std::abs(Q.y) == std::abs(R.y))
 	{
 		JC_Point2d C;
-		C.x = (R.x + Q.x) / 2;
-		C.y = (P.y + R.y) / 2;
+		C.x = (R.x + P.x) / 2;
+		C.y = (Q.y + R.y) / 2;
 		return C;
-
 	}
 	//when we have 2 flat lines in reverce order under right angle
 	else if (std::abs(P.y) == std::abs(R.y) && std::abs(Q.x) == std::abs(R.x))
 	{
 		JC_Point2d C;
-		C.x = R.x + P.x / 2;
-		C.y = Q.y + R.y / 2;
+		C.x = R.x + Q.x / 2;
+		C.y = P.y + R.y / 2;
 		return C;
 	}
-	else if (std::abs(P.x) == std::abs(R.x) && std::abs(Q.y) != std::abs(R.y))
+	else if (std::abs(P.x) == std::abs(R.x) && std::abs(Q.y) != std::abs(R.y) || std::abs(P.y) == std::abs(R.y) && std::abs(Q.x) != std::abs(R.x))
 	{
-
 		JC_Point2d C = CalculateSpecificCentre(P, R, Q);
 		return C;
-
 	}
-	else if (std::abs(P.x) != std::abs(R.x) && std::abs(Q.y) == std::abs(R.y))
+	else if (std::abs(P.x) != std::abs(R.x) && std::abs(Q.y) == std::abs(R.y) || std::abs(P.y) == std::abs(R.y) && std::abs(Q.x) != std::abs(R.x))
 	{
 		JC_Point2d C = CalculateSpecificCentre(R, Q, P);
 		return C;
 	}
-	else if (std::abs (P.x) != std::abs(Q.x) && std::abs(P.y) != std::abs(Q.y) || std::abs(Q.x) != std::abs(R.x) && std::abs(Q.y) != std::abs(R.y))
+	else if ( P != Q || Q != R )
 	{
 		JC_Point2d C = CalculateSpecificCentre(P, Q, R);
 		return C;

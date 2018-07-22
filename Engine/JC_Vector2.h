@@ -93,7 +93,6 @@ template<class T> JC_Point2<T>& operator+=(JC_Point2<T>& lhs, const JC_Vector2<T
 
 	return lhs;
 }
-
 template<class T> JC_Point2<T>& operator+=(JC_Point2<T>& lhs, const JC_Point2<T>& rhs)
 {
 	lhs.x += rhs.x;
@@ -117,7 +116,6 @@ template<class T> JC_Point2<T>& operator-=(JC_Point2<T>& lhs, const JC_Vector2<T
 
 	return lhs;
 }
-
 template<class T> JC_Point2<T>& operator-=(JC_Point2<T>& lhs, const JC_Point2<T>& rhs)
 {
 	lhs.x -= rhs.x;
@@ -175,6 +173,32 @@ template<class T> JC_Vector2<T> operator*(T s, const JC_Vector2<T>& v)
 template<class T> JC_Vector2<T> operator/(const JC_Vector2<T>& v, T s)
 {
 	return { v.x / s,v.y / s };
+}
+
+
+template <class T> JC_Point2<T> operator*=(JC_Point2<T> lhs, T rhs)
+{
+	lhs.x *= rhs;
+	lhs.y *= rhs;
+	return lhs;
+}
+template <class T> JC_Point2<T> operator/=(JC_Point2<T> lhs, T rhs)
+{
+	lhs.x /= rhs;
+	lhs.y /= rhs;
+	return lhs;
+}
+template <class T> JC_Point2<T> operator*=(T lhs, JC_Point2<T> rhs)
+{
+	rhs.x *= lhs;
+	rhs.y *= lhs;
+	return rhs;
+}
+template <class T> JC_Point2<T> operator/=(T lhs , JC_Point2<T> rhs)
+{
+	rhs.x /= lhs;
+	rhs.y /= lhs;
+	return rhs;
 }
 
 template<class T> T dot_product(const JC_Vector2<T>& v0, const JC_Vector2<T>& v1)

@@ -46,6 +46,8 @@ constexpr double PI_D = 3.1415926535897932;
 		return -1 / m;
 	}
 
+	
+
 	// We have couple of types of centre calculation:
 	// When we can Determine slope of both lines, then we proces points in seen order.
 	// When we can't determine slope of any of lines (parallel to the window sides) 
@@ -58,3 +60,7 @@ constexpr double PI_D = 3.1415926535897932;
 	//Used to calculate centre from points from which created lines have caclulatable slope (at least one line)
 	JC_Point2d CalculateSpecificCentre(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R);
 
+	// First two points create line third we are exsamining
+	JC_Point2d ClosesPoint (const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R);
+
+	bool IsBetween2Points(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R);

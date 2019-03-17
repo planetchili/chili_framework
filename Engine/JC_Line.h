@@ -13,13 +13,24 @@ public:
 		JC_Shape(color_in)
 	{}
 
-	void Draw(Camera cam_in) override
+	void Draw(Camera cam) override
 	{
-		cam_in.DrawLine(P, Q, Base_Color);
+		cam.DrawLine(P, Q, Base_Color);
 	}
-	bool IsInRange(const JC_Point2d& mouse_in) override
+	bool IsInRange(const JC_Point2d& M) override
 	{
-		return false;
+		JC_Point2d C = ClosesPoint(P, Q, M);
+
+		if (IsBetween2Points(P, Q, C))
+		{
+			if ((abs(GetDistanceTo(M,C)) < halfwidth))
+				return true;
+
+			else
+				return false;
+		}
+		else
+			return false;
 	}
 
 

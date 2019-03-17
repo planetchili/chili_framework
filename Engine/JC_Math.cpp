@@ -28,7 +28,7 @@ JC_Point2d CalculateCentre(const JC_Point2d & P, const JC_Point2d & Q, const JC_
 		JC_Point2d C = CalculateSpecificCentre(R, Q, P);
 		return C;
 	}
-	else if ( P != Q || Q != R )
+	else 
 	{
 		JC_Point2d C = CalculateSpecificCentre(P, Q, R);
 		return C;
@@ -74,5 +74,35 @@ JC_Point2d CalculateSpecificCentre(const JC_Point2d & P, const JC_Point2d & Q, c
 	C.y = ((m1_perp * b) - (m2_perp * a)) / (m1_perp - m2_perp);
 
 	return C;
+
+}
+
+JC_Point2d ClosesPoint(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R)
+{
+	
+
+	double c = LineSlopeBetween2Points(P, Q);
+
+	//assert(c == 0); 
+
+	double a = InverceLineSlope(c);
+
+	double b = R.y - (a * R.x);
+	double d = Q.y - (c * Q.x);
+
+	double x = ((a*R.x) + b - d) / c; 
+	double y = (a * x) + b;
+
+	return JC_Point2d(x, y);
+}
+
+bool IsBetween2Points(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R)
+{
+	JC_Point2d C = ClosesPoint(P, Q, R);
+
+	if ((GetDistanceTo(P, C) < GetDistanceTo(P, Q)) && (GetDistanceTo(Q, C) < GetDistanceTo(P, Q)))
+		return true;
+	else
+		return false;
 
 }

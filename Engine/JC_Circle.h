@@ -4,6 +4,7 @@
 #include "JC_Shape.h"
 #include "JC_Math.h"
 
+
 #include "JC_Vector2.h"
 #include "Graphics.h"
 
@@ -21,9 +22,21 @@ public:
 	
 	void Draw(Camera cam_in) override;
 	bool IsInRange(const JC_Point2d& mouse_in) override;
-								 
+		
+
+	std::wstring MakeDescription() override
+	{
+
+		std::wstring PosO = L" X: " + std::to_wstring(O.x) + L" Y: " + std::to_wstring(O.y);
+		std::wstring Radius = std::to_wstring(radius);
+
+		return	std::wstring(L"PositionO: " + PosO + L"\n" + L"Radius: " + Radius);
+
+	}
+
 private:
 	JC_Point2d O;
 	double radius;
+
 
 };

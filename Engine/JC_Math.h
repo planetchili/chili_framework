@@ -63,4 +63,17 @@ constexpr double PI_D = 3.1415926535897932;
 	// First two points create line third we are exsamining
 	JC_Point2d ClosesPoint (const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R);
 
+	template <typename T> JC_Point2<T> TrasformPoint(JC_Point2<T> input)
+	{
+		//fixes disconection between screen and math coordinates
+		input.x += (T)(Camera_Pos.x);
+		input.y -= (T)(Camera_Pos.y);
+
+		JC_Vector2<T> offset = { (T)(Graphics::ScreenWidth / 2), (T)(Graphics::ScreenHeight / 2) };
+		input -= offset;
+		input.y *= -1;
+		return input;
+	}
+
+
 	bool IsBetween2Points(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R);

@@ -1,7 +1,6 @@
 #pragma once
 #include "JC_Vector2.h"
 #include "Camera.h"
-
 class JC_Shape
 
 {
@@ -10,6 +9,7 @@ public:
 
 	void virtual Draw(Camera cam_in) = 0;
 	bool virtual IsInRange(const JC_Point2d& mouse_in) = 0;
+	std::wstring virtual MakeDescription() = 0;
 
 	void UpdateColor()
 	{
@@ -30,7 +30,10 @@ public:
 		return selectedflag;
 	}
 
-
+	bool IsSelected() const
+	{
+		return selectedflag;
+	}
 
 protected:
 

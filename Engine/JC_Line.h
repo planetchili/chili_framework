@@ -33,7 +33,16 @@ public:
 			return false;
 	}
 
+	std::wstring MakeDescription() override
+	{
+		
+		std::wstring PosP = std::to_wstring(P.x) + L" " + std::to_wstring(P.y);
+		std::wstring PosQ = std::to_wstring(Q.x) + L" " + std::to_wstring(Q.y);
+		std::wstring Lenght = std::to_wstring(GetDistanceTo(P,Q));
 
+		return	std::wstring(L"PositionP: " + PosP + L"\n" + L" PositionQ: " + PosQ + L"\n" + L"Lenght: " + Lenght);
+			
+	}
 
 private:
 	JC_Point2d P, Q; //Start and end points of the line

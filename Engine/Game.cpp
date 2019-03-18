@@ -254,23 +254,14 @@ void Game::ProcesInput()
 		remove_erase_if(Shapes, std::mem_fn(&JC_Shape::ReadyForRemoval));
 	}
 
-	
-	const float speed = 7.0f;
-	if (wnd.kbd.KeyIsPressed(VK_DOWN))
+	if (wnd.kbd.KeyIsPressed(VK_RETURN))
 	{
-		cam.MoveBy({ 0.0f,-speed });
-	}
-	if (wnd.kbd.KeyIsPressed(VK_UP))
-	{
-		cam.MoveBy({ 0.0f,speed });
-	}
-	if (wnd.kbd.KeyIsPressed(VK_LEFT))
-	{
-		cam.MoveBy({ -speed,0.0f });
-	}
-	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
-	{
-		cam.MoveBy({ speed,0.0f });
+		for (auto& i : Shapes)
+		{
+			if (i.get()->IsSelected())
+			wnd.ShowMessageBox(L"Description", i.get()->MakeDescription());
+		}
+		
 	}
 }
 

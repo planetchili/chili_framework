@@ -259,7 +259,10 @@ void Game::ProcesInput()
 		for (auto& i : Shapes)
 		{
 			if (i.get()->IsSelected())
-			wnd.ShowMessageBox(L"Description", i.get()->MakeDescription());
+			{
+				wnd.ShowMessageBox(L"Description", L"Only single shape wil be show \n\n " + i.get()->MakeDescription());
+				break;
+			}
 		}
 		
 	}

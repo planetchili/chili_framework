@@ -27,10 +27,10 @@ public:
 	std::wstring MakeDescription() override
 	{
 
-		std::wstring PosO = L" X: " + std::to_wstring(O.x) + L" Y: " + std::to_wstring(O.y);
+		std::wstring PosO = L"X: " + std::to_wstring(O.x) + L"\n Y: " + std::to_wstring(O.y);
 		std::wstring Radius = std::to_wstring(radius);
 
-		return	std::wstring(L"PositionO: " + PosO + L"\n" + L"Radius: " + Radius);
+		return	std::wstring(L"Centre:\n " + PosO + L"\n\n" + L"Radius: " + Radius);
 
 	}
 

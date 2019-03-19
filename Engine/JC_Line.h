@@ -40,7 +40,7 @@ public:
 		std::wstring PosQ = std::to_wstring(Q.x) + L" " + std::to_wstring(Q.y);
 		std::wstring Lenght = std::to_wstring(GetDistanceTo(P,Q));
 
-		return	std::wstring(L"PositionP: " + PosP + L"\n" + L" PositionQ: " + PosQ + L"\n" + L"Lenght: " + Lenght);
+		return	std::wstring(L"Start:\n" + PosP + L"\n\n" + L" End \n " + PosQ + L"\n\n" + L"Lenght: " + Lenght);
 			
 	}
 

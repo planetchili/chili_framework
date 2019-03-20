@@ -29,7 +29,7 @@
 #include "Colors.h"
 #include "JC_Vector2.h"
 #include "JC_Math.h"
-
+#include "Chili_Rectangle.h"
 
 class Graphics
 {
@@ -80,13 +80,17 @@ public:
 	/***** Start Draw Circle Functions *****/
 
 	template<typename T2>
-	void DrawCircle(JC_Point2<T2> vO, T2 R, Color c)
+	void DrawCircle(JC_Point2<T2> vO, T2 R, int t , Color c)
 	{
-		DrawCircle((double)vO.x, (double)vO.y, (double)R, c);
+		RectD Bound{ (double)ScreenWidth ,0,(double)ScreenHeight,0 };
+		DrawCircle((double)vO.x, (double)vO.y, (double)R, Bound, t, c);
 	}
 	 
 
 	void DrawCircle(double Ox, double Oy, double R, Color& c);
+
+
+	void DrawCircle(double _ox, double _oy, double _outer_radius, const CRectangle<double>& _clip, int t, Color _color) noexcept;
 
 	/***** END Draw Circle Functions ****/
 

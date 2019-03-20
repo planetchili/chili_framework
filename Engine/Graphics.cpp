@@ -26,6 +26,8 @@
 #include <string>
 #include <array>
 
+#include "Chili_Rectangle.h"
+
 
 // Ignore the intellisense error "cannot open source file" for .shh files.
 // They will be created during the build sequence before the preprocessor runs.
@@ -372,6 +374,49 @@ void Graphics::DrawLine(double x1, double y1, double x2, double y2, Color c)
 }
 
 
+void Graphics::DrawCircle(double _ox, double _oy, double _outer_radius, const CRectangle<double>& _clip, int t,Color C) noexcept
+{// For outline thickness of 1
+	const auto rSq_inner = Square(_outer_radius - t);
+	const auto rSq_outer = Square(_outer_radius);
+
+	const auto outer_double = _outer_radius * 2.0;
+
+	// Calculate the bounding rectangle of the circle
+	const auto left = _ox - _outer_radius;
+	const auto top = _oy - _outer_radius;
+	const auto right = _ox + _outer_radius;
+	const auto bottom = _oy + _outer_radius;
+
+	// Clip the bounding rectangle to screen boundaries and translate 
+	// back to -radius ( left_clip, top_clip ), +radius ( right_clip, bottom_clip )
+	const auto left_clip = std::max(0.0, -left) - _outer_radius;
+	const auto top_clip = std::max(0.0, -top) - _outer_radius;
+	const auto right_clip = std::min(ScreenWidth - right, outer_double) - _outer_radius;
+	const auto bottom_clip = std::min(ScreenHeight - bottom, outer_double) - _outer_radius;
+
+	// Loop through clipped bounding rectangle, from top to bottom,
+	// left to right skipping any pixels contained in the _clip Rect passed
+	// as parameter to the function
+	for (double y = top_clip; y < bottom_clip; ++y)
+	{
+		for (double x = left_clip; x < right_clip; ++x)
+		{
+			const auto sqDist = Square(x) + Square(y);
+			if (sqDist > rSq_inner && sqDist < rSq_outer)
+			{
+				const auto px = x + _ox;
+				const auto py = y + _oy;
+
+				if (!_clip.Contains(JC_Vector2<double>{ px, py }))
+				{
+					PutPixel(int(std::round(px)), int(std::round(py)), C);
+				}
+			}
+		}
+	}
+}
+
+
 void Graphics::DrawCircle(double Ox, double Oy, double R, Color& c)
 {
 	//issue with continuity drawing for large circles
@@ -388,6 +433,7 @@ void Graphics::DrawCircle(double Ox, double Oy, double R, Color& c)
 			PutPixel(xi, yi, c);
 	}
 	*/
+
 
 	double x = 0.7071067811865475;
 	

@@ -29,8 +29,10 @@ public:
 
 		std::wstring PosO = L"X: " + std::to_wstring(O.x) + L"\n Y: " + std::to_wstring(O.y);
 		std::wstring Radius = std::to_wstring(radius);
+		std::wstring Diameter = std::to_wstring(radius*2 * PI_D);
+		std::wstring Area = std::to_wstring( radius * radius * PI_D);
 
-		return	std::wstring(L"Centre:\n " + PosO + L"\n\n" + L"Radius: " + Radius);
+		return	std::wstring(L"Centre:\n " + PosO + L"\n\nRadius: " + Radius + L"\n\nDiameter: " + Diameter + L"\n\nArea: " + Area);
 
 	}
 

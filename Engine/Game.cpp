@@ -89,7 +89,7 @@ void Game::ProcesInput()
 		{
 			
 			Q = cam.TrasformPoint(wnd.mouse.GetPos());
-			cam.DrawCircle(P, GetDistanceTo(P, Q), Colors::Red);
+			cam.DrawCircle(P, GetDistanceTo(P, Q), 2, Colors::Red);
 			cam.DrawLine(P, Q, Colors::Red);
 		}
 		break;
@@ -141,7 +141,7 @@ void Game::ProcesInput()
 		{
 			Q = cam.TrasformPoint(wnd.mouse.GetPos());
 			auto Temp = GetMidPoint(P, Q);
-			cam.DrawCircle(Temp, GetDistanceTo(Temp, Q), Colors::Red);
+			cam.DrawCircle(Temp, GetDistanceTo(Temp, Q), 2, Colors::Red);
 		}
 		if (second_point_engagement)
 		{
@@ -155,10 +155,10 @@ void Game::ProcesInput()
 			else if (Q != R && !(LineSlopeBetween2Points(P, R) == LineSlopeBetween2Points(R, Q)))
 			{
 				auto Temp = CalculateCentre(P, Q, R);
-				cam.DrawCircle(Temp, GetDistanceTo(Temp, R), Colors::Red);
-				cam.DrawCircle(P, 10, Colors::Red);
-				cam.DrawCircle(Q, 10, Colors::Red);
-				cam.DrawCircle(R, 10, Colors::Red);
+				cam.DrawCircle(Temp, GetDistanceTo(Temp, R), 2, Colors::Red);
+				cam.DrawCircle(P, 10, 1, Colors::Red);
+				cam.DrawCircle(Q, 10, 1, Colors::Red);
+				cam.DrawCircle(R, 10, 1, Colors::Red);
 				//cam.DrawLine(CalculateCentre(P, Q, R), R, Colors::Red);
 			}
 				
@@ -282,6 +282,7 @@ void Game::ComposeFrame()
 	{
 		c.get()->Draw(cam);
 	}
+
 	//cam.DrawClosedPolyline(Star::Make(200, 75.0,7), Colors::Red);
 }
 

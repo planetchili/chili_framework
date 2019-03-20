@@ -30,14 +30,14 @@ public:
 		gfx.DrawLine(P_in, Q_in, Color_in);
 	}
 
-	void DrawCircle(JC_Point2d pos, double radius, Color c)
+	void DrawCircle(JC_Point2d pos, double radius, int t, Color c)
 	{
 		JC_Vector2d offset = { double(Graphics::ScreenWidth / 2),double(Graphics::ScreenHeight / 2) };
 
 		pos.y *= -1.0;
 		pos += offset;
 
-		gfx.DrawCircle(pos, radius, c);
+		gfx.DrawCircle(pos, radius, t, c);
 	}
 
 private:

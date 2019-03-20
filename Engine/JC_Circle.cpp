@@ -22,7 +22,7 @@ JC_Circle::JC_Circle(const JC_Point2d& P_in, const JC_Point2d& Q_in, const JC_Po
 
 void JC_Circle::Draw(Camera cam_in)
 {
-	cam_in.DrawCircle(O, radius, Base_Color);
+	cam_in.DrawCircle(O, radius, 2, Base_Color);
 }
 
 

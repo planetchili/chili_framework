@@ -46,10 +46,10 @@ public:
 		ct.DrawLine(std::move(P_in), std::move(Q_in), std::move(Color_in));
 	}
 	
-	void DrawCircle(JC_Point2d pos, double radius, Color Color_in)
+	void DrawCircle(JC_Point2d pos, double radius, int t, Color Color_in)
 	{
 		pos -= Camera_Pos;
-		ct.DrawCircle(std::move(pos), std::move(radius), std::move(Color_in));
+		ct.DrawCircle(std::move(pos), std::move(radius), t,  std::move(Color_in));
 	}
 
 	// trasforms Point screen coordinates to mathematical coordinates regardles from cmaera position

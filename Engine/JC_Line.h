@@ -32,7 +32,6 @@ public:
 		else
 			return false;
 	}
-
 	std::wstring MakeDescription() override
 	{
 		

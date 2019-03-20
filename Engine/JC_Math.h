@@ -10,7 +10,7 @@ constexpr double PI_D = 3.1415926535897932;
 
 
 	template <typename T>
-	inline auto Sq(const T& x)
+	inline auto Square(const T& x)
 	{
 		return x * x;
 	}
@@ -52,7 +52,7 @@ constexpr double PI_D = 3.1415926535897932;
 	// When we can Determine slope of both lines, then we proces points in seen order.
 	// When we can't determine slope of any of lines (parallel to the window sides) 
 	//   in this situation we are calculating centre using line mid point rule
-	// When we are unable to determine solope of one from the lines
+	// When we are unable to determine solope of one the lines
 	//   in this situation we are simply swaping order of the points.
 	JC_Point2d CalculateCentre(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R);
 	

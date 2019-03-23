@@ -139,6 +139,8 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ChiliException.h" />
     <ClInclude Include="ChiliWin.h" />
+    <ClInclude Include="Drawableh.h" />
+    <ClInclude Include="JC_Bezier.h" />
     <ClInclude Include="JC_Circle.h" />
     <ClInclude Include="Colors.h" />
     <ClInclude Include="COMInitializer.h" />
@@ -154,6 +156,7 @@
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="MouseCameraControler.h" />
+    <ClInclude Include="Chili_Rectangle.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="JC_Shape.h" />
     <ClInclude Include="Sound.h" />

@@ -87,8 +87,9 @@ public:
 	}
 	 
 
-	void DrawCircle(double Ox, double Oy, double R, Color& c);
+	//void DrawCircle(double Ox, double Oy, double R, Color& c);
 
+	void DrawBezier(const JC_Point2d & p0, const JC_Point2d & p1, const JC_Point2d & p2, Color color) noexcept;
 
 	void DrawCircle(double _ox, double _oy, double _outer_radius, const CRectangle<double>& _clip, int t, Color _color) noexcept;
 
@@ -97,7 +98,7 @@ public:
 	
 	/***** Start Draw Arc Functions *****/
 	
-	void DrawArc(double Ox, double Oy, double R, double theta_begin, double theta_end, Color c);
+	//void DrawArc(double Ox, double Oy, double R, double theta_begin, double theta_end, Color c);
 	
 	/***** End Draw Arc Functions *****/
 

@@ -155,6 +155,8 @@ LRESULT MainWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			AppendMenu(hSubMenu, MF_STRING, ID_SHAPES_ThreePointCircle, L"&Circle from 3 points");
 			AppendMenu(hSubMenu, MF_SEPARATOR, NULL, NULL);
 			AppendMenu(hSubMenu, MF_STRING, ID_SHAPES_LineSegment, L"&Line Segment");
+			AppendMenu(hSubMenu, MF_SEPARATOR, NULL, NULL);
+			AppendMenu(hSubMenu, MF_STRING, ID_SHAPES_BezierCurve, L"&3Point Bezier Curve");
 		}
 
 	
@@ -168,11 +170,12 @@ LRESULT MainWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		switch (LOWORD(wParam))
 		{
 		case ID_FILE_EXIT:
+
 			PostMessage(hWnd, WM_CLOSE, 0, 0);
 			break;
 		case ID_SHAPES_TwoPointCircle:
-			ShapeState = MWShapeState::TwoPointCircle ;
-			ShowMessageBox(L"Info",L"Create circle form 2 points");
+			ShapeState = MWShapeState::TwoPointCircle;
+			ShowMessageBox(L"Info", L"Create circle form 2 points");
 
 			break;
 
@@ -181,17 +184,22 @@ LRESULT MainWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			ShowMessageBox(L"Info", L"Create circle form 3 points");
 
 			break;
-	
+
 
 		case ID_SHAPES_LineSegment:
 			ShapeState = MWShapeState::LineSegment;
 			ShowMessageBox(L"Info", L"Create line Segment");
 
 			break;
+
+		case ID_SHAPES_BezierCurve:
+			ShapeState = MWShapeState::BezierCurve;
+			ShowMessageBox(L"Info", L"Create 3 point Bezier Curve");
+
+			break;
+			
 		}
-
 		break;
-
 	}
 	case WM_DESTROY:
 		PostQuitMessage(0);

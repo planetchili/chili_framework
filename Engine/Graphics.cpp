@@ -389,10 +389,11 @@ void Graphics::DrawCircle(double _ox, double _oy, double _outer_radius, const CR
 
 	// Clip the bounding rectangle to screen boundaries and translate 
 	// back to -radius ( left_clip, top_clip ), +radius ( right_clip, bottom_clip )
+
 	const auto left_clip = std::max(0.0, -left) - _outer_radius;
 	const auto top_clip = std::max(0.0, -top) - _outer_radius;
-	const auto right_clip = std::min(ScreenWidth - right, outer_double) - _outer_radius;
-	const auto bottom_clip = std::min(ScreenHeight - bottom, outer_double) - _outer_radius;
+	const auto right_clip = std::min(ScreenWidth - left -1.0, outer_double) - _outer_radius;
+	const auto bottom_clip = std::min(ScreenHeight - top - 1.0, outer_double) - _outer_radius;
 
 	// Loop through clipped bounding rectangle, from top to bottom,
 	// left to right skipping any pixels contained in the _clip Rect passed
@@ -416,12 +417,30 @@ void Graphics::DrawCircle(double _ox, double _oy, double _outer_radius, const CR
 	}
 }
 
+void Graphics::DrawBezier(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R, Color color) noexcept
+{
+	const auto range0 = (Q - P);
+	const auto range1 = (R - Q);
+	const auto range2 = (range1 - range0);
+	const auto doubleRange0 = (range0 * 2.0);
 
+	constexpr auto step = .1;
+	auto prev = P;
+	for (double t = step; t <= 1.0; t += step)
+	{
+		const auto p3 = P + (doubleRange0 + (range2 * t)) * t;
+
+		DrawLine(prev, p3, color);
+		prev = p3;
+	}
+}
+
+/*
 void Graphics::DrawCircle(double Ox, double Oy, double R, Color& c)
 {
 	//issue with continuity drawing for large circles
 	
-	/*for (double theta = 0; theta < 360; theta += 0.2)
+	for (double theta = 0; theta < 360; theta += 0.2)
 	{
 		double x = (double)(R * std::cos(PI_D*theta / 180));
 		double y = (double)(R * std::sin(PI_D*theta / 180));
@@ -432,7 +451,7 @@ void Graphics::DrawCircle(double Ox, double Oy, double R, Color& c)
 		if (xi >= 0 && xi < ScreenWidth && yi >= 0 && yi < ScreenHeight)
 			PutPixel(xi, yi, c);
 	}
-	*/
+	
 
 
 	double x = 0.7071067811865475;
@@ -475,11 +494,11 @@ void Graphics::DrawCircle(double Ox, double Oy, double R, Color& c)
 		       
 	
 }
+*/
 
 
 
-
-
+/*
 void Graphics::DrawArc(double Ox, double Oy, double R , double theta_begin, double theta_end, Color c)
 {
 
@@ -505,7 +524,7 @@ void Graphics::DrawArc(double Ox, double Oy, double R , double theta_begin, doub
 		}
 	}
 }
-
+*/
 
 
 

@@ -23,7 +23,6 @@
 #include "Mouse.h"
 #include "CordinateTrasformerh.h"
 #include "ChiliUtil.h"
-
 #include <functional>
 
 Game::Game(MainWindow& wnd)
@@ -31,8 +30,10 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	ct(gfx),
-	cam(ct)//,
+	cam(ct)
+	//,
 	//camCtrl(wnd.mouse,cam)
+
 {	
 }
 
@@ -206,6 +207,64 @@ void Game::ProcesInput()
 		}
 		break;
 	}
+
+	case MainWindow::MWShapeState::BezierCurve:
+	{
+		while (!wnd.mouse.IsEmpty())
+		{
+			const auto e = wnd.mouse.Read();
+
+			if (e.GetType() == Mouse::Event::Type::LPress)
+			{
+				if (input == 0)
+				{
+					first_point_engagement = true;
+					P = cam.TrasformPoint(wnd.mouse.GetPos());
+				}
+
+				if (input == 1)
+				{
+					second_point_engagement = true;
+					R = cam.TrasformPoint(wnd.mouse.GetPos());
+				}
+
+				if (input == 2)
+				{
+					Q = cam.TrasformPoint(wnd.mouse.GetPos());
+					Shapes.push_back(std::make_unique<JC_Bezier>(P, Q, R));
+				}
+
+				input++;
+
+				if (input >= 3)
+				{
+					input = 0;
+					second_point_engagement = false;
+				}
+			}
+			if (e.GetType() == Mouse::Event::Type::RPress)
+			{
+				input = 0;
+				first_point_engagement = false;
+				second_point_engagement = false;
+			}
+		}
+		//Draw bezier from two points when left mouse button is pressed for the first time
+		if (first_point_engagement)
+		{
+			R = cam.TrasformPoint(wnd.mouse.GetPos());
+			cam.DrawLine(P,R, Colors::Red);
+		}
+		if (second_point_engagement)
+		{
+			first_point_engagement = false;
+			Q = cam.TrasformPoint(wnd.mouse.GetPos());
+			
+			cam.DrawBezier(P,Q, R ,Colors::Red);
+		
+		}
+		break;
+	}
 	case MainWindow::MWShapeState::Null:
 	{
 		while (!wnd.mouse.IsEmpty())
@@ -283,6 +342,5 @@ void Game::ComposeFrame()
 		c.get()->Draw(cam);
 	}
 
-	//cam.DrawClosedPolyline(Star::Make(200, 75.0,7), Colors::Red);
 }
 

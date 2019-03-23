@@ -105,6 +105,15 @@
     <ClInclude Include="Resource.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="Drawableh.h">
+      <Filter>Header Files\CameraPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Chili_Rectangle.h">
+      <Filter>Header Files\MathLib</Filter>
+    </ClInclude>
+    <ClInclude Include="JC_Bezier.h">
+      <Filter>Header Files\Geometric shapes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DXErr.cpp">

@@ -30,6 +30,22 @@ public:
 		gfx.DrawLine(P_in, Q_in, Color_in);
 	}
 
+	void DrawBezier(JC_Point2d P_in, JC_Point2d Q_in, JC_Point2d R_in, Color Color_in)
+	{
+		JC_Vector2d offset = { double(Graphics::ScreenWidth / 2),double(Graphics::ScreenHeight / 2) };
+
+		P_in.y *= -1;
+		Q_in.y *= -1;
+		R_in.y *= -1;
+
+		P_in += offset;
+		Q_in += offset;
+		R_in += offset;
+
+		gfx.DrawBezier(P_in, Q_in, R_in, Color_in);
+	}
+
+
 	void DrawCircle(JC_Point2d pos, double radius, int t, Color c)
 	{
 		JC_Vector2d offset = { double(Graphics::ScreenWidth / 2),double(Graphics::ScreenHeight / 2) };

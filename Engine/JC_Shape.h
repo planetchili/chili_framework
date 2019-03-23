@@ -7,8 +7,8 @@ class JC_Shape
 public:
 
 
-	void virtual Draw(Camera cam_in) = 0;
-	bool virtual IsInRange(const JC_Point2d& mouse_in) = 0;
+	void virtual Draw(Camera cam) = 0;
+	bool virtual IsInRange(const JC_Point2d& M) = 0;
 	std::wstring virtual MakeDescription() = 0;
 
 	void UpdateColor()

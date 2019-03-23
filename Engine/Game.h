@@ -33,6 +33,7 @@
 #include "JC_Math.h"
 #include "JC_Circle.h"
 #include "JC_Line.h"
+#include "JC_Bezier.h"
 #include "JC_Shape.h"
 #include "Star.h"
 

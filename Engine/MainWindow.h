@@ -56,6 +56,7 @@ public:
 		TwoPointCircle,
 		ThreePointCircle,
 		LineSegment,
+		BezierCurve,
 		Count
 	};
 	MWShapeState ShapeState = MWShapeState::Null;

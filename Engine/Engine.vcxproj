@@ -140,6 +140,7 @@
     <ClInclude Include="ChiliException.h" />
     <ClInclude Include="ChiliWin.h" />
     <ClInclude Include="Drawableh.h" />
+    <ClInclude Include="Bezier.h" />
     <ClInclude Include="JC_Bezier.h" />
     <ClInclude Include="JC_Circle.h" />
     <ClInclude Include="Colors.h" />

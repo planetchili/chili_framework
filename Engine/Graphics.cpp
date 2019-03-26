@@ -428,10 +428,10 @@ void Graphics::DrawBezier(const JC_Point2d & P, const JC_Point2d & Q, const JC_P
 	auto prev = P;
 	for (double t = step; t <= 1.0; t += step)
 	{
-		const auto p3 = P + (doubleRange0 + (range2 * t)) * t;
+		const auto S = P + (doubleRange0 + (range2 * t)) * t;
 
-		DrawLine(prev, p3, color);
-		prev = p3;
+		DrawLine(prev, S, color);
+		prev = S;
 	}
 }
 

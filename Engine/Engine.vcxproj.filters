@@ -34,11 +34,11 @@
     <Filter Include="Source Files\MathLib">
       <UniqueIdentifier>{85608aef-b314-4019-9eef-58cd5dee7256}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Chili util">
+      <UniqueIdentifier>{b309b936-8445-487c-909c-da4141e3b864}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChiliWin.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Colors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -60,9 +60,6 @@
     <ClInclude Include="Mouse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ChiliException.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -74,9 +71,6 @@
     </ClInclude>
     <ClInclude Include="Star.h">
       <Filter>Header Files\Geometric shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="ChiliUtil.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CordinateTrasformerh.h">
       <Filter>Header Files\CameraPipeline</Filter>
@@ -108,11 +102,23 @@
     <ClInclude Include="Drawableh.h">
       <Filter>Header Files\CameraPipeline</Filter>
     </ClInclude>
-    <ClInclude Include="Chili_Rectangle.h">
-      <Filter>Header Files\MathLib</Filter>
-    </ClInclude>
     <ClInclude Include="JC_Bezier.h">
       <Filter>Header Files\Geometric shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Bezier.h">
+      <Filter>Header Files\Geometric shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="ChiliException.h">
+      <Filter>Header Files\Chili util</Filter>
+    </ClInclude>
+    <ClInclude Include="ChiliUtil.h">
+      <Filter>Header Files\Chili util</Filter>
+    </ClInclude>
+    <ClInclude Include="ChiliWin.h">
+      <Filter>Header Files\Chili util</Filter>
+    </ClInclude>
+    <ClInclude Include="Chili_Rectangle.h">
+      <Filter>Header Files\Chili util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -43,7 +43,7 @@ protected:
 	{}
 
 	Color Base_Color;
-	static constexpr double halfwidth = 10.0;
+	static constexpr double halfwidth = 20.0;
 
 private:
 	bool selectedflag = false;

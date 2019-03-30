@@ -1,6 +1,4 @@
 #include "JC_Circle.h"
-#include "JC_Math.h"
-#include <math.h>
 
 JC_Circle::JC_Circle(const JC_Point2d& P_in, const JC_Point2d& Q_in, Color color_in)
 	:

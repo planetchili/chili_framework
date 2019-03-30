@@ -56,6 +56,7 @@ public:
 		TwoPointCircle,
 		ThreePointCircle,
 		LineSegment,
+		PoliLine,
 		BezierCurve,
 		Count
 	};

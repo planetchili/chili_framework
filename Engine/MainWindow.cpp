@@ -156,7 +156,10 @@ LRESULT MainWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			AppendMenu(hSubMenu, MF_SEPARATOR, NULL, NULL);
 			AppendMenu(hSubMenu, MF_STRING, ID_SHAPES_LineSegment, L"&Line Segment");
 			AppendMenu(hSubMenu, MF_SEPARATOR, NULL, NULL);
-			AppendMenu(hSubMenu, MF_STRING, ID_SHAPES_BezierCurve, L"&3Point Bezier Curve");
+			AppendMenu(hSubMenu, MF_STRING, ID_SHAPES_PoliLine, L"&PoliLine");
+			AppendMenu(hSubMenu, MF_SEPARATOR, NULL, NULL);
+			AppendMenu(hSubMenu, MF_STRING, ID_SHAPES_BezierCurve, L"&Bezier Curve");
+			
 		}
 
 	
@@ -189,6 +192,12 @@ LRESULT MainWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case ID_SHAPES_LineSegment:
 			ShapeState = MWShapeState::LineSegment;
 			ShowMessageBox(L"Info", L"Create line Segment");
+
+			break;
+
+		case ID_SHAPES_PoliLine:
+			ShapeState = MWShapeState::PoliLine;
+			ShowMessageBox(L"Info", L" Create PoliLine");
 
 			break;
 

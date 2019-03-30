@@ -207,7 +207,63 @@ void Game::ProcesInput()
 		}
 		break;
 	}
+	case MainWindow::MWShapeState::PoliLine:
+	{
+		while (!wnd.mouse.IsEmpty())
+		{
+			const auto e = wnd.mouse.Read();
 
+			if (e.GetType() == Mouse::Event::Type::LPress)
+			{
+				if(input==0)
+					first_point_engagement = true;
+				if (input>0)
+				{
+					first_point_engagement = false;
+					second_point_engagement = true;
+				}
+
+				P = cam.TrasformPoint(wnd.mouse.GetPos());
+				point_data.push_back(P);
+				input++;
+
+				
+			}
+			if (second_point_engagement)
+			{
+				if (e.GetType() == Mouse::Event::Type::RPress)
+				{
+
+					if (point_data.size() > 1)
+					{
+						Shapes.push_back(std::make_unique<JC_Poliline>(point_data));
+						input = 0;
+						first_point_engagement = false;
+						second_point_engagement = false;
+						point_data.clear();
+
+					}
+
+				}
+
+			}
+		
+		}
+		if (first_point_engagement)
+		{
+			Q = cam.TrasformPoint(wnd.mouse.GetPos());
+			cam.DrawLine(P, Q, Colors::Red);
+		}
+		if (second_point_engagement)
+		{
+			cam.DrawPoliLine(point_data, Colors::Red);
+			Q = cam.TrasformPoint(wnd.mouse.GetPos());
+			cam.DrawLine(P, Q, Colors::Red);
+
+		}
+		break;
+
+	}
 	case MainWindow::MWShapeState::BezierCurve:
 	{
 		while (!wnd.mouse.IsEmpty())
@@ -231,7 +287,7 @@ void Game::ProcesInput()
 				if (input == 2)
 				{
 					Q = cam.TrasformPoint(wnd.mouse.GetPos());
-					Shapes.push_back(std::make_unique<JC_Bezier>(P, Q, R));
+					Shapes.push_back(std::make_unique<ALIB_Bezier>(P, Q, R));
 				}
 
 				input++;

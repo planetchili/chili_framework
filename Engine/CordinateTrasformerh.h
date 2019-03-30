@@ -30,6 +30,21 @@ public:
 		gfx.DrawLine(P_in, Q_in, Color_in);
 	}
 
+
+	void DrawPoliLine(std::vector<JC_Point2d> point_data, Color Color_in)
+	{
+		JC_Vector2d offset = { double(Graphics::ScreenWidth / 2),double(Graphics::ScreenHeight / 2) };
+
+		for (auto &P : point_data)
+		{
+			P.y *= -1;
+			P += offset;
+		}
+
+		gfx.DrawPoliLine(point_data, Color_in);
+	}
+
+
 	void DrawBezier(JC_Point2d P_in, JC_Point2d Q_in, JC_Point2d R_in, Color Color_in)
 	{
 		JC_Vector2d offset = { double(Graphics::ScreenWidth / 2),double(Graphics::ScreenHeight / 2) };
@@ -43,6 +58,20 @@ public:
 		R_in += offset;
 
 		gfx.DrawBezier(P_in, Q_in, R_in, Color_in);
+	}
+
+
+	void DrawMPBezier(std::vector<JC_Point2d> point_data, Color Color_in)
+	{
+		JC_Vector2d offset = { double(Graphics::ScreenWidth / 2),double(Graphics::ScreenHeight / 2) };
+
+		for (auto &P : point_data)
+		{
+			P.y *= -1;
+			P += offset;
+		}
+		
+		gfx.DrawBezier(point_data, Color_in);
 	}
 
 

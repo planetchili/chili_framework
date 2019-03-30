@@ -46,7 +46,12 @@ constexpr double PI_D = 3.1415926535897932;
 		return -1 / m;
 	}
 
+
+	int CalcFactorial(int n);
 	
+	int Binomial_Make(int N, int K);
+
+
 
 	// We have couple of types of centre calculation:
 	// When we can Determine slope of both lines, then we proces points in seen order.
@@ -63,17 +68,12 @@ constexpr double PI_D = 3.1415926535897932;
 	// First two points create line third we are exsamining
 	JC_Point2d ClosesPoint (const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R);
 
-	template <typename T> JC_Point2<T> TrasformPoint(JC_Point2<T> input)
-	{
-		//fixes disconection between screen and math coordinates
-		input.x += (T)(Camera_Pos.x);
-		input.y -= (T)(Camera_Pos.y);
 
-		JC_Vector2<T> offset = { (T)(Graphics::ScreenWidth / 2), (T)(Graphics::ScreenHeight / 2) };
-		input -= offset;
-		input.y *= -1;
-		return input;
-	}
 
 
 	bool IsBetween2Points(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R);
+
+	
+	
+
+

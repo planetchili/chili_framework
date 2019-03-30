@@ -2,13 +2,9 @@
 
 
 #include "JC_Shape.h"
-#include "JC_Math.h"
 
 
-#include "JC_Vector2.h"
-#include "Graphics.h"
 
-#include "Camera.h"
 
 
 class JC_Circle : public JC_Shape

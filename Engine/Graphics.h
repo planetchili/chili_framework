@@ -74,7 +74,10 @@ public:
 	}
 	void DrawLine(double x1, double y1, double x2, double y2, Color c);
 
+	void DrawPoliLine(std::vector<JC_Point2d> point_data, Color Color_in);
+
 	/***** END Draw Line Functions ****/
+
 
 
 	/***** Start Draw Circle Functions *****/
@@ -85,17 +88,21 @@ public:
 		RectD Bound{ (double)ScreenWidth ,0,(double)ScreenHeight,0 };
 		DrawCircle((double)vO.x, (double)vO.y, (double)R, Bound, t, c);
 	}
-	 
+	void DrawCircle(double _ox, double _oy, double _outer_radius, const CRectangle<double>& _clip, int t, Color _color) noexcept;
 
 	//void DrawCircle(double Ox, double Oy, double R, Color& c);
 
-	void DrawBezier(const JC_Point2d & p0, const JC_Point2d & p1, const JC_Point2d & p2, Color color) noexcept;
-
-	void DrawCircle(double _ox, double _oy, double _outer_radius, const CRectangle<double>& _clip, int t, Color _color) noexcept;
-
 	/***** END Draw Circle Functions ****/
 
+
+
+
+	void DrawBezier(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R, Color color) noexcept;
+	void DrawBezier(const std::vector<JC_Point2d> point_data, Color color) noexcept;
 	
+	
+
+
 	/***** Start Draw Arc Functions *****/
 	
 	//void DrawArc(double Ox, double Oy, double R, double theta_begin, double theta_end, Color c);

@@ -373,6 +373,28 @@ void Graphics::DrawLine(double x1, double y1, double x2, double y2, Color c)
 	}
 }
 
+void Graphics::DrawPoliLine(std::vector<JC_Point2d> point_data, Color Color_in)
+{
+	JC_Point2d Current;
+	JC_Point2d Previous;
+
+	
+	if (point_data.size() > 1)
+	{
+		for (int i = 1; i < point_data.size(); i++)
+		{
+			Current = point_data[i];
+			Previous = point_data[i - 1];
+			DrawLine(Previous, Current, Color_in);
+		}
+	}
+	else
+	{
+		
+	}
+	
+}
+
 
 void Graphics::DrawCircle(double _ox, double _oy, double _outer_radius, const CRectangle<double>& _clip, int t,Color C) noexcept
 {// For outline thickness of 1
@@ -417,9 +439,29 @@ void Graphics::DrawCircle(double _ox, double _oy, double _outer_radius, const CR
 	}
 }
 
+
 void Graphics::DrawBezier(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R, Color color) noexcept
 {
 	const auto range0 = (Q - P);
+	const auto range1 = (R - Q);
+	const auto range2 = (range1 - range0);
+	const auto doubleRange0 = (range0 * 2.0);
+
+	constexpr auto step = .01;
+	auto prev = P;
+	for (double t = step; t <= 1.0; t += step)
+	{
+		const auto S = P + (doubleRange0 + (range2 * t)) * t;
+
+		DrawLine(prev, S, color);
+		prev = S;
+	}
+}
+
+
+void Graphics::DrawBezier(std::vector<JC_Point2d> point_data, Color color) noexcept
+{
+/*	const auto range0 = (Q - P);
 	const auto range1 = (R - Q);
 	const auto range2 = (range1 - range0);
 	const auto doubleRange0 = (range0 * 2.0);
@@ -433,7 +475,9 @@ void Graphics::DrawBezier(const JC_Point2d & P, const JC_Point2d & Q, const JC_P
 		DrawLine(prev, S, color);
 		prev = S;
 	}
+*/
 }
+
 
 /*
 void Graphics::DrawCircle(double Ox, double Oy, double R, Color& c)

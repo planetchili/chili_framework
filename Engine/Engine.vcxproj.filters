@@ -25,9 +25,6 @@
     <Filter Include="Header Files\CameraPipeline">
       <UniqueIdentifier>{991129b5-249e-4da4-bad5-8426e98a3a3c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Geometric shapes">
-      <UniqueIdentifier>{b9b4aa28-3d6d-4412-b8b4-6ff6c3af9881}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\MathLib">
       <UniqueIdentifier>{ab08727f-c0bc-4aac-a38c-7a209aa66dcb}</UniqueIdentifier>
     </Filter>
@@ -36,6 +33,9 @@
     </Filter>
     <Filter Include="Header Files\Chili util">
       <UniqueIdentifier>{b309b936-8445-487c-909c-da4141e3b864}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Geometric shapes">
+      <UniqueIdentifier>{b9b4aa28-3d6d-4412-b8b4-6ff6c3af9881}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -99,14 +99,14 @@
     <ClInclude Include="Resource.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="Drawableh.h">
-      <Filter>Header Files\CameraPipeline</Filter>
-    </ClInclude>
-    <ClInclude Include="JC_Bezier.h">
+    <ClInclude Include="ALIB_Bezier.h">
       <Filter>Header Files\Geometric shapes</Filter>
     </ClInclude>
-    <ClInclude Include="Bezier.h">
+    <ClInclude Include="JC_Poli.h">
       <Filter>Header Files\Geometric shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Chili_Rectangle.h">
+      <Filter>Header Files\Chili util</Filter>
     </ClInclude>
     <ClInclude Include="ChiliException.h">
       <Filter>Header Files\Chili util</Filter>
@@ -115,9 +115,6 @@
       <Filter>Header Files\Chili util</Filter>
     </ClInclude>
     <ClInclude Include="ChiliWin.h">
-      <Filter>Header Files\Chili util</Filter>
-    </ClInclude>
-    <ClInclude Include="Chili_Rectangle.h">
       <Filter>Header Files\Chili util</Filter>
     </ClInclude>
   </ItemGroup>
@@ -154,6 +151,9 @@
     </ClCompile>
     <ClCompile Include="JC_Math.cpp">
       <Filter>Source Files\MathLib</Filter>
+    </ClCompile>
+    <ClCompile Include="JC_MP_Bezier.h">
+      <Filter>Header Files\Geometric shapes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

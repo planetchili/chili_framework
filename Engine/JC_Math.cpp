@@ -1,5 +1,23 @@
 #include "JC_Math.h"
 
+
+int CalcFactorial(int n)
+{
+	if (n > 1)
+	return n * CalcFactorial(n - 1);
+	else
+	return 1;
+}
+
+int Binomial_Make(int N, int K)
+{
+	int f_N = CalcFactorial(N);
+	int f_K = CalcFactorial(K);
+	int f_NK = CalcFactorial(N - K);
+
+	return (f_N / (f_K * f_NK));
+}
+
 JC_Point2d CalculateCentre(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R)
 {
 	//when we have 2 flat lines in order under right angle
@@ -83,7 +101,6 @@ JC_Point2d ClosesPoint(const JC_Point2d & P, const JC_Point2d & Q, const JC_Poin
 
 	double c = LineSlopeBetween2Points(P, Q);
 
-	//assert(c == 0); 
 
 	double a = InverceLineSlope(c);
 

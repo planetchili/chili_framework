@@ -3,10 +3,10 @@
 #include "JC_Shape.h"
 #include "Camera.h"
 
-class JC_Bezier : public JC_Shape
+class ALIB_Bezier : public JC_Shape
 {
 public:
-	JC_Bezier(JC_Point2d P, JC_Point2d Q, JC_Point2d R,Color color_in = Colors::White)
+	ALIB_Bezier(JC_Point2d P, JC_Point2d Q, JC_Point2d R,Color color_in = Colors::White)
 		:
 		P(P),
 		Q(Q),

@@ -226,6 +226,8 @@ template<class T> JC_Vector2<T> normalize(const JC_Vector2<T>& v)
 
 
 
+
+
 template<class T> T GetDistanceToSq(const JC_Point2<T>& v0, const JC_Point2<T>& v1)
 {
 	return ((v1.x - v0.x)*(v1.x - v0.x)+ (v1.y - v0.y)*(v1.y - v0.y));

@@ -25,7 +25,7 @@ public:
 		{
 			Current = PointData[i];
 			Previous = PointData[i - 1];
-			C = ClosesPoint(Previous, Current, M);
+			C = ClosestPoint(Previous, Current, M);
 
 			if (IsBetween2Points(Previous, Current, C))
 			{
@@ -33,7 +33,6 @@ public:
 				{
 					return true;
 				}
-				return false;
 			}
 		}
 		return false;

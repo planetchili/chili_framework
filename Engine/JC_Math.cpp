@@ -95,27 +95,26 @@ JC_Point2d CalculateSpecificCentre(const JC_Point2d & P, const JC_Point2d & Q, c
 
 }
 
-JC_Point2d ClosesPoint(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R)
+JC_Point2d ClosestPoint(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R)
 {
+	const double a = P.y - Q.y;
+	const double b = Q.x - P.x;
+	const double c = P.x * Q.y - Q.x * P.y;
+
+	JC_Point2d C;
+
+	C.x = (b * (b * R.x - (a * R.y)) - (a * c)) / (Square(a) + Square(b));
+	C.y = (a * ((-b * R.x )+ ( a * R.y)) - (b * c)) / (Square(a) + Square(b));
+
+
+	return C;
+}
 	
 
-	double c = LineSlopeBetween2Points(P, Q);
-
-
-	double a = InverceLineSlope(c);
-
-	double b = R.y - (a * R.x);
-	double d = Q.y - (c * Q.x);
-
-	double x = ((a*R.x) + b - d) / c; 
-	double y = (a * x) + b;
-
-	return JC_Point2d(x, y);
-}
 
 bool IsBetween2Points(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R)
 {
-	JC_Point2d C = ClosesPoint(P, Q, R);
+	JC_Point2d C = ClosestPoint(P, Q, R);
 
 	if ((GetDistanceTo(P, C) < GetDistanceTo(P, Q)) && (GetDistanceTo(Q, C) < GetDistanceTo(P, Q)))
 		return true;

@@ -19,7 +19,7 @@ public:
 	}
 	bool IsInRange(const JC_Point2d& M) override
 	{
-		JC_Point2d C = ClosesPoint(P, Q, M);
+		JC_Point2d C = ClosestPoint(P, Q, M);
 
 		if (IsBetween2Points(P, Q, C))
 		{

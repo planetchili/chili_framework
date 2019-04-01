@@ -2,7 +2,7 @@
 
 #include "JC_Vector2.h"
 #include <assert.h>
-
+#include <algorithm>
 
 constexpr double PI_F = 3.1415926536;
 constexpr double PI_D = 3.1415926535897932;
@@ -66,7 +66,7 @@ constexpr double PI_D = 3.1415926535897932;
 	JC_Point2d CalculateSpecificCentre(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R);
 
 	// First two points create line third we are exsamining
-	JC_Point2d ClosesPoint (const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R);
+	JC_Point2d ClosestPoint(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R);
 
 
 

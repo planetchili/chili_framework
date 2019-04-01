@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FFCA512B-49FC-4FC8-8A73-C4F87D322FF2}</ProjectGuid>
     <RootNamespace>Engine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -80,6 +80,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MinimalRebuild>false</MinimalRebuild>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link />
   </ItemDefinitionGroup>
@@ -94,6 +95,7 @@
       <CallingConvention>VectorCall</CallingConvention>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -110,6 +112,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PreprocessorDefinitions>NDEBUG;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -129,6 +132,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PreprocessorDefinitions>NDEBUG;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -140,6 +144,8 @@
     <ClInclude Include="ChiliException.h" />
     <ClInclude Include="ChiliWin.h" />
     <ClInclude Include="ALIB_Bezier.h" />
+    <ClInclude Include="Font.h" />
+    <ClInclude Include="GDIPlusManager.h" />
     <ClInclude Include="JC_Circle.h" />
     <ClInclude Include="Colors.h" />
     <ClInclude Include="COMInitializer.h" />
@@ -155,15 +161,18 @@
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="MouseCameraControler.h" />
-    <ClInclude Include="Chili_Rectangle.h" />
+    <ClInclude Include="ChiliRectangle.h" />
     <ClInclude Include="JC_Poli.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="JC_Shape.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundEffect.h" />
+    <ClInclude Include="SpriteEffect.h" />
     <ClInclude Include="Star.h" />
+    <ClInclude Include="Surface.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GDIPlusManager.cpp" />
     <ClCompile Include="JC_Circle.cpp" />
     <ClCompile Include="COMInitializer.cpp" />
     <ClCompile Include="DXErr.cpp" />
@@ -176,6 +185,8 @@
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="Font.cpp" />
+    <ClCompile Include="Surface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FramebufferPS.hlsl">

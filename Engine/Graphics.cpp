@@ -26,7 +26,7 @@
 #include <string>
 #include <array>
 
-#include "Chili_Rectangle.h"
+#include "ChiliRectangle.h"
 
 
 // Ignore the intellisense error "cannot open source file" for .shh files.
@@ -36,6 +36,21 @@ namespace FramebufferShaders
 #include "FramebufferPS.shh"
 #include "FramebufferVS.shh"
 }
+
+Color Graphics::GetPixel(int x, int y) const
+{
+	assert(x >= 0);
+	assert(x < int(Graphics::ScreenWidth));
+	assert(y >= 0);
+	assert(y < int(Graphics::ScreenHeight));
+	return pSysBuffer[Graphics::ScreenWidth * y + x];
+}
+
+RectI Graphics::GetScreenRect()
+{
+	return{ 0,ScreenWidth,0,ScreenHeight };
+}
+
 
 #pragma comment( lib,"d3d11.lib" )
 
@@ -203,6 +218,7 @@ Graphics::Graphics( HWNDKey& key )
 	{
 		throw CHILI_GFX_EXCEPTION( hr,L"Creating vertex buffer" );
 	}
+
 
 	
 	//////////////////////////////////////////

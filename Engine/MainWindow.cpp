@@ -147,11 +147,22 @@ LRESULT MainWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		}
 
 		hSubMenu = CreatePopupMenu();
-		
+
 		AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT_PTR)hSubMenu, L"&Shapes");
 		{
 			AppendMenu(hSubMenu, MF_STRING, ID_SHAPES_TwoPointCircle, L"&Circle from 2 points");
+			AppendMenu(hSubMenu, MF_SEPARATOR, NULL, NULL);
+			AppendMenu(hSubMenu, MF_STRING, ID_SHAPES_ThreePointCircle, L"&Circle from 3 points");
+			AppendMenu(hSubMenu, MF_SEPARATOR, NULL, NULL);
+			AppendMenu(hSubMenu, MF_STRING, ID_SHAPES_LineSegment, L"&Line Segment");
+			AppendMenu(hSubMenu, MF_SEPARATOR, NULL, NULL);
+			AppendMenu(hSubMenu, MF_STRING, ID_SHAPES_PoliLine, L"&PoliLine");
+			AppendMenu(hSubMenu, MF_SEPARATOR, NULL, NULL);
+			AppendMenu(hSubMenu, MF_STRING, ID_SHAPES_BezierCurve, L"&Bezier Curve");
+			
 		}
+
+	
 
 		SetMenu(hWnd, hMenu);
 
@@ -162,17 +173,42 @@ LRESULT MainWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		switch (LOWORD(wParam))
 		{
 		case ID_FILE_EXIT:
+
 			PostMessage(hWnd, WM_CLOSE, 0, 0);
 			break;
 		case ID_SHAPES_TwoPointCircle:
-			shape = Shape::TwoPointCircle ;
-			ShowMessageBox(L"Info",L"Create circle form 2 points");
+			ShapeState = MWShapeState::TwoPointCircle;
+			ShowMessageBox(L"Info", L"Create circle form 2 points");
 
 			break;
+
+		case ID_SHAPES_ThreePointCircle:
+			ShapeState = MWShapeState::ThreePointCircle;
+			ShowMessageBox(L"Info", L"Create circle form 3 points");
+
+			break;
+
+
+		case ID_SHAPES_LineSegment:
+			ShapeState = MWShapeState::LineSegment;
+			ShowMessageBox(L"Info", L"Create line Segment");
+
+			break;
+
+		case ID_SHAPES_PoliLine:
+			ShapeState = MWShapeState::PoliLine;
+			ShowMessageBox(L"Info", L" Create PoliLine");
+
+			break;
+
+		case ID_SHAPES_BezierCurve:
+			ShapeState = MWShapeState::BezierCurve;
+			ShowMessageBox(L"Info", L"Create 3 point Bezier Curve");
+
+			break;
+			
 		}
-
 		break;
-
 	}
 	case WM_DESTROY:
 		PostQuitMessage(0);
@@ -225,6 +261,7 @@ LRESULT MainWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				mouse.OnMouseLeave();
 				mouse.OnLeftReleased(pt.x, pt.y);
 				mouse.OnRightReleased(pt.x, pt.y);
+				mouse.OnWheelReleased(pt.x, pt.y);
 			}
 		}
 		break;
@@ -265,6 +302,18 @@ LRESULT MainWindow::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		{
 			mouse.OnWheelDown(pt.x, pt.y);
 		}
+		break;
+	}
+	case WM_MBUTTONDOWN:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnWheelPressed(pt.x, pt.y);
+		break;
+	}
+	case WM_MBUTTONUP:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnWheelReleased(pt.x, pt.y);
 		break;
 	}
 	// ************ END MOUSE MESSAGES ************ //

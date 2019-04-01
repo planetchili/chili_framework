@@ -20,14 +20,22 @@
  ******************************************************************************************/
 #pragma once
 
+#include <memory>
+
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
 #include "CordinateTrasformerh.h"
+#include "Camera.h"
+#include "MouseCameraControler.h"
 
+#include "JC_Shape.h"
 #include "JC_Vector2.h"
-#include "Circle.h"
-#include "Star.h"
+#include "JC_Math.h"
+#include "JC_Circle.h"
+#include "JC_Line.h"
+#include "JC_Poli.h"
+#include "ALIB_Bezier.h"
 
 
 class Game
@@ -56,13 +64,29 @@ private:
 	/********************************/
 	/*  User Variables              */
 	CoordinateTrasformer ct;
-	std::vector<Circle> circles;
+	Camera cam;
+	//MouseCameraController camCtrl;
+	std::vector<std::unique_ptr<JC_Shape>> Shapes;
 	unsigned short input = 0;
 
-	bool engaged = false;
-
+	bool first_point_engagement = false;
+	bool second_point_engagement = false;
+	   
 	JC_Point2d P, Q, R;
-	JC_Point2i T;
+	std::vector<JC_Point2d> point_data;
+	
 	/********************************/
 
 };
+
+
+//enum class GameCreationState
+	//{
+	//	Null,
+	//	FirstPoint,
+	//	SecondPoint,
+	//	ThirdPoint,
+	//	NextPoint,
+	//	Count
+	//};
+	//GameCreationState CreoState = GameCreationState::Null;

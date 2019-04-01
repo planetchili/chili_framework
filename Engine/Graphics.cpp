@@ -26,6 +26,8 @@
 #include <string>
 #include <array>
 
+#include "ChiliRectangle.h"
+
 
 // Ignore the intellisense error "cannot open source file" for .shh files.
 // They will be created during the build sequence before the preprocessor runs.
@@ -34,6 +36,21 @@ namespace FramebufferShaders
 #include "FramebufferPS.shh"
 #include "FramebufferVS.shh"
 }
+
+Color Graphics::GetPixel(int x, int y) const
+{
+	assert(x >= 0);
+	assert(x < int(Graphics::ScreenWidth));
+	assert(y >= 0);
+	assert(y < int(Graphics::ScreenHeight));
+	return pSysBuffer[Graphics::ScreenWidth * y + x];
+}
+
+RectI Graphics::GetScreenRect()
+{
+	return{ 0,ScreenWidth,0,ScreenHeight };
+}
+
 
 #pragma comment( lib,"d3d11.lib" )
 
@@ -202,6 +219,7 @@ Graphics::Graphics( HWNDKey& key )
 		throw CHILI_GFX_EXCEPTION( hr,L"Creating vertex buffer" );
 	}
 
+
 	
 	//////////////////////////////////////////
 	// create input layout for fullscreen quad
@@ -239,35 +257,6 @@ Graphics::Graphics( HWNDKey& key )
 	// allocate memory for sysbuffer (16-byte aligned for faster access)
 	pSysBuffer = reinterpret_cast<Color*>( 
 		_aligned_malloc( sizeof( Color ) * Graphics::ScreenWidth * Graphics::ScreenHeight,16u ) );
-}
-
-void Graphics::DrawFlatEllipse(float Ox, float Oy, float Rx, float Ry, Color c)
-{
-	if (Ry==0.0)
-	{
-		DrawLine(Ox - Rx, Oy, Ox + Rx, Oy, c);
-	}
-	else if (Rx==0.0)
-	{
-
-		DrawLine(Ox, Oy - Ry, Ox, Oy + Ry, c);
-	}
-	else if (Rx == 0.0 && Ry == 0.0)
-	{
-		PutPixel((int)(Ox), (int)(Oy), c);
-	}
-	else
-	{
-		for (double theta = 0; theta < 360; theta += 0.2)
-		{
-			float x = (float)(Rx * std::cos(PI_F*theta / 180));
-			float y = (float)(Ry * std::sin(PI_F*theta / 180));
-
-			PutPixel((int)(Ox), (int)(Oy), c);
-			PutPixel((int)(x + 0.5f + Ox), (int)(y + 0.5f + Oy), c);
-		}
-	}
-
 }
 
 Graphics::~Graphics()
@@ -347,15 +336,7 @@ void Graphics::PutPixel( int x,int y,Color c )
 }
 
 
-void Graphics::DrawClosedPolyline(const std::vector<JC_Point2d>& verts, Color c)
-{
-	for (auto i = verts.begin(); i != std::prev(verts.end()); i++)
-	{
-		DrawLine(*i, *std::next(i), c);
-	}
-	DrawLine(verts.back(), verts.front(), c);
-}
-
+// line with per pixel clipping
 void Graphics::DrawLine(double x1, double y1, double x2, double y2, Color c)
 {
 	const double dx = x2 - x1;
@@ -363,6 +344,7 @@ void Graphics::DrawLine(double x1, double y1, double x2, double y2, Color c)
 
 	if (dx == 0.0f && dy == 0.0f)
 	{
+		if (x1 >= 0 && x1 < ScreenWidth && y1 >= 0 && y1  < ScreenHeight)
 		PutPixel((int)x1, (int)y1, Colors::Red);
 	}
 	else if (abs(dx)>abs(dy))
@@ -378,8 +360,12 @@ void Graphics::DrawLine(double x1, double y1, double x2, double y2, Color c)
 
 		for (double x = x1; x <= x2; x++)
 		{
+
 			double y = m * x + b;
-			PutPixel((int)(x + 0.5f), (int)(y + 0.5f), c);
+			// issue! why there is need for substraction of one ?
+			if (x >= 0 && x < ScreenWidth-1 && y >= 0 && y  < ScreenHeight-1)
+				PutPixel((int)(x + 0.5), (int)(y + 0.5), c);
+			
 		}
 	}
 	else
@@ -396,15 +382,125 @@ void Graphics::DrawLine(double x1, double y1, double x2, double y2, Color c)
 		for (double y = y1; y <= y2; y++)
 		{
 			double x = m * y + b;
-			PutPixel((int)(x + 0.5f), (int)(y + 0.5f), c);
+			// issue! why there is need for substraction of one ?
+			if (x >= 0 && x < ScreenWidth-1 && y >= 0 && y  < ScreenHeight-1)
+				PutPixel((int)(x + 0.5), (int)(y + 0.5), c);
+		}
+	}
+}
+
+void Graphics::DrawPoliLine(std::vector<JC_Point2d> point_data, Color Color_in)
+{
+	JC_Point2d Current;
+	JC_Point2d Previous;
+
+	
+	if (point_data.size() > 1)
+	{
+		for (int i = 1; i < point_data.size(); i++)
+		{
+			Current = point_data[i];
+			Previous = point_data[i - 1];
+			DrawLine(Previous, Current, Color_in);
+		}
+	}
+	else
+	{
+		
+	}
+	
+}
+
+
+void Graphics::DrawCircle(double _ox, double _oy, double _outer_radius, const CRectangle<double>& _clip, int t,Color C) noexcept
+{// For outline thickness of 1
+	const auto rSq_inner = Square(_outer_radius - t);
+	const auto rSq_outer = Square(_outer_radius);
+
+	const auto outer_double = _outer_radius * 2.0;
+
+	// Calculate the bounding rectangle of the circle
+	const auto left = _ox - _outer_radius;
+	const auto top = _oy - _outer_radius;
+	const auto right = _ox + _outer_radius;
+	const auto bottom = _oy + _outer_radius;
+
+	// Clip the bounding rectangle to screen boundaries and translate 
+	// back to -radius ( left_clip, top_clip ), +radius ( right_clip, bottom_clip )
+
+	const auto left_clip = std::max(0.0, -left) - _outer_radius;
+	const auto top_clip = std::max(0.0, -top) - _outer_radius;
+	const auto right_clip = std::min(ScreenWidth - left -1.0, outer_double) - _outer_radius;
+	const auto bottom_clip = std::min(ScreenHeight - top - 1.0, outer_double) - _outer_radius;
+
+	// Loop through clipped bounding rectangle, from top to bottom,
+	// left to right skipping any pixels contained in the _clip Rect passed
+	// as parameter to the function
+	for (double y = top_clip; y < bottom_clip; ++y)
+	{
+		for (double x = left_clip; x < right_clip; ++x)
+		{
+			const auto sqDist = Square(x) + Square(y);
+			if (sqDist > rSq_inner && sqDist < rSq_outer)
+			{
+				const auto px = x + _ox;
+				const auto py = y + _oy;
+
+				if (!_clip.Contains(JC_Vector2<double>{ px, py }))
+				{
+					PutPixel(int(std::round(px)), int(std::round(py)), C);
+				}
+			}
 		}
 	}
 }
 
 
+void Graphics::DrawBezier(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R, Color color) noexcept
+{
+	const auto range0 = (Q - P);
+	const auto range1 = (R - Q);
+	const auto range2 = (range1 - range0);
+	const auto doubleRange0 = (range0 * 2.0);
+
+	constexpr auto step = .01;
+	auto prev = P;
+	for (double t = step; t <= 1.0; t += step)
+	{
+		const auto S = P + (doubleRange0 + (range2 * t)) * t;
+
+		DrawLine(prev, S, color);
+		prev = S;
+	}
+}
+
+
+void Graphics::DrawBezier(std::vector<JC_Point2d> point_data, Color color) noexcept
+{
+/*	const auto range0 = (Q - P);
+	const auto range1 = (R - Q);
+	const auto range2 = (range1 - range0);
+	const auto doubleRange0 = (range0 * 2.0);
+
+	constexpr auto step = .1;
+	auto prev = P;
+	for (double t = step; t <= 1.0; t += step)
+	{
+		const auto S = P + (doubleRange0 + (range2 * t)) * t;
+
+		DrawLine(prev, S, color);
+		prev = S;
+	}
+*/
+}
+
+
+/*
 void Graphics::DrawCircle(double Ox, double Oy, double R, Color& c)
 {
-	/*for (double theta = 0; theta < 360; theta += 0.2)
+	//issue with continuity drawing for large circles
+	
+	for (double theta = 0; theta < 360; theta += 0.2)
 	{
 		double x = (double)(R * std::cos(PI_D*theta / 180));
 		double y = (double)(R * std::sin(PI_D*theta / 180));
@@ -415,7 +511,8 @@ void Graphics::DrawCircle(double Ox, double Oy, double R, Color& c)
 		if (xi >= 0 && xi < ScreenWidth && yi >= 0 && yi < ScreenHeight)
 			PutPixel(xi, yi, c);
 	}
-	*/
+	
+
 
 	double x = 0.7071067811865475;
 	
@@ -430,38 +527,38 @@ void Graphics::DrawCircle(double Ox, double Oy, double R, Color& c)
 		int yi = (int)(std::sqrt(radsqr - (xi*xi)) + 0.5f);
 
 
-		if (Ox + xi >= 0 && Ox + xi < ScreenWidth && Oy + yi >= 0 && Oy + yi < ScreenHeight)
-			PutPixel((int)Ox + xi, (int)Oy + yi, c);
+		if (Ox + xi >= 0 && Ox + xi < ScreenWidth - 1 && Oy + yi >= 0 && Oy + yi < ScreenHeight-1)
+			PutPixel((int)Ox + xi, (int)Oy + yi, c);									   
+																						   
+		if (Ox + yi >= 0 && Ox + yi < ScreenWidth - 1 && Oy + xi >= 0 && Oy + xi < ScreenHeight-1)
+			PutPixel((int)Ox + yi, (int)Oy + xi, c);									   
+																						   
+		if (Ox -xi >= 0 && Ox -xi < ScreenWidth - 1 && Oy + yi >= 0 && Oy + yi <   ScreenHeight-1)
+			PutPixel((int)Ox - xi, (int)Oy + yi, c);									   
+																						   
+		if (Ox -yi >= 0 && Ox -yi < ScreenWidth - 1 && Oy + xi >= 0 && Oy + xi <   ScreenHeight-1)
+			PutPixel((int)Ox - yi, (int)Oy + xi, c);									   
+																						   
+		if (Ox -xi >= 0 && Ox -xi < ScreenWidth - 1 && Oy -yi >= 0 && Oy -yi <     ScreenHeight-1)
+			PutPixel((int)Ox - xi, (int)Oy - yi, c);									   
+																						   
+		if (Ox -yi >= 0 && Ox-yi < ScreenWidth - 1 && Oy -xi >= 0 && Oy -xi <	   ScreenHeight-1)
+			PutPixel((int)Ox - yi, (int)Oy - xi, c);									   
+																						   
+		if (Ox + xi >= 0 && Ox + xi < ScreenWidth-1 && Oy -yi >= 0 && Oy -yi < ScreenHeight-1)
+			PutPixel((int)Ox + xi, (int)Oy - yi, c);									   
 
-		if (Ox + yi >= 0 && Ox + yi < ScreenWidth && Oy + xi >= 0 && Oy + xi < ScreenHeight)
-			PutPixel((int)Ox + yi, (int)Oy + xi, c);
-
-		if (Ox -xi >= 0 && Ox -xi < ScreenWidth && Oy + yi >= 0 && Oy + yi < ScreenHeight)
-			PutPixel((int)Ox - xi, (int)Oy + yi, c);
-
-		if (Ox -yi >= 0 && Ox -yi < ScreenWidth && Oy + xi >= 0 && Oy + xi < ScreenHeight)
-			PutPixel((int)Ox - yi, (int)Oy + xi, c);
-
-		if (Ox -xi >= 0 && Ox -xi < ScreenWidth && Oy -yi >= 0 && Oy -yi < ScreenHeight)
-			PutPixel((int)Ox - xi, (int)Oy - yi, c);
-
-		if (Ox -yi >= 0 && Ox-yi < ScreenWidth && Oy -xi >= 0 && Oy -xi < ScreenHeight)
-			PutPixel((int)Ox - yi, (int)Oy - xi, c);
-
-		if (Ox + xi >= 0 && Ox + xi < ScreenWidth && Oy -yi >= 0 && Oy -yi < ScreenHeight)
-			PutPixel((int)Ox + xi, (int)Oy - yi, c);
-
-		if (Ox + yi >= 0 && Ox + yi < ScreenWidth && Oy -xi >= 0 && Oy -xi < ScreenHeight)
+		if (Ox + yi >= 0 && Ox + yi < ScreenWidth-1 && Oy -xi >= 0 && Oy -xi < ScreenHeight-1)
 			PutPixel((int)Ox + yi, (int)Oy - xi, c);
 	}
 		       
 	
 }
+*/
 
 
 
-
-
+/*
 void Graphics::DrawArc(double Ox, double Oy, double R , double theta_begin, double theta_end, Color c)
 {
 
@@ -487,7 +584,7 @@ void Graphics::DrawArc(double Ox, double Oy, double R , double theta_begin, doub
 		}
 	}
 }
-
+*/
 
 
 

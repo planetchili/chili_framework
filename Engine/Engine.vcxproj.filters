@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
@@ -16,11 +12,36 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{8b6c92a8-f65d-451e-80e3-d65773602b92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Added Sprites">
+      <UniqueIdentifier>{7429fb29-146a-47ac-b5ad-e8731b226a6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shapes">
+      <UniqueIdentifier>{a1ba54ce-e6f2-47b3-93dd-e28c6615d142}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CameraPipeline">
+      <UniqueIdentifier>{991129b5-249e-4da4-bad5-8426e98a3a3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\MathLib">
+      <UniqueIdentifier>{ab08727f-c0bc-4aac-a38c-7a209aa66dcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MathLib">
+      <UniqueIdentifier>{85608aef-b314-4019-9eef-58cd5dee7256}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Chili util">
+      <UniqueIdentifier>{b309b936-8445-487c-909c-da4141e3b864}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Geometric shapes">
+      <UniqueIdentifier>{b9b4aa28-3d6d-4412-b8b4-6ff6c3af9881}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Chili Spriite loading">
+      <UniqueIdentifier>{17f84fd5-42d9-44cc-a348-7ca1040c068a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChiliWin.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Colors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -42,12 +63,6 @@
     <ClInclude Include="Mouse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ChiliException.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -56,6 +71,66 @@
     </ClInclude>
     <ClInclude Include="COMInitializer.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Star.h">
+      <Filter>Header Files\Geometric shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="CordinateTrasformerh.h">
+      <Filter>Header Files\CameraPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\CameraPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseCameraControler.h">
+      <Filter>Header Files\CameraPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="JC_Circle.h">
+      <Filter>Header Files\Geometric shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="JC_Shape.h">
+      <Filter>Header Files\Geometric shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="JC_Line.h">
+      <Filter>Header Files\Geometric shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="JC_Math.h">
+      <Filter>Header Files\MathLib</Filter>
+    </ClInclude>
+    <ClInclude Include="JC_Vector2.h">
+      <Filter>Header Files\MathLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ALIB_Bezier.h">
+      <Filter>Header Files\Geometric shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="JC_Poli.h">
+      <Filter>Header Files\Geometric shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="ChiliException.h">
+      <Filter>Header Files\Chili util</Filter>
+    </ClInclude>
+    <ClInclude Include="ChiliUtil.h">
+      <Filter>Header Files\Chili util</Filter>
+    </ClInclude>
+    <ClInclude Include="ChiliWin.h">
+      <Filter>Header Files\Chili util</Filter>
+    </ClInclude>
+    <ClInclude Include="Surface.h">
+      <Filter>Header Files\Chili Spriite loading</Filter>
+    </ClInclude>
+    <ClInclude Include="GDIPlusManager.h">
+      <Filter>Header Files\Chili Spriite loading</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Header Files\Chili Spriite loading</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteEffect.h">
+      <Filter>Header Files\Chili Spriite loading</Filter>
+    </ClInclude>
+    <ClInclude Include="ChiliRectangle.h">
+      <Filter>Header Files\Chili util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -86,6 +161,24 @@
     <ClCompile Include="COMInitializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="JC_Circle.cpp">
+      <Filter>Source Files\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="JC_Math.cpp">
+      <Filter>Source Files\MathLib</Filter>
+    </ClCompile>
+    <ClCompile Include="JC_MP_Bezier.h">
+      <Filter>Header Files\Geometric shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Surface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GDIPlusManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FramebufferPS.hlsl">
@@ -103,6 +196,33 @@
   <ItemGroup>
     <Image Include="Chili.ico">
       <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="sprite\Circle.png">
+      <Filter>Added Sprites</Filter>
+    </Image>
+    <Image Include="sprite\Circle_1.png">
+      <Filter>Added Sprites</Filter>
+    </Image>
+    <Image Include="sprite\Circle_2.png">
+      <Filter>Added Sprites</Filter>
+    </Image>
+    <Image Include="sprite\Ellipse.png">
+      <Filter>Added Sprites</Filter>
+    </Image>
+    <Image Include="sprite\Ellipse_1.png">
+      <Filter>Added Sprites</Filter>
+    </Image>
+    <Image Include="sprite\Ellipse_2.png">
+      <Filter>Added Sprites</Filter>
+    </Image>
+    <Image Include="sprite\select.png">
+      <Filter>Added Sprites</Filter>
+    </Image>
+    <Image Include="sprite\select_1.png">
+      <Filter>Added Sprites</Filter>
+    </Image>
+    <Image Include="sprite\select_2.png">
+      <Filter>Added Sprites</Filter>
     </Image>
   </ItemGroup>
 </Project>

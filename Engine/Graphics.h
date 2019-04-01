@@ -19,11 +19,18 @@
 *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
 ******************************************************************************************/
 #pragma once
-#include "ChiliWin.h"
 #include <d3d11.h>
 #include <wrl.h>
+#include <math.h>
+#include <vector>
+
+#include "ChiliWin.h"
 #include "ChiliException.h"
 #include "Colors.h"
+#include "JC_Vector2.h"
+#include "JC_Math.h"
+#include "ChiliRectangle.h"
+#include "Surface.h"
 
 class Graphics
 {
@@ -52,11 +59,152 @@ public:
 	Graphics& operator=( const Graphics& ) = delete;
 	void EndFrame();
 	void BeginFrame();
+
+	Color GetPixel(int x, int y) const;
+
 	void PutPixel( int x,int y,int r,int g,int b )
 	{
 		PutPixel( x,y,{ unsigned char( r ),unsigned char( g ),unsigned char( b ) } );
 	}
 	void PutPixel( int x,int y,Color c );
+
+	
+	/***** Start Draw Line Functions *****/
+
+	
+	void DrawLine(const JC_Point2d& P, const JC_Point2d& Q, Color c)
+	{
+		DrawLine(P.x, P.y, Q.x, Q.y, c);
+	}
+	void DrawLine(double x1, double y1, double x2, double y2, Color c);
+
+	void DrawPoliLine(std::vector<JC_Point2d> point_data, Color Color_in);
+
+	/***** END Draw Line Functions ****/
+
+
+
+	/***** Start Draw Circle Functions *****/
+
+	template<typename T2>
+	void DrawCircle(JC_Point2<T2> vO, T2 R, int t , Color c)
+	{
+		RectD Bound{ (double)ScreenWidth ,0,(double)ScreenHeight,0 };
+		DrawCircle((double)vO.x, (double)vO.y, (double)R, Bound, t, c);
+	}
+	void DrawCircle(double _ox, double _oy, double _outer_radius, const CRectangle<double>& _clip, int t, Color _color) noexcept;
+
+	//void DrawCircle(double Ox, double Oy, double R, Color& c);
+
+	/***** END Draw Circle Functions ****/
+
+
+
+
+	void DrawBezier(const JC_Point2d & P, const JC_Point2d & Q, const JC_Point2d & R, Color color) noexcept;
+	void DrawBezier(const std::vector<JC_Point2d> point_data, Color color) noexcept;
+	
+	
+
+
+	/***** Start Draw Arc Functions *****/
+	
+	//void DrawArc(double Ox, double Oy, double R, double theta_begin, double theta_end, Color c);
+	
+	/***** End Draw Arc Functions *****/
+
+
+	template<typename E>
+	void DrawSprite(int x, int y, const Surface& s, E effect, bool reversed = false)
+	{
+		DrawSprite(x, y, s.GetRect(), s, effect, reversed);
+	}
+	template<typename E>
+	void DrawSprite(int x, int y, const RectI& srcRect, const Surface& s, E effect, bool reversed = false)
+	{
+		DrawSprite(x, y, srcRect, GetScreenRect(), s, effect, reversed);
+	}
+	template<typename E>
+	void DrawSprite(int x, int y, RectI srcRect, const RectI& clip, const Surface& s, E effect, bool reversed = false)
+	{
+		assert(srcRect.left >= 0);
+		assert(srcRect.right <= s.GetWidth());
+		assert(srcRect.top >= 0);
+		assert(srcRect.bottom <= s.GetHeight());
+
+		// mirror in x depending on reversed bool switch
+		if (!reversed)
+		{
+			// cliping is different depending on mirroring status
+			if (x < clip.left)
+			{
+				srcRect.left += clip.left - x;
+				x = clip.left;
+			}
+			if (y < clip.top)
+			{
+				srcRect.top += clip.top - y;
+				y = clip.top;
+			}
+			if (x + srcRect.GetWidth() > clip.right)
+			{
+				srcRect.right -= x + srcRect.GetWidth() - clip.right;
+			}
+			if (y + srcRect.GetHeight() > clip.bottom)
+			{
+				srcRect.bottom -= y + srcRect.GetHeight() - clip.bottom;
+			}
+			for (int sy = srcRect.top; sy < srcRect.bottom; sy++)
+			{
+				for (int sx = srcRect.left; sx < srcRect.right; sx++)
+				{
+					effect(
+						// no mirroring
+						s.GetPixel(sx, sy),
+						x + sx - srcRect.left,
+						y + sy - srcRect.top,
+						*this
+					);
+				}
+			}
+		}
+		else
+		{
+			if (x < clip.left)
+			{
+				srcRect.right -= clip.left - x;
+				x = clip.left;
+			}
+			if (y < clip.top)
+			{
+				srcRect.top += clip.top - y;
+				y = clip.top;
+			}
+			if (x + srcRect.GetWidth() > clip.right)
+			{
+				srcRect.left += x + srcRect.GetWidth() - clip.right;
+			}
+			if (y + srcRect.GetHeight() > clip.bottom)
+			{
+				srcRect.bottom -= y + srcRect.GetHeight() - clip.bottom;
+			}
+			const int xOffset = srcRect.left + srcRect.right - 1;
+			for (int sy = srcRect.top; sy < srcRect.bottom; sy++)
+			{
+				for (int sx = srcRect.left; sx < srcRect.right; sx++)
+				{
+					effect(
+						// mirror in x
+						s.GetPixel(xOffset - sx, sy),
+						x + sx - srcRect.left,
+						y + sy - srcRect.top,
+						*this
+					);
+				}
+			}
+		}
+	}
+
 	~Graphics();
 private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;
@@ -73,6 +221,8 @@ private:
 	D3D11_MAPPED_SUBRESOURCE							mappedSysBufferTexture;
 	Color*                                              pSysBuffer = nullptr;
 public:
-	static constexpr int ScreenWidth = 800;
-	static constexpr int ScreenHeight = 600;
+	static constexpr int ScreenWidth =1440;
+	static constexpr int ScreenHeight = 900;
+	static RectI GetScreenRect();
+
 };

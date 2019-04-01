@@ -20,6 +20,7 @@
  ******************************************************************************************/
 #pragma once
 #include <queue>
+#include "JC_Vector2.h"
 
 class Mouse
 {
@@ -34,6 +35,8 @@ public:
 			LRelease,
 			RPress,
 			RRelease,
+			WheelPress,
+			WheelRelease,
 			WheelUp,
 			WheelDown,
 			Move,
@@ -43,6 +46,7 @@ public:
 		Type type;
 		bool leftIsPressed;
 		bool rightIsPressed;
+		bool wheelIsPressed;
 		int x;
 		int y;
 	public:
@@ -51,6 +55,7 @@ public:
 			type( Type::Invalid ),
 			leftIsPressed( false ),
 			rightIsPressed( false ),
+			wheelIsPressed( false ),
 			x( 0 ),
 			y( 0 )
 		{}
@@ -58,7 +63,8 @@ public:
 			:
 			type( type ),
 			leftIsPressed( parent.leftIsPressed ),
-			rightIsPressed( parent.rightIsPressed ),
+			rightIsPressed( parent.rightIsPressed),
+			wheelIsPressed( parent.wheelIsPressed),
 			x( parent.x ),
 			y( parent.y )
 		{}
@@ -70,7 +76,7 @@ public:
 		{
 			return type;
 		}
-		std::pair<int,int> GetPos() const
+		JC_Point2i GetPos() const
 		{
 			return{ x,y };
 		}
@@ -90,16 +96,21 @@ public:
 		{
 			return rightIsPressed;
 		}
+		bool WheelIsPressed() const
+		{
+			return wheelIsPressed;
+		}
 	};
 public:
 	Mouse() = default;
 	Mouse( const Mouse& ) = delete;
 	Mouse& operator=( const Mouse& ) = delete;
-	std::pair<int,int> GetPos() const;
+	JC_Point2i GetPos() const;
 	int GetPosX() const;
 	int GetPosY() const;
 	bool LeftIsPressed() const;
 	bool RightIsPressed() const;
+	bool WheelIsPressed() const;
 	bool IsInWindow() const;
 	Mouse::Event Read();
 	bool IsEmpty() const
@@ -115,6 +126,8 @@ private:
 	void OnLeftReleased( int x,int y );
 	void OnRightPressed( int x,int y );
 	void OnRightReleased( int x,int y );
+	void OnWheelPressed(int x, int y);
+	void OnWheelReleased(int x, int y);
 	void OnWheelUp( int x,int y );
 	void OnWheelDown( int x,int y );
 	void TrimBuffer();
@@ -124,6 +137,7 @@ private:
 	int y;
 	bool leftIsPressed = false;
 	bool rightIsPressed = false;
+	bool wheelIsPressed = false;
 	bool isInWindow = false;
 	std::queue<Event> buffer;
 };

@@ -21,7 +21,7 @@
 #include "Mouse.h"
 
 
-std::pair<int,int> Mouse::GetPos() const
+JC_Point2i Mouse::GetPos() const
 {
 	return { x,y };
 }
@@ -44,6 +44,11 @@ bool Mouse::LeftIsPressed() const
 bool Mouse::RightIsPressed() const
 {
 	return rightIsPressed;
+}
+
+bool Mouse::WheelIsPressed() const
+{
+	return wheelIsPressed;
 }
 
 bool Mouse::IsInWindow() const
@@ -118,6 +123,22 @@ void Mouse::OnRightReleased( int x,int y )
 	rightIsPressed = false;
 
 	buffer.push( Mouse::Event( Mouse::Event::Type::RRelease,*this ) );
+	TrimBuffer();
+}
+
+void Mouse::OnWheelPressed(int x, int y)
+{
+	wheelIsPressed = true;
+
+	buffer.push(Mouse::Event(Mouse::Event::Type::WheelPress, *this));
+	TrimBuffer();
+}
+
+void Mouse::OnWheelReleased(int x, int y)
+{
+	wheelIsPressed = false;
+
+	buffer.push(Mouse::Event(Mouse::Event::Type::WheelRelease, *this));
 	TrimBuffer();
 }
 

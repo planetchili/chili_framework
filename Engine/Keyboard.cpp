@@ -20,14 +20,14 @@
  ******************************************************************************************/
 #include "Keyboard.h"
 
-bool Keyboard::KeyIsPressed( unsigned char keycode ) const
+bool Keyboard::KeyIsPressed(unsigned char keycode) const
 {
 	return keystates[keycode];
 }
 
 Keyboard::Event Keyboard::ReadKey()
 {
-	if( keybuffer.size() > 0u )
+	if (keybuffer.size() > 0u)
 	{
 		Keyboard::Event e = keybuffer.front();
 		keybuffer.pop();
@@ -46,7 +46,7 @@ bool Keyboard::KeyIsEmpty() const
 
 char Keyboard::ReadChar()
 {
-	if( charbuffer.size() > 0u )
+	if (charbuffer.size() > 0u)
 	{
 		unsigned char charcode = charbuffer.front();
 		charbuffer.pop();
@@ -79,39 +79,39 @@ void Keyboard::Flush()
 	FlushChar();
 }
 
-void Keyboard::EnableAutorepeat()
+void Keyboard::EnableAutoRepeat()
 {
 	autorepeatEnabled = true;
 }
 
-void Keyboard::DisableAutorepeat()
+void Keyboard::DisableAutoRepeat()
 {
 	autorepeatEnabled = false;
 }
 
-bool Keyboard::AutorepeatIsEnabled() const
+bool Keyboard::AutoRepeatIsEnabled() const
 {
 	return autorepeatEnabled;
 }
 
-void Keyboard::OnKeyPressed( unsigned char keycode )
+void Keyboard::OnKeyPressed(unsigned char keycode)
 {
-	keystates[ keycode ] = true;	
-	keybuffer.push( Keyboard::Event( Keyboard::Event::Type::Press,keycode ) );
-	TrimBuffer( keybuffer );
+	keystates[keycode] = true;
+	keybuffer.push(Keyboard::Event(Keyboard::Event::Type::Press, keycode));
+	TrimBuffer(keybuffer);
 }
 
-void Keyboard::OnKeyReleased( unsigned char keycode )
+void Keyboard::OnKeyReleased(unsigned char keycode)
 {
-	keystates[ keycode ] = false;
-	keybuffer.push( Keyboard::Event( Keyboard::Event::Type::Release,keycode ) );
-	TrimBuffer( keybuffer );
+	keystates[keycode] = false;
+	keybuffer.push(Keyboard::Event(Keyboard::Event::Type::Release, keycode));
+	TrimBuffer(keybuffer);
 }
 
-void Keyboard::OnChar( char character )
+void Keyboard::OnChar(char character)
 {
-	charbuffer.push( character );
-	TrimBuffer( charbuffer );
+	charbuffer.push(character);
+	TrimBuffer(charbuffer);
 }
 
 void Keyboard::ClearState()
@@ -119,12 +119,11 @@ void Keyboard::ClearState()
 	keystates.reset();
 }
 
-template<typename T>
-void Keyboard::TrimBuffer( std::queue<T>& buffer )
+template <typename T>
+void Keyboard::TrimBuffer(std::queue<T>& buffer)
 {
-	while( buffer.size() > bufferSize )
+	while (buffer.size() > bufferSize)
 	{
 		buffer.pop();
 	}
 }
-

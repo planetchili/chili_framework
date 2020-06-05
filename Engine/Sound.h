@@ -39,7 +39,7 @@ public:
 	class APIException : public ChiliException
 	{
 	public:
-		APIException( HRESULT hr,const wchar_t * file,unsigned int line,const std::wstring& note );
+		APIException(HRESULT hr, const wchar_t* file, unsigned int line, const std::wstring& note);
 		std::wstring GetErrorName() const;
 		std::wstring GetErrorDescription() const;
 		virtual std::wstring GetFullMessage() const override;
@@ -47,15 +47,17 @@ public:
 	private:
 		HRESULT hr;
 	};
+
 	class FileException : public ChiliException
 	{
 	public:
-		FileException( const wchar_t* file,unsigned int line,const std::wstring& note,const std::wstring& filename );
+		FileException(const wchar_t* file, unsigned int line, const std::wstring& note, const std::wstring& filename);
 		virtual std::wstring GetFullMessage() const override;
 		virtual std::wstring GetExceptionType() const override;
 	private:
 		std::wstring filename;
 	};
+
 private:
 	class MFInitializer
 	{
@@ -65,6 +67,7 @@ private:
 	private:
 		HRESULT hr;
 	};
+
 	class XAudioDll
 	{
 	private:
@@ -75,12 +78,13 @@ private:
 			System,
 			Invalid
 		};
+
 	public:
 		XAudioDll();
 		~XAudioDll();
 		operator HMODULE() const;
 	private:
-		static const wchar_t* GetDllPath( LoadType type );
+		static const wchar_t* GetDllPath(LoadType type);
 	private:
 		HMODULE hModule = 0;
 		static constexpr wchar_t* systemPath = L"XAudio2_7.dll";
@@ -92,32 +96,34 @@ private:
 		static constexpr wchar_t* localPath = L"XAudio2_7_32.dll";
 #endif
 	};
+
 public:
 	class Channel
 	{
 		friend class Sound;
 	public:
-		Channel( SoundSystem& sys );
-		Channel( const Channel& ) = delete;
+		Channel(SoundSystem& sys);
+		Channel(const Channel&) = delete;
 		~Channel();
-		void PlaySoundBuffer( class Sound& s,float freqMod,float vol );
+		void PlaySoundBuffer(class Sound& s, float freqMod, float vol);
 		void Stop();
 	private:
-		void RetargetSound( const Sound* pOld,Sound* pNew );
+		void RetargetSound(const Sound* pOld, Sound* pNew);
 	private:
 		std::unique_ptr<struct XAUDIO2_BUFFER> xaBuffer;
 		struct IXAudio2SourceVoice* pSource = nullptr;
 		class Sound* pSound = nullptr;
 	};
+
 public:
-	SoundSystem( const SoundSystem& ) = delete;
+	SoundSystem(const SoundSystem&) = delete;
 	static SoundSystem& Get();
-	static void SetMasterVolume( float vol = 1.0f );
+	static void SetMasterVolume(float vol = 1.0f);
 	static const WAVEFORMATEX& GetFormat();
-	void PlaySoundBuffer( class Sound& s,float freqMod,float vol );
+	void PlaySoundBuffer(class Sound& s, float freqMod, float vol);
 private:
 	SoundSystem();
-	void DeactivateChannel( Channel& channel );
+	void DeactivateChannel(Channel& channel);
 private:
 	COMInitializer comInit;
 	MFInitializer mfInit;
@@ -151,27 +157,28 @@ public:
 		ManualSample,
 		Invalid
 	};
+
 public:
 	Sound() = default;
 	// for backwards compatibility--2nd parameter false -> NotLooping (does not work with non-wav)
-	Sound( const std::wstring& fileName,bool loopingWithAutoCueDetect );
+	Sound(const std::wstring& fileName, bool loopingWithAutoCueDetect);
 	// do not pass this function Manual LoopTypes!
-	Sound( const std::wstring& fileName,LoopType loopType = LoopType::NotLooping );
-	Sound( const std::wstring& fileName,unsigned int loopStart,unsigned int loopEnd );
-	Sound( const std::wstring& fileName,float loopStart,float loopEnd );
-	Sound( Sound&& donor );
-	Sound& operator=( Sound&& donor );
-	void Play( float freqMod = 1.0f,float vol = 1.0f );
+	Sound(const std::wstring& fileName, LoopType loopType = LoopType::NotLooping);
+	Sound(const std::wstring& fileName, unsigned int loopStart, unsigned int loopEnd);
+	Sound(const std::wstring& fileName, float loopStart, float loopEnd);
+	Sound(Sound&& donor);
+	Sound& operator=(Sound&& donor);
+	void Play(float freqMod = 1.0f, float vol = 1.0f);
 	void StopOne();
 	void StopAll();
 	~Sound();
 private:
-	static Sound LoadNonWav( const std::wstring& fileName,LoopType loopType,
-							 unsigned int loopStartSample,unsigned int loopEndSample,
-							 float loopStartSeconds,float loopEndSeconds );
-	Sound( const std::wstring& fileName,LoopType loopType,
-		unsigned int loopStartSample,unsigned int loopEndSample,
-		float loopStartSeconds,float loopEndSeconds );
+	static Sound LoadNonWav(const std::wstring& fileName, LoopType loopType,
+	                        unsigned int loopStartSample, unsigned int loopEndSample,
+	                        float loopStartSeconds, float loopEndSeconds);
+	Sound(const std::wstring& fileName, LoopType loopType,
+	      unsigned int loopStartSample, unsigned int loopEndSample,
+	      float loopStartSeconds, float loopEndSeconds);
 private:
 	UINT32 nBytes = 0u;
 	bool looping = false;

@@ -310,9 +310,9 @@ void Graphics::BeginFrame()
 void Graphics::PutPixel(int x, int y, Color c)
 {
 	assert(x >= 0);
-	assert(x < int( Graphics::ScreenWidth ));
+	assert(x < int(Graphics::ScreenWidth));
 	assert(y >= 0);
-	assert(y < int( Graphics::ScreenHeight ));
+	assert(y < int(Graphics::ScreenHeight));
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
 }
 

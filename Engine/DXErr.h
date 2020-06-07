@@ -25,7 +25,7 @@ extern "C" {
 //--------------------------------------------------------------------------------------
 // DXGetErrorString
 //--------------------------------------------------------------------------------------
-const WCHAR* WINAPI DXGetErrorStringW( _In_ HRESULT hr );
+const WCHAR* WINAPI DXGetErrorStringW(_In_ HRESULT hr);
 
 #define DXGetErrorString DXGetErrorStringW
 
@@ -33,7 +33,7 @@ const WCHAR* WINAPI DXGetErrorStringW( _In_ HRESULT hr );
 // DXGetErrorDescription has to be modified to return a copy in a buffer rather than
 // the original static string.
 //--------------------------------------------------------------------------------------
-void WINAPI DXGetErrorDescriptionW( _In_ HRESULT hr, _Out_cap_(count) WCHAR* desc, _In_ size_t count );
+void WINAPI DXGetErrorDescriptionW(_In_ HRESULT hr, _Out_cap_(count) WCHAR* desc, _In_ size_t count);
 
 #define DXGetErrorDescription DXGetErrorDescriptionW
 
@@ -52,7 +52,8 @@ void WINAPI DXGetErrorDescriptionW( _In_ HRESULT hr, _Out_cap_(count) WCHAR* des
 //
 //  Return: The hr that was passed in.  
 //--------------------------------------------------------------------------------------
-HRESULT WINAPI DXTraceW( _In_z_ const WCHAR* strFile, _In_ DWORD dwLine, _In_ HRESULT hr, _In_opt_ const WCHAR* strMsg, _In_ bool bPopMsgBox );
+HRESULT WINAPI DXTraceW(_In_z_ const WCHAR* strFile, _In_ DWORD dwLine, _In_ HRESULT hr, _In_opt_ const WCHAR* strMsg,
+                        _In_ bool bPopMsgBox);
 
 #define DXTrace DXTraceW
 

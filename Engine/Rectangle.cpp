@@ -1,6 +1,8 @@
 #include "Rectangle.h"
 
-Rectangle::Rectangle(Point position, Color color, int width, int height, int life_points = RECTANGLE_LIFE_POINTS, int damage = RECTANGLE_DAMAGE) :
+using namespace Fighters;
+
+Rectangle::Rectangle(Point position, Color color, int width, int height, int life_points, int damage) :
 	Fighter(life_points, damage, position, color)
 {
 	if ((position.GetX() + width) > Graphics::ScreenWidth)

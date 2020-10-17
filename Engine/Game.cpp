@@ -18,6 +18,7 @@
  *	You should have received a copy of the GNU General Public License					  *
  *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
  ******************************************************************************************/
+#include "Rectangle.h"
 #include "MainWindow.h"
 #include "Game.h"
 
@@ -26,8 +27,10 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd )
 {
-	Square* sqaure = new Square(Point(0, 0), Color(160, 0, 0), 300);
+	Fighters::Square* sqaure = new Fighters::Square(Point(0, 0), Color(160, 0, 0), 300);
+	Fighters::Rectangle* rect = new Fighters::Rectangle(Point(300, 500), Color(10,200, 100), 100, 50);
 	fighters.push_back(sqaure);
+	fighters.push_back(rect);
 }
 
 Game::~Game()

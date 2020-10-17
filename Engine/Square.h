@@ -2,8 +2,11 @@
 
 #include "Rectangle.h"
 
-class Square : public Rectangle
+namespace Fighters
 {
-public:
-	Square(Point position, Color color, int height);
-};
+	class Square : public Rectangle
+	{
+	public:
+		Square(Point position, Color color, int height);
+	};
+}

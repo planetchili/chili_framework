@@ -26,6 +26,18 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd )
 {
+	Square* sqaure = new Square(Point(0, 0), Color(160, 0, 0), 300);
+	fighters.push_back(sqaure);
+}
+
+Game::~Game()
+{
+	while (!fighters.empty())
+	{
+		Fighter* current = fighters.back();
+		fighters.pop_back();
+		delete current;
+	}
 }
 
 void Game::Go()
@@ -38,8 +50,13 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	
 }
 
 void Game::ComposeFrame()
 {
+	for (int i = 0; i < fighters.size(); i++)
+	{
+		fighters.at(i)->draw(gfx);
+	}
 }

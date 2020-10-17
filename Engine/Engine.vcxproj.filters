@@ -16,6 +16,12 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{8b6c92a8-f65d-451e-80e3-d65773602b92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Fighters">
+      <UniqueIdentifier>{547d18d3-3632-452b-830c-8080808771c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Fighters">
+      <UniqueIdentifier>{dc90cd91-9b8a-4a81-ac11-7ae53e8822e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChiliWin.h">
@@ -57,6 +63,21 @@
     <ClInclude Include="COMInitializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Fighter.h">
+      <Filter>Header Files\Fighters</Filter>
+    </ClInclude>
+    <ClInclude Include="Rectangle.h">
+      <Filter>Header Files\Fighters</Filter>
+    </ClInclude>
+    <ClInclude Include="consts.h">
+      <Filter>Header Files\Fighters</Filter>
+    </ClInclude>
+    <ClInclude Include="Square.h">
+      <Filter>Header Files\Fighters</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DXErr.cpp">
@@ -85,6 +106,15 @@
     </ClCompile>
     <ClCompile Include="COMInitializer.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sqaure.cpp">
+      <Filter>Source Files\Fighters</Filter>
+    </ClCompile>
+    <ClCompile Include="Square.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rectangle.cpp">
+      <Filter>Source Files\Fighters</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -21,6 +21,7 @@
 #include "MainWindow.h"
 #include "Graphics.h"
 #include "DXErr.h"
+#include "Graphics.h"
 #include "ChiliException.h"
 #include <assert.h>
 #include <string>
@@ -316,6 +317,16 @@ void Graphics::PutPixel( int x,int y,Color c )
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
 }
 
+void Graphics::DrawRect(Point loc, int width, int height, Color color)
+{
+	for (int i = loc.GetX(); i < loc.GetX() + width; i++)
+	{
+		for (int j = loc.GetY(); j < loc.GetY() + height; j++)
+		{
+			PutPixel(i, j, color);
+		}
+	}
+}
 
 //////////////////////////////////////////////////
 //           Graphics Exception

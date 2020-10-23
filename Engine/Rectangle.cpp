@@ -22,7 +22,7 @@ void Rectangle::draw(Graphics& gfx)
 	{
 		for (int j = 0; j < this->width; j++)
 		{
-			gfx.PutPixel(i + position.GetY(), j + position.GetX(), color);
+			gfx.PutPixel(i + position.GetX(), j + position.GetY(), color);
 		}
 	}
 }

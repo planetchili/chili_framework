@@ -27,20 +27,14 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd )
 {
-	Fighters::Square* sqaure = new Fighters::Square(Point(0, 0), Color(160, 0, 0), 300);
-	Fighters::Rectangle* rect = new Fighters::Rectangle(Point(300, 500), Color(10,200, 100), 100, 50);
-	fighters.push_back(sqaure);
-	fighters.push_back(rect);
+	this->left_fighter = new Fighters::Square(Point(50, Graphics::ScreenHeight - 100), Color(100, 230, 70), 40);
+	this->right_fighter = new Fighters::Rectangle(Point(Graphics::ScreenWidth - 200, Graphics::ScreenHeight - 100), Color(70, 200, 200), 50, 70);
 }
 
 Game::~Game()
 {
-	while (!fighters.empty())
-	{
-		Fighter* current = fighters.back();
-		fighters.pop_back();
-		delete current;
-	}
+	delete left_fighter;
+	delete right_fighter;
 }
 
 void Game::Go()
@@ -58,8 +52,6 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	for (int i = 0; i < fighters.size(); i++)
-	{
-		fighters.at(i)->draw(gfx);
-	}
+	left_fighter->draw(gfx);
+	right_fighter->draw(gfx);
 }

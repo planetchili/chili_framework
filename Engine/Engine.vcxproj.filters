@@ -116,6 +116,9 @@
     <ClCompile Include="Rectangle.cpp">
       <Filter>Source Files\Fighters</Filter>
     </ClCompile>
+    <ClCompile Include="Fighter.cpp">
+      <Filter>Source Files\Fighters</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FramebufferPS.hlsl">

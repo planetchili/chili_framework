@@ -51,5 +51,6 @@ private:
 	/********************************/
 	/*  User Variables              */
 	/********************************/
-	vector<Fighter*> fighters;
+	Fighter* left_fighter;
+	Fighter* right_fighter;
 };

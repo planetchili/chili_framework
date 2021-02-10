@@ -22,58 +22,94 @@
 #include "Game.h"
 #include "ChiliException.h"
 
-int WINAPI wWinMain( HINSTANCE hInst,HINSTANCE,LPWSTR pArgs,INT )
+static HINSTANCE hInst;
+static LPWSTR pArgs;
+
+int execMain()
 {
 	try
 	{
-		MainWindow wnd( hInst,pArgs );		
+		MainWindow wnd(hInst, pArgs);
 		try
 		{
-			Game theGame( wnd );
-			while( wnd.ProcessMessage() )
+			Game theGame(wnd);
+			while (wnd.ProcessMessage())
 			{
 				theGame.Go();
 			}
 		}
-		catch( const ChiliException& e )
+		catch (const ChiliException& e)
 		{
-			const std::wstring eMsg = e.GetFullMessage() + 
+			const std::wstring eMsg = e.GetFullMessage() +
 				L"\n\nException caught at Windows message loop.";
-			wnd.ShowMessageBox( e.GetExceptionType(),eMsg,MB_ICONERROR );
+			wnd.ShowMessageBox(e.GetExceptionType(), eMsg, MB_ICONERROR);
 		}
-		catch( const std::exception& e )
+		catch (const std::exception& e)
 		{
 			// need to convert std::exception what() string from narrow to wide string
-			const std::string whatStr( e.what() );
-			const std::wstring eMsg = std::wstring( whatStr.begin(),whatStr.end() ) + 
+			const std::string whatStr(e.what());
+			const std::wstring eMsg = std::wstring(whatStr.begin(), whatStr.end()) +
 				L"\n\nException caught at Windows message loop.";
-			wnd.ShowMessageBox( L"Unhandled STL Exception",eMsg,MB_ICONERROR );
+			wnd.ShowMessageBox(L"Unhandled STL Exception", eMsg, MB_ICONERROR);
 		}
-		catch( ... )
+		catch (...)
 		{
-			wnd.ShowMessageBox( L"Unhandled Non-STL Exception",
-				L"\n\nException caught at Windows message loop.",MB_ICONERROR );
+			wnd.ShowMessageBox(L"Unhandled Non-STL Exception",
+				L"\n\nException caught at Windows message loop.", MB_ICONERROR);
 		}
 	}
-	catch( const ChiliException& e )
+	catch (const ChiliException& e)
 	{
 		const std::wstring eMsg = e.GetFullMessage() +
 			L"\n\nException caught at main window creation.";
-		MessageBox( nullptr,eMsg.c_str(),e.GetExceptionType().c_str(),MB_ICONERROR );
+		MessageBox(nullptr, eMsg.c_str(), e.GetExceptionType().c_str(), MB_ICONERROR);
 	}
-	catch( const std::exception& e )
+	catch (const std::exception& e)
 	{
 		// need to convert std::exception what() string from narrow to wide string
-		const std::string whatStr( e.what() );
-		const std::wstring eMsg = std::wstring( whatStr.begin(),whatStr.end() ) +
+		const std::string whatStr(e.what());
+		const std::wstring eMsg = std::wstring(whatStr.begin(), whatStr.end()) +
 			L"\n\nException caught at main window creation.";
-		MessageBox( nullptr,eMsg.c_str(),L"Unhandled STL Exception",MB_ICONERROR );
+		MessageBox(nullptr, eMsg.c_str(), L"Unhandled STL Exception", MB_ICONERROR);
 	}
-	catch( ... )
+	catch (...)
 	{
-		MessageBox( nullptr,L"\n\nException caught at main window creation.",
-			L"Unhandled Non-STL Exception",MB_ICONERROR );
+		MessageBox(nullptr, L"\n\nException caught at main window creation.",
+			L"Unhandled Non-STL Exception", MB_ICONERROR);
 	}
 
 	return 0;
 }
+
+
+#if _WIN64
+int WINAPI wmain(int argc, wchar_t* argv[])
+{
+	hInst = GetModuleHandle(NULL);
+	pArgs = *argv;
+
+	execMain();
+}
+#else
+std::unique_ptr<wchar_t> GetWC(char* c)
+{
+	std::unique_ptr<wchar_t> returnContainer;
+
+	const size_t cSize = strlen(c) + 1;
+	wchar_t* wc = new wchar_t[cSize];
+
+	mbstowcs(wc, c, cSize);
+	returnContainer.reset(wc);
+
+	return returnContainer;
+}
+
+//for some reason __stdcall is not working for 32 bit.. bit more research has to be done regarding this..
+int __cdecl main(int argc, char** argv)
+{
+	hInst = GetModuleHandle(NULL);
+	pArgs = GetWC(*argv).release();
+
+	execMain();
+}
+#endif

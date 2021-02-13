@@ -1,5 +1,5 @@
 /****************************************************************************************** 
- *	Chili DirectX Framework Version 16.07.20											  *	
+ *	Chili DirectX Framework Version 16.10.01											  *	
  *	Keyboard.cpp																		  *
  *	Copyright 2016 PlanetChili.net <http://www.planetchili.net>							  *
  *																						  *
@@ -65,12 +65,12 @@ bool Keyboard::CharIsEmpty() const
 
 void Keyboard::FlushKey()
 {
-	keybuffer = std::queue<Event>();
+	std::swap( keybuffer,std::queue<Event>() );
 }
 
 void Keyboard::FlushChar()
 {
-	charbuffer = std::queue<char>();
+	std::swap( charbuffer,std::queue<char>() );
 }
 
 void Keyboard::Flush()
@@ -97,14 +97,14 @@ bool Keyboard::AutorepeatIsEnabled() const
 void Keyboard::OnKeyPressed( unsigned char keycode )
 {
 	keystates[ keycode ] = true;	
-	keybuffer.push( Keyboard::Event( Keyboard::Event::Type::Press,keycode ) );
+	keybuffer.push( Keyboard::Event( Keyboard::Event::Press,keycode ) );
 	TrimBuffer( keybuffer );
 }
 
 void Keyboard::OnKeyReleased( unsigned char keycode )
 {
 	keystates[ keycode ] = false;
-	keybuffer.push( Keyboard::Event( Keyboard::Event::Type::Release,keycode ) );
+	keybuffer.push( Keyboard::Event( Keyboard::Event::Release,keycode ) );
 	TrimBuffer( keybuffer );
 }
 
@@ -112,11 +112,6 @@ void Keyboard::OnChar( char character )
 {
 	charbuffer.push( character );
 	TrimBuffer( charbuffer );
-}
-
-void Keyboard::ClearState()
-{
-	keystates.reset();
 }
 
 template<typename T>

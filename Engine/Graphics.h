@@ -1,5 +1,5 @@
 /******************************************************************************************
-*	Chili DirectX Framework Version 16.07.20											  *
+*	Chili DirectX Framework Version 16.10.01											  *
 *	Graphics.h																			  *
 *	Copyright 2016 PlanetChili <http://www.planetchili.net>								  *
 *																						  *
@@ -19,11 +19,16 @@
 *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
 ******************************************************************************************/
 #pragma once
-#include "ChiliWin.h"
 #include <d3d11.h>
 #include <wrl.h>
+#include "GDIPlusManager.h"
 #include "ChiliException.h"
+#include "Surface.h"
 #include "Colors.h"
+
+#include "Vec2.h"
+
+#define CHILI_GFX_EXCEPTION( hr,note ) Graphics::Exception( hr,note,_CRT_WIDE(__FILE__),__LINE__ )
 
 class Graphics
 {
@@ -52,13 +57,28 @@ public:
 	Graphics& operator=( const Graphics& ) = delete;
 	void EndFrame();
 	void BeginFrame();
+	void DrawTriangle(const Vec2& p1, const Vec2& p2, const Vec2& p3, Color c);
+	void DrawLine( const Vec2& p1,const Vec2& p2,Color c )
+	{
+		DrawLine( p1.x,p1.y,p2.x,p2.y,c );
+	}
+	void DrawLine( float x1,float y1,float x2,float y2,Color c );
 	void PutPixel( int x,int y,int r,int g,int b )
 	{
 		PutPixel( x,y,{ unsigned char( r ),unsigned char( g ),unsigned char( b ) } );
 	}
-	void PutPixel( int x,int y,Color c );
+	void PutPixel( int x,int y,Color c )
+	{
+		sysBuffer.PutPixel( x,y,c );
+	}
 	~Graphics();
+
 private:
+	void drawFlatBottomTriangle(const Vec2& p1, const Vec2& p2, const Vec2& p3, const Color& c);
+	void drawFlatTopTriangle   (const Vec2& p1, const Vec2& p2, const Vec2& p3, const Color& c);
+
+private:
+	GDIPlusManager										gdipMan;
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;
 	Microsoft::WRL::ComPtr<ID3D11Device>				pDevice;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext>			pImmediateContext;
@@ -71,8 +91,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11InputLayout>			pInputLayout;
 	Microsoft::WRL::ComPtr<ID3D11SamplerState>			pSamplerState;
 	D3D11_MAPPED_SUBRESOURCE							mappedSysBufferTexture;
-	Color*                                              pSysBuffer = nullptr;
+	Surface												sysBuffer;
 public:
-	static constexpr int ScreenWidth = 800;
-	static constexpr int ScreenHeight = 600;
+	static constexpr unsigned int ScreenWidth  = 640u;
+	static constexpr unsigned int ScreenHeight = 640u;
 };

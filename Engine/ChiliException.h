@@ -1,5 +1,5 @@
 /******************************************************************************************
-*	Chili DirectX Framework Version 16.07.20											  *
+*	Chili DirectX Framework Version 16.10.01											  *
 *	ChiliException.h																	  *
 *	Copyright 2016 PlanetChili <http://www.planetchili.net>								  *
 *																						  *

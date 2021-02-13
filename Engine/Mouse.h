@@ -1,5 +1,5 @@
 /****************************************************************************************** 
- *	Chili DirectX Framework Version 16.07.20											  *	
+ *	Chili DirectX Framework Version 16.10.01											  *	
  *	Mouse.h																				  *
  *	Copyright 2016 PlanetChili <http://www.planetchili.net>								  *
  *																						  *
@@ -20,6 +20,7 @@
  ******************************************************************************************/
 #pragma once
 #include <queue>
+#include "Vec2.h"
 
 class Mouse
 {
@@ -28,7 +29,7 @@ public:
 	class Event
 	{
 	public:
-		enum class Type
+		enum Type
 		{
 			LPress,
 			LRelease,
@@ -48,7 +49,7 @@ public:
 	public:
 		Event()
 			:
-			type( Type::Invalid ),
+			type( Invalid ),
 			leftIsPressed( false ),
 			rightIsPressed( false ),
 			x( 0 ),
@@ -64,15 +65,15 @@ public:
 		{}
 		bool IsValid() const
 		{
-			return type != Type::Invalid;
+			return type != Invalid;
 		}
 		Type GetType() const
 		{
 			return type;
 		}
-		std::pair<int,int> GetPos() const
+		Vei2 GetPos() const
 		{
-			return{ x,y };
+			return { x,y };
 		}
 		int GetPosX() const
 		{
@@ -95,7 +96,7 @@ public:
 	Mouse() = default;
 	Mouse( const Mouse& ) = delete;
 	Mouse& operator=( const Mouse& ) = delete;
-	std::pair<int,int> GetPos() const;
+	Vei2 GetPos() const;
 	int GetPosX() const;
 	int GetPosY() const;
 	bool LeftIsPressed() const;
@@ -120,8 +121,8 @@ private:
 	void TrimBuffer();
 private:
 	static constexpr unsigned int bufferSize = 4u;
-	int x;
-	int y;
+	int x = 0;
+	int y = 0;
 	bool leftIsPressed = false;
 	bool rightIsPressed = false;
 	bool isInWindow = false;

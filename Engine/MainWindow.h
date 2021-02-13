@@ -1,5 +1,5 @@
 /******************************************************************************************
-*	Chili DirectX Framework Version 16.07.20											  *
+*	Chili DirectX Framework Version 16.10.01											  *
 *	MainWindow.h																		  *
 *	Copyright 2016 PlanetChili <http://www.planetchili.net>								  *
 *																						  *
@@ -56,7 +56,7 @@ public:
 	~MainWindow();
 	bool IsActive() const;
 	bool IsMinimized() const;
-	void ShowMessageBox( const std::wstring& title,const std::wstring& message,UINT type = MB_OK ) const;
+	void ShowMessageBox( const std::wstring& title,const std::wstring& message ) const;
 	void Kill()
 	{
 		PostQuitMessage( 0 );

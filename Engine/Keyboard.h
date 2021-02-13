@@ -1,5 +1,5 @@
 /****************************************************************************************** 
- *	Chili DirectX Framework Version 16.07.20											  *	
+ *	Chili DirectX Framework Version 16.10.01											  *	
  *	Keyboard.h																			  *
  *	Copyright 2016 PlanetChili.net <http://www.planetchili.net>							  *
  *																						  *
@@ -29,7 +29,7 @@ public:
 	class Event
 	{
 	public:
-		enum class Type
+		enum Type
 		{
 			Press,
 			Release,
@@ -41,7 +41,7 @@ public:
 	public:
 		Event()
 			:
-			type( Type::Invalid ),
+			type( Invalid ),
 			code( 0u )
 		{}
 		Event( Type type,unsigned char code )
@@ -51,15 +51,15 @@ public:
 		{}
 		bool IsPress() const
 		{
-			return type == Type::Press;
+			return type == Press;
 		}
 		bool IsRelease() const
 		{
-			return type == Type::Release;
+			return type == Release;
 		}
 		bool IsValid() const
 		{
-			return type != Type::Invalid;
+			return type != Invalid;
 		}
 		unsigned char GetCode() const
 		{
@@ -85,7 +85,6 @@ private:
 	void OnKeyPressed( unsigned char keycode );
 	void OnKeyReleased( unsigned char keycode );
 	void OnChar( char character );
-	void ClearState();
 	template<typename T>
 	void TrimBuffer( std::queue<T>& buffer );
 private:

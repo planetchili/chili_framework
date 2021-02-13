@@ -1,5 +1,5 @@
 /****************************************************************************************** 
- *	Chili DirectX Framework Version 16.07.20											  *	
+ *	Chili DirectX Framework Version 16.10.01											  *	
  *	Mouse.cpp																			  *
  *	Copyright 2016 PlanetChili <http://www.planetchili.net>								  *
  *																						  *
@@ -19,9 +19,10 @@
  *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
  ******************************************************************************************/
 #include "Mouse.h"
+#include "Vec2.h"
 
 
-std::pair<int,int> Mouse::GetPos() const
+Vei2 Mouse::GetPos() const
 {
 	return { x,y };
 }
@@ -67,7 +68,7 @@ Mouse::Event Mouse::Read()
 
 void Mouse::Flush()
 {
-	buffer = std::queue<Event>();
+	std::swap( buffer,std::queue<Event>() );
 }
 
 void Mouse::OnMouseLeave()
@@ -85,7 +86,7 @@ void Mouse::OnMouseMove( int newx,int newy )
 	x = newx;
 	y = newy;
 
-	buffer.push( Mouse::Event( Mouse::Event::Type::Move,*this ) );
+	buffer.push( Mouse::Event( Mouse::Event::Move,*this ) );
 	TrimBuffer();
 }
 
@@ -93,7 +94,7 @@ void Mouse::OnLeftPressed( int x,int y )
 {
 	leftIsPressed = true;
 
-	buffer.push( Mouse::Event( Mouse::Event::Type::LPress,*this ) );
+	buffer.push( Mouse::Event( Mouse::Event::LPress,*this ) );
 	TrimBuffer();
 }
 
@@ -101,7 +102,7 @@ void Mouse::OnLeftReleased( int x,int y )
 {
 	leftIsPressed = false;
 
-	buffer.push( Mouse::Event( Mouse::Event::Type::LRelease,*this ) );
+	buffer.push( Mouse::Event( Mouse::Event::LRelease,*this ) );
 	TrimBuffer();
 }
 
@@ -109,7 +110,7 @@ void Mouse::OnRightPressed( int x,int y )
 {
 	rightIsPressed = true;
 
-	buffer.push( Mouse::Event( Mouse::Event::Type::RPress,*this ) );
+	buffer.push( Mouse::Event( Mouse::Event::RPress,*this ) );
 	TrimBuffer();
 }
 
@@ -117,19 +118,19 @@ void Mouse::OnRightReleased( int x,int y )
 {
 	rightIsPressed = false;
 
-	buffer.push( Mouse::Event( Mouse::Event::Type::RRelease,*this ) );
+	buffer.push( Mouse::Event( Mouse::Event::RRelease,*this ) );
 	TrimBuffer();
 }
 
 void Mouse::OnWheelUp( int x,int y )
 {
-	buffer.push( Mouse::Event( Mouse::Event::Type::WheelUp,*this ) );
+	buffer.push( Mouse::Event( Mouse::Event::WheelUp,*this ) );
 	TrimBuffer();
 }
 
 void Mouse::OnWheelDown( int x,int y )
 {
-	buffer.push( Mouse::Event( Mouse::Event::Type::WheelDown,*this ) );
+	buffer.push( Mouse::Event( Mouse::Event::WheelDown,*this ) );
 	TrimBuffer();
 }
 

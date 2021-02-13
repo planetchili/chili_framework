@@ -72,19 +72,9 @@ void Game::ComposeFrame()
 	for (auto& i : tempVertexBuffer)
 		i.z = i.z + 2.0f;
 
-	//gfx.DrawLine({ 426,426 }, { 213,213 }, Colors::Red);
-	//gfx.DrawLine({ 213,426 }, { 213,213 }, Colors::Red);
-
-	//gfx.DrawTriangle({ 426,426 }, { 213,213 }, { 213,426 }, Colors::Red);
-
+	int colorCounter = 0;
 	for (int i = 0; i < trigIB.size(); i = i + 3)
 		gfx.DrawTriangle(pubeToScreenTransformer::getCoordinatesInScreenSpace(tempVertexBuffer[trigIB[i]]),
 						 pubeToScreenTransformer::getCoordinatesInScreenSpace(tempVertexBuffer[trigIB[i+1]]),
-						 pubeToScreenTransformer::getCoordinatesInScreenSpace(tempVertexBuffer[trigIB[i+2]]),Colors::Yellow);
-		
-		
-		//gfx.DrawLine(pubeToScreenTransformer::getCoordinatesInScreenSpace(tempVertexBuffer[lineIndexBuffer[i]]),
-					 //pubeToScreenTransformer::getCoordinatesInScreenSpace(tempVertexBuffer[lineIndexBuffer[i+1]]), Colors::Yellow);
-
-	//gfx.DrawTriangle({ 100.0f, 100.0f }, { 100.0f,200.0f }, { (float)wnd.mouse.GetPosX(), (float)wnd.mouse.GetPosY() }, Colors::Cyan);//{ 200.0f,50.0f,0.0f }, Colors::Cyan);
+						 pubeToScreenTransformer::getCoordinatesInScreenSpace(tempVertexBuffer[trigIB[i+2]]),colors[colorCounter++]);
 }

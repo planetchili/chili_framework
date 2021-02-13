@@ -74,7 +74,7 @@ private:
 		triangleIndexBuffer.emplace_back(5);
 
 
-		/*triangleIndexBuffer.emplace_back(1);
+		triangleIndexBuffer.emplace_back(1);
 		triangleIndexBuffer.emplace_back(2);
 		triangleIndexBuffer.emplace_back(7);
 
@@ -112,7 +112,7 @@ private:
 
 		triangleIndexBuffer.emplace_back(3);
 		triangleIndexBuffer.emplace_back(4);
-		triangleIndexBuffer.emplace_back(7);*/
+		triangleIndexBuffer.emplace_back(7);
 	}
 
 private:

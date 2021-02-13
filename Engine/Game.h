@@ -45,5 +45,20 @@ private:
 	/*  User Variables              */
 	cube cub;
 
+	Color colors[12] = {
+		Colors::Blue,
+		Colors::Red,
+		Colors::Green,
+		Colors::Magenta,
+		Colors::White,
+		Colors::Cyan,
+		Colors::Yellow,
+		Colors::Red,
+		Colors::Blue,
+		Colors::White,
+		Colors::Gray,
+		Colors::Magenta
+	};
+
 	/********************************/
 };

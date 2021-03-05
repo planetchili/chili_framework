@@ -69,12 +69,12 @@ void Game::ComposeFrame()
 
 	std::vector<Vec3> tempVertexBuffer= cub.getVertexBuffer();
 
+	for (auto& i : tempVertexBuffer)
+		i.z = i.z + 2.0f;
+
 	//do backface culling here on tempVertexBuffer..
 	std::vector<bool> cullFlags;
 	cullFlags.resize(trigIB.size() / 3, false);
-
-	for (auto& i : tempVertexBuffer)
-		i.z = i.z + 2.0f;
 
 	for (int i = 0, trigCounter = 0; i < trigIB.size()/3; i++, trigCounter = trigCounter + 3)
 	{
@@ -88,7 +88,6 @@ void Game::ComposeFrame()
 	}
 
 	
-
 	int triangleCounter = 0;
 	for (int i = 0; i < trigIB.size(); i = i + 3)
 	{

@@ -130,6 +130,21 @@ public:
 	{
 		return !(*this == rhs);
 	}
+
+	float dot(const _Vec3<T>& rhs) const
+	{
+		return (x * rhs.x) + (y * rhs.y) + (z * rhs.z);
+	}
+	
+	_Vec3<T> cross(const _Vec3<T>& rhs) const
+	{
+		return _Vec3<T>(
+			y * rhs.z - z * rhs.y,
+			z * rhs.x - x * rhs.z,
+			x * rhs.y - y * rhs.x
+			);
+	}
+
 public:
 	T z;
 };

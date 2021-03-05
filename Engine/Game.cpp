@@ -69,12 +69,32 @@ void Game::ComposeFrame()
 
 	std::vector<Vec3> tempVertexBuffer= cub.getVertexBuffer();
 
+	//do backface culling here on tempVertexBuffer..
+	std::vector<bool> cullFlags;
+	cullFlags.resize(trigIB.size() / 3, false);
+
 	for (auto& i : tempVertexBuffer)
 		i.z = i.z + 2.0f;
 
-	int colorCounter = 0;
+	for (int i = 0, trigCounter = 0; i < trigIB.size()/3; i++, trigCounter = trigCounter + 3)
+	{
+		Vec3 v0 = tempVertexBuffer[trigIB[trigCounter]];
+		Vec3 v1 = tempVertexBuffer[trigIB[trigCounter+1]];
+		Vec3 v2 = tempVertexBuffer[trigIB[trigCounter+2]];
+
+		auto normal = ((v1 - v0).cross(v2 - v0));
+
+		cullFlags[i] = (normal.dot(v0) > 0.0f);
+	}
+
+	
+
+	int triangleCounter = 0;
 	for (int i = 0; i < trigIB.size(); i = i + 3)
-		gfx.DrawTriangle(pubeToScreenTransformer::getCoordinatesInScreenSpace(tempVertexBuffer[trigIB[i]]),
-						 pubeToScreenTransformer::getCoordinatesInScreenSpace(tempVertexBuffer[trigIB[i+1]]),
-						 pubeToScreenTransformer::getCoordinatesInScreenSpace(tempVertexBuffer[trigIB[i+2]]),colors[colorCounter++]);
+	{
+		if(cullFlags[triangleCounter++] == false)
+			gfx.DrawTriangle(pubeToScreenTransformer::getCoordinatesInScreenSpace(tempVertexBuffer[trigIB[i]]),
+							 pubeToScreenTransformer::getCoordinatesInScreenSpace(tempVertexBuffer[trigIB[i + 1]]),
+							 pubeToScreenTransformer::getCoordinatesInScreenSpace(tempVertexBuffer[trigIB[i + 2]]), colors[triangleCounter]);	
+	}
 }

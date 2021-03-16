@@ -21,6 +21,7 @@
 #pragma once
 
 #include "Graphics.h"
+#include "Surface.h"
 
 #include "cube.h"
 #include "pubeToScreenTransformer.h"
@@ -44,6 +45,7 @@ private:
 	/********************************/
 	/*  User Variables              */
 	cube cub;
+	Surface m_checkerboardTexture;
 
 	Color colors[12] = {
 		Colors::Blue,

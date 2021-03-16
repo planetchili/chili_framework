@@ -21,13 +21,17 @@
 #include "MainWindow.h"
 #include "Game.h"
 
+#include<iostream>
 #include "Mat3.h"
 
-Game::Game( MainWindow& wnd )
+#include "Log.h"
+
+Game::Game(MainWindow& wnd)
 	:
-	wnd( wnd ),
-	gfx( wnd ),
-	cub(0.5f)
+	wnd(wnd),
+	gfx(wnd),
+	cub(0.5f),
+	m_checkerboardTexture(Surface::FromFile(L"checkerboardPattern.bmp"))
 {}
 
 void Game::Go()
@@ -39,61 +43,6 @@ void Game::Go()
 }
 
 void Game::UpdateModel()
-{
-}
+{}
 void Game::ComposeFrame()
-{
-	static auto rotZ = Mat3::RotateZ(0.0174533);
-	static auto rotY = Mat3::RotateY(0.0174533);
-	static auto rotX = Mat3::RotateX(0.0174533);
-
-	auto lineIndexBuffer	= cub.getLineIndexBuffer();
-	auto trigIB = cub.getTriangleIndexBuffer();
-	auto& vertexBuffer	= cub.getVertexBuffer();
-
-	if (wnd.kbd.KeyIsPressed(0x5A))
-	{
-		for (auto& i : vertexBuffer)
-			i = i * rotZ;
-	}
-	if (wnd.kbd.KeyIsPressed(0x59))
-	{
-		for (auto& i : vertexBuffer)
-			i = i * rotY;
-	}
-	if (wnd.kbd.KeyIsPressed(0x58))
-	{
-		for (auto& i : vertexBuffer)
-			i = i * rotX;
-	}
-
-	std::vector<Vec3> tempVertexBuffer= cub.getVertexBuffer();
-
-	for (auto& i : tempVertexBuffer)
-		i.z = i.z + 2.0f;
-
-	//do backface culling here on tempVertexBuffer..
-	std::vector<bool> cullFlags;
-	cullFlags.resize(trigIB.size() / 3, false);
-
-	for (int i = 0, trigCounter = 0; i < trigIB.size()/3; i++, trigCounter = trigCounter + 3)
-	{
-		Vec3 v0 = tempVertexBuffer[trigIB[trigCounter]];
-		Vec3 v1 = tempVertexBuffer[trigIB[trigCounter+1]];
-		Vec3 v2 = tempVertexBuffer[trigIB[trigCounter+2]];
-
-		auto normal = ((v1 - v0).cross(v2 - v0));
-
-		cullFlags[i] = (normal.dot(v0) > 0.0f);
-	}
-
-	
-	int triangleCounter = 0;
-	for (int i = 0; i < trigIB.size(); i = i + 3)
-	{
-		if(cullFlags[triangleCounter++] == false)
-			gfx.DrawTriangle(pubeToScreenTransformer::getCoordinatesInScreenSpace(tempVertexBuffer[trigIB[i]]),
-							 pubeToScreenTransformer::getCoordinatesInScreenSpace(tempVertexBuffer[trigIB[i + 1]]),
-							 pubeToScreenTransformer::getCoordinatesInScreenSpace(tempVertexBuffer[trigIB[i + 2]]), colors[triangleCounter]);	
-	}
-}
+{}

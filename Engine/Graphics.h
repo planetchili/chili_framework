@@ -25,8 +25,7 @@
 #include "ChiliException.h"
 #include "Surface.h"
 #include "Colors.h"
-
-#include "Vec2.h"
+#include "texturedVertex.h"
 
 #define CHILI_GFX_EXCEPTION( hr,note ) Graphics::Exception( hr,note,_CRT_WIDE(__FILE__),__LINE__ )
 
@@ -57,25 +56,21 @@ public:
 	Graphics& operator=( const Graphics& ) = delete;
 	void EndFrame();
 	void BeginFrame();
-	void DrawTriangle(const Vec2& p1, const Vec2& p2, const Vec2& p3, Color c);
-	void DrawLine( const Vec2& p1,const Vec2& p2,Color c )
-	{
-		DrawLine( p1.x,p1.y,p2.x,p2.y,c );
-	}
+	void DrawLine( const Vec2& p1,const Vec2& p2,Color c )	{	DrawLine( p1.x,p1.y,p2.x,p2.y,c );	}
 	void DrawLine( float x1,float y1,float x2,float y2,Color c );
-	void PutPixel( int x,int y,int r,int g,int b )
-	{
-		PutPixel( x,y,{ unsigned char( r ),unsigned char( g ),unsigned char( b ) } );
-	}
-	void PutPixel( int x,int y,Color c )
-	{
-		sysBuffer.PutPixel( x,y,c );
-	}
+	void PutPixel( int x,int y,int r,int g,int b )	{	PutPixel( x,y,{ unsigned char( r ),unsigned char( g ),unsigned char( b ) } );	}
+	void PutPixel( int x,int y,Color c )	{	sysBuffer.PutPixel( x,y,c );	}
 	~Graphics();
+
+	void DrawTriangle(const Vec2& p1, const Vec2& p2, const Vec2& p3, Color c);
+	void DrawTriangle(const texturedVertex& p1, const texturedVertex& p2, const texturedVertex& p3, const Surface& texture);
 
 private:
 	void drawFlatBottomTriangle(const Vec2& p1, const Vec2& p2, const Vec2& p3, const Color& c);
 	void drawFlatTopTriangle   (const Vec2& p1, const Vec2& p2, const Vec2& p3, const Color& c);
+
+	void drawTexturedFlatBottomTriangle(const texturedVertex& p1, const texturedVertex& p2, const texturedVertex& p3, const Surface& texture);
+	void drawTexturedFlatTopTriangle(const texturedVertex& p1, const texturedVertex& p2, const texturedVertex& p3, const Surface& texture);
 
 private:
 	GDIPlusManager										gdipMan;

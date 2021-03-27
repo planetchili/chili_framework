@@ -19,6 +19,9 @@
     <Filter Include="Header Files\userDefined">
       <UniqueIdentifier>{d98a8e16-894e-4d9c-bb7d-d143da83e0ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\utilities">
+      <UniqueIdentifier>{e43458ab-01e9-4c48-8b1d-d8ad2e8b7162}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChiliWin.h">
@@ -84,6 +87,12 @@
     <ClInclude Include="Log.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="texturedVertex.h">
+      <Filter>Header Files\userDefined</Filter>
+    </ClInclude>
+    <ClInclude Include="mathFunctions.h">
+      <Filter>Header Files\utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DXErr.cpp">
@@ -115,6 +124,12 @@
     </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="texturedVertex.cpp">
+      <Filter>Header Files\userDefined</Filter>
+    </ClCompile>
+    <ClCompile Include="mathFunctions.cpp">
+      <Filter>Header Files\utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

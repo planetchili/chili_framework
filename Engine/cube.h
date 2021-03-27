@@ -1,21 +1,46 @@
 #pragma once
 #include <vector>
-#include "Vec3.h"
+#include "texturedVertex.h"
 
 class cube
 {
 public:
-	cube(float size = 0.5f)
+	cube(float side = 0.5f)
 	{
-		vertexBuffer.emplace_back(Vec3{ -size,-size,-0.5f }); //0
-		vertexBuffer.emplace_back(Vec3{ -size, size,-0.5f }); //1
-		vertexBuffer.emplace_back(Vec3{  size, size,-0.5f }); //2
-		vertexBuffer.emplace_back(Vec3{  size,-size,-0.5f }); //3
+		texturedVertex vertex;
+
+		vertex.m_position = Vec3(-side, -side, -side);
+		vertex.m_uv_coordinates = Vec2(0.0f, 1.0f);
+		vertexBuffer.emplace_back(vertex); //0
+
+		vertex.m_position = Vec3(side, -side, -side);
+		vertex.m_uv_coordinates = Vec2(1.0f, 1.0f);
+		vertexBuffer.emplace_back(vertex); //1
 		
-		vertexBuffer.emplace_back(Vec3{ -size, size, 0.5f }); //4 -> 1
-		vertexBuffer.emplace_back(Vec3{ -size,-size, 0.5f }); //5 -> 0
-		vertexBuffer.emplace_back(Vec3{  size, size, 0.5f }); //6 -> 2
-		vertexBuffer.emplace_back(Vec3{  size,-size, 0.5f }); //7 -> 3
+		vertex.m_position = Vec3(-side, side, -side);
+		vertex.m_uv_coordinates = Vec2(0.0f, 0.0f);
+		vertexBuffer.emplace_back(vertex); //2
+
+		vertex.m_position = Vec3(side, side, -side);
+		vertex.m_uv_coordinates = Vec2(1.0f, 0.0f);
+		vertexBuffer.emplace_back(vertex); //3
+		
+		vertex.m_position = Vec3(-side, -side, side);
+		vertex.m_uv_coordinates = Vec2(1.0f, 1.0f);
+		vertexBuffer.emplace_back(vertex); //4
+		
+		vertex.m_position = Vec3(side, -side, side);
+		vertex.m_uv_coordinates = Vec2(0.0f, 1.0f);
+		vertexBuffer.emplace_back(vertex); //5
+		
+		vertex.m_position = Vec3(-side, side, side);
+		vertex.m_uv_coordinates = Vec2(1.0f, 0.0f);
+		vertexBuffer.emplace_back(vertex); //6
+		
+		vertex.m_position = Vec3(side, side, side);
+		vertex.m_uv_coordinates = Vec2(0.0f, 0.0f);
+		vertexBuffer.emplace_back(vertex); //7
+
 
 		setLineIndexBuffer();
 		setTriangleIndexBuffer();
@@ -23,75 +48,30 @@ public:
 
 	inline std::vector<uint32_t> getLineIndexBuffer		() { return lineIndexBuffer;	 }
 	inline std::vector<uint32_t> getTriangleIndexBuffer	() { return triangleIndexBuffer; }
-	inline std::vector<Vec3>&     getVertexBuffer() { return vertexBuffer; }
+
+	inline std::vector<texturedVertex>&     getVertexBuffer() { return vertexBuffer; }
 
 private:
 	void setLineIndexBuffer()
 	{
-		//not implemented..
+		lineIndexBuffer = std::vector<std::uint32_t>{
+			0,1,  1,3,  3,2,  2,0,
+			0,4,  1,5,	3,7,  2,6,
+			4,5,  5,7,	7,6,  6,4 };
 	}
-
-
 	void setTriangleIndexBuffer()
 	{
-		//this is not right fix it in earnest..
-
-		triangleIndexBuffer.emplace_back(0);
-		triangleIndexBuffer.emplace_back(1);
-		triangleIndexBuffer.emplace_back(2);
-
-		triangleIndexBuffer.emplace_back(2);
-		triangleIndexBuffer.emplace_back(3);
-		triangleIndexBuffer.emplace_back(0);
-
-
-		triangleIndexBuffer.emplace_back(6);
-		triangleIndexBuffer.emplace_back(4);
-		triangleIndexBuffer.emplace_back(5);
-
-		triangleIndexBuffer.emplace_back(5);
-		triangleIndexBuffer.emplace_back(7);
-		triangleIndexBuffer.emplace_back(6);
-
-
-		triangleIndexBuffer.emplace_back(4);
-		triangleIndexBuffer.emplace_back(1);
-		triangleIndexBuffer.emplace_back(0);
-
-		triangleIndexBuffer.emplace_back(0);
-		triangleIndexBuffer.emplace_back(5);
-		triangleIndexBuffer.emplace_back(4);
-
-
-		triangleIndexBuffer.emplace_back(3);
-		triangleIndexBuffer.emplace_back(2);
-		triangleIndexBuffer.emplace_back(6);
-
-		triangleIndexBuffer.emplace_back(6);
-		triangleIndexBuffer.emplace_back(7);
-		triangleIndexBuffer.emplace_back(3);
-
-
-		triangleIndexBuffer.emplace_back(6);
-		triangleIndexBuffer.emplace_back(2);
-		triangleIndexBuffer.emplace_back(1);
-
-		triangleIndexBuffer.emplace_back(1);
-		triangleIndexBuffer.emplace_back(4);
-		triangleIndexBuffer.emplace_back(6);
-
-
-		triangleIndexBuffer.emplace_back(0);
-		triangleIndexBuffer.emplace_back(3);
-		triangleIndexBuffer.emplace_back(7);
-
-		triangleIndexBuffer.emplace_back(7);
-		triangleIndexBuffer.emplace_back(5);
-		triangleIndexBuffer.emplace_back(0);
+		triangleIndexBuffer = std::vector<std::uint32_t>{
+				0, 2, 1, 2, 3, 1,
+				1, 3, 5, 3, 7, 5,
+				2, 6, 3, 3, 6, 7,
+				4, 5, 7, 4, 7, 6,
+				0, 4, 2, 2, 4, 6,
+				0, 1, 4, 1, 5, 4 };
 	}
 
 private:
-	std::vector<Vec3> vertexBuffer;
+	std::vector<texturedVertex> vertexBuffer;
 
 	std::vector<std::uint32_t> lineIndexBuffer;
 	std::vector<uint32_t> triangleIndexBuffer;

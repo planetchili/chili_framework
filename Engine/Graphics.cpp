@@ -27,6 +27,8 @@
 #include <array>
 #include <functional>
 
+#include "mathFunctions.h"
+
 // Ignore the intellisense error "cannot open source file" for .shh files.
 // They will be created during the build sequence before the preprocessor runs.
 namespace FramebufferShaders
@@ -417,55 +419,52 @@ void Graphics::drawFlatTopTriangle(const Vec2& point1, const Vec2& point2, const
 
 void Graphics::DrawTriangle(const texturedVertex& point1,const texturedVertex& point2,const texturedVertex& point3,const Surface& texture)
 {
-	const texturedVertex* p1 = &point1;
-	const texturedVertex* p2 = &point2;
-	const texturedVertex* p3 = &point3;
+	const texturedVertex* p0 = &point1;
+	const texturedVertex* p1 = &point2;
+	const texturedVertex* p2 = &point3;
 
-	//by design.. I decided that p1 and p2 should be the long line which makes the triangle either flat bottom or flat top
-	if (p2->m_position.y == p3->m_position.y)
-		std::swap(p1, p3);
-	else if (p1->y == p3->y)
-		std::swap(p2, p3);
+	// sorting vertices by y
+	if (p0->m_position.y > p1->m_position.y) std::swap(p0, p1);
+	if (p1->m_position.y > p2->m_position.y) std::swap(p1, p2);
+	if (p0->m_position.y > p1->m_position.y) std::swap(p0, p1);
 
-	if (p1->m_position.y == p2->m_position.y)
+	if (p0->m_position.y == p1->m_position.y)
 	{
-		if (p3->m_position.y < p1->m_position.y)
-			drawTexturedFlatBottomTriangle(*p1, *p3, *p2, texture); //the design of drawFlatBottomTriangle states that p1->y and p3->y are the same.. with p2 either to the top or bottom 
-		else if (p3->y > p1->y)
-			drawTexturedFlatTopTriangle(*p1, *p3, *p2, texture); //the design of drawFlatTopTriangle states that p1->y and p3->y are the same.. with p2 either to the top or bottom 
+		if (p2->m_position.y > p0->m_position.y)
+		{
+			//natural flat bottom
+			drawTexturedFlatBottomTriangle(*p0, *p1, *p2, texture);
+		}
+		else //for now donot handle not a triangle case..
+		{
+			//natural flat top
+			drawTexturedFlatTopTriangle(*p0, *p1, *p2, texture);
+		}
 	}
 	else
 	{
-		//standrad triangle..
-		float dist12 = abs(p1->m_position.y - p2->m_position.y);
-		float dist23 = abs(p2->m_position.y - p3->m_position.y);
-		float dist31 = abs(p3->m_position.y - p1->m_position.y);
+		//normal triangle which needs to be split into natural flat bottom and natural flat top
 
-		//by design.. I decided that p1 and p2 should be the long line which needs to be interrupted..
-		if ((dist23 > dist12) && (dist23 > dist31))
-			std::swap(p1, p3);
+		float alphaSplit = (p1->m_position.y - p0->m_position.y)/(p2->m_position.y - p0->m_position.y);
+		texturedVertex splitPoint = p0->interpolateTo(*p2, alphaSplit);
 
-		//by design.. I decided that p1 and p2 should be the long line which needs to be interrupted..
-		if ((dist31 > dist12) && (dist31 > dist23))
-			std::swap(p2, p3);
-
-		texturedVertex splitPoint = p1->interpolateTo(*p2, p3->m_position.y);
-
-		if (p1->m_position.y > p2->m_position.y)
-			std::swap(p1, p2);
-
-		if (p2->m_position.x > splitPoint.m_position.x)
-		{
-			drawTexturedFlatBottomTriangle(*p3, *p1, splitPoint, texture);
-			drawTexturedFlatTopTriangle(*p3, *p2, splitPoint, texture);
-		}
-		else
-		{
-			drawTexturedFlatBottomTriangle(splitPoint, *p1, *p3, texture);
-			drawTexturedFlatTopTriangle	  (splitPoint, *p2, *p3, texture);
-		}
+		//draw flat bottom and flat top
+		drawTexturedFlatBottomTriangle	(*p1, splitPoint, *p0, texture);
+		drawTexturedFlatTopTriangle		(*p1, splitPoint, *p2, texture);
 	}
 }
+void Graphics::drawTexturedFlatBottomTriangle(const texturedVertex& point1, const texturedVertex& point2, const texturedVertex& point3, const Surface& texture)
+{
+	const texturedVertex* p0 = &point1;
+	const texturedVertex* p1 = &point2;
+	const texturedVertex* p2 = &point3;
+	
+	//see that p0 is to the left of p1 always.
+	if (p0->m_position.x > p1->m_position.x)
+		std::swap(p0, p1);
+
+}
+
 
 //////////////////////////////////////////////////
 //           Graphics Exception

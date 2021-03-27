@@ -14,3 +14,20 @@ texturedVertex texturedVertex::interpolateTo(const texturedVertex& rhs, float al
 
 	return vertex;
 }
+
+texturedVertex texturedVertex::operator-(const texturedVertex& rhs) const
+{
+	texturedVertex vert;
+	vert.m_position = m_position - rhs.m_position;
+	vert.m_uv_coordinates = m_uv_coordinates - rhs.m_uv_coordinates;
+
+	return vert;
+}
+texturedVertex texturedVertex::operator+(const texturedVertex& rhs) const
+{
+	texturedVertex vert;
+	vert.m_position = m_position + rhs.m_position;
+	vert.m_uv_coordinates = m_uv_coordinates + rhs.m_uv_coordinates;
+
+	return vert;
+}

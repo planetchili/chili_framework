@@ -15,7 +15,7 @@ public:
 public:
 	texturedVertex interpolateTo(const texturedVertex& rhs, float alpha) const;
 
-	bool operator=(const texturedVertex& rhs) { return ((m_position == rhs.m_position) && (m_uv_coordinates == rhs.m_uv_coordinates)); };
+	//bool operator ==(const texturedVertex& rhs) { return ((m_position == rhs.m_position) && (m_uv_coordinates == rhs.m_uv_coordinates)); };
 	texturedVertex operator-(const texturedVertex& rhs) const;
 	texturedVertex operator+(const texturedVertex& rhs) const;
 	

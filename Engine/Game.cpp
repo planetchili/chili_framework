@@ -45,4 +45,19 @@ void Game::Go()
 void Game::UpdateModel()
 {}
 void Game::ComposeFrame()
-{}
+{
+	texturedVertex t1;
+	t1.m_position = Vec3( 100.0f,0.0f,0.0f);
+	t1.m_uv_coordinates = Vec2( 0.5f,1.0f );
+
+	texturedVertex t2;
+	t2.m_position = Vec3( 50.0f,50.0f,0.0f );
+	t2.m_uv_coordinates = Vec2( 0.0f,0.0f );
+
+	texturedVertex t3;
+	t3.m_position = Vec3( 150.0f,50.0f,0.0f );
+	t3.m_uv_coordinates = Vec2( 1.0f,0.0f );
+
+
+	gfx.DrawTriangle(t1, t2, t3, m_checkerboardTexture);
+}

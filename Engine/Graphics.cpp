@@ -428,17 +428,23 @@ void Graphics::DrawTriangle(const texturedVertex& point1,const texturedVertex& p
 	if (p1->m_position.y > p2->m_position.y) std::swap(p1, p2);
 	if (p0->m_position.y > p1->m_position.y) std::swap(p0, p1);
 
+	///case for p1 and p2 y value equal not handled.. basically.. no natural flat bottom is being handled..
+	if (p1->m_position.y == p2->m_position.y)
+	{
+		//natural flat bottom
+		drawTexturedFlatBottomTriangle(*p0, *p1, *p2, texture);
+	}
 	if (p0->m_position.y == p1->m_position.y)
 	{
 		if (p2->m_position.y > p0->m_position.y)
 		{
 			//natural flat bottom
-			drawTexturedFlatBottomTriangle(*p0, *p1, *p2, texture);
+			drawTexturedFlatBottomTriangle(*p2, *p0, *p1, texture);
 		}
 		else //for now donot handle not a triangle case..
 		{
 			//natural flat top
-			drawTexturedFlatTopTriangle(*p0, *p1, *p2, texture);
+			drawTexturedFlatTopTriangle(*p2, *p0, *p1, texture);
 		}
 	}
 	else
@@ -449,21 +455,40 @@ void Graphics::DrawTriangle(const texturedVertex& point1,const texturedVertex& p
 		texturedVertex splitPoint = p0->interpolateTo(*p2, alphaSplit);
 
 		//draw flat bottom and flat top
-		drawTexturedFlatBottomTriangle	(*p1, splitPoint, *p0, texture);
-		drawTexturedFlatTopTriangle		(*p1, splitPoint, *p2, texture);
+		drawTexturedFlatBottomTriangle	(*p0, * p1, splitPoint, texture);
+		drawTexturedFlatTopTriangle		(*p2, *p1, splitPoint, texture);
 	}
 }
 void Graphics::drawTexturedFlatBottomTriangle(const texturedVertex& point1, const texturedVertex& point2, const texturedVertex& point3, const Surface& texture)
 {
+	//p1 and p2 form the straight line always and p0 is to the top of p1 and p2..
 	const texturedVertex* p0 = &point1;
 	const texturedVertex* p1 = &point2;
 	const texturedVertex* p2 = &point3;
-	
-	//see that p0 is to the left of p1 always.
-	if (p0->m_position.x > p1->m_position.x)
+
+	//see that p1 is to the left of p2 always.
+	if (p1->m_position.x > p2->m_position.x)
 		std::swap(p0, p1);
 
+	float w12 = (p1->m_position.x - p0->m_position.x) / (p1->m_position.y - p0->m_position.y); //inverse slope
+	float w13 = (p2->m_position.x - p0->m_position.x) / (p2->m_position.y - p0->m_position.y); //inverse slope
+
+	float yStart = p0->m_position.y;
+	float yEnd	 = p1->m_position.y;
+
+	for (int y = yStart; y < yEnd; y++)
+	{
+		float xStart = (y * w12) + p0->m_position.x;
+		float xEnd = (y * w13) + p0->m_position.x;
+
+		for (int x = xStart; x < xEnd; x++)
+		{
+			PutPixel(x, y, Colors::Red);
+		}
+	}
 }
+void Graphics::drawTexturedFlatTopTriangle(const texturedVertex& point1, const texturedVertex& point2, const texturedVertex& point3, const Surface& texture)
+{}
 
 
 //////////////////////////////////////////////////

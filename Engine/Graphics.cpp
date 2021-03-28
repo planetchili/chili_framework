@@ -459,17 +459,30 @@ void Graphics::drawTexturedFlatBottomTriangle(const texturedVertex& point1, cons
 	float w12 = (p1->m_position.x - p0->m_position.x) / (p1->m_position.y - p0->m_position.y); //inverse slope
 	float w13 = (p2->m_position.x - p0->m_position.x) / (p2->m_position.y - p0->m_position.y); //inverse slope
 
+	float tW12 = (p1->m_uv_coordinates.x - p0->m_uv_coordinates.x) / (p1->m_uv_coordinates.y - p0->m_uv_coordinates.y); //inverse slope
+	float tW13 = (p2->m_uv_coordinates.x - p0->m_uv_coordinates.x) / (p2->m_uv_coordinates.y - p0->m_uv_coordinates.y); //inverse slope
+
 	float yStart = p0->m_position.y;
 	float yEnd	 = p1->m_position.y;
 
-	for (int y = yStart; y < yEnd; y++)
+	float tYStart = p0->m_uv_coordinates.y;
+	float tYEnd	  = p1->m_uv_coordinates.y;
+	float tYDelta = (p1->m_uv_coordinates.y - p0->m_uv_coordinates.y)/(p1->m_position.y - p0->m_position.y);
+
+	for (int y = yStart; y < yEnd; y++,tYStart += tYDelta)
 	{
 		float xStart = (y * w12) + p0->m_position.x;
 		float xEnd = (y * w13) + p0->m_position.x;
 
-		for (int x = xStart; x < xEnd; x++)
+		float tXStart	= (tYStart * tW12) + p0->m_uv_coordinates.x;
+		float tXEnd		= (tYStart * tW13) + p0->m_uv_coordinates.x;
+		float txDelta = (tXEnd - tXStart) / (xEnd - xStart);
+
+		for (int x = xStart; x < xEnd; x++,tXStart += txDelta)
 		{
-			PutPixel(x, y, Colors::Red);
+			PutPixel(x, y, texture.GetPixel(std::clamp(tXStart * texture.GetWidth(), 0.0f, (float)texture.GetWidth() - 1.0f),
+				std::clamp(tYStart * texture.GetHeight(), 0.0f, (float)texture.GetHeight() - 1.0f)
+			));
 		}
 	}
 }

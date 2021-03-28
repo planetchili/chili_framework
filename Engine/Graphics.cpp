@@ -462,8 +462,8 @@ void Graphics::drawTexturedFlatBottomTriangle(const texturedVertex& point1, cons
 	float tW12 = (p1->m_uv_coordinates.x - p0->m_uv_coordinates.x) / (p1->m_uv_coordinates.y - p0->m_uv_coordinates.y); //inverse slope
 	float tW13 = (p2->m_uv_coordinates.x - p0->m_uv_coordinates.x) / (p2->m_uv_coordinates.y - p0->m_uv_coordinates.y); //inverse slope
 
-	float yStart = p0->m_position.y;
-	float yEnd	 = p1->m_position.y;
+	float yStart = std::floor(p0->m_position.y + 0.5f);
+	float yEnd	 = std::floor(p1->m_position.y + 0.5f);
 
 	float tYStart = p0->m_uv_coordinates.y;
 	float tYEnd	  = p1->m_uv_coordinates.y;
@@ -471,8 +471,8 @@ void Graphics::drawTexturedFlatBottomTriangle(const texturedVertex& point1, cons
 
 	for (int y = yStart; y < yEnd; y++,tYStart += tYDelta)
 	{
-		float xStart = (y * w12) + p0->m_position.x;
-		float xEnd = (y * w13) + p0->m_position.x;
+		float xStart = std::floor(((y * w12) + p0->m_position.x) + 0.5f);
+		float xEnd = std::floor(((y * w13) + p0->m_position.x) + 0.5f);
 
 		float tXStart	= (tYStart * tW12) + p0->m_uv_coordinates.x;
 		float tXEnd		= (tYStart * tW13) + p0->m_uv_coordinates.x;
@@ -487,7 +487,12 @@ void Graphics::drawTexturedFlatBottomTriangle(const texturedVertex& point1, cons
 	}
 }
 void Graphics::drawTexturedFlatTopTriangle(const texturedVertex& point1, const texturedVertex& point2, const texturedVertex& point3, const Surface& texture)
-{}
+{
+	//p1 and p2 form the straight line always and p0 is to the bottom of p1 and p2..
+	const texturedVertex* p0 = &point1;
+	const texturedVertex* p1 = &point2;
+	const texturedVertex* p2 = &point3;
+}
 
 
 //////////////////////////////////////////////////

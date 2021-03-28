@@ -429,24 +429,10 @@ void Graphics::DrawTriangle(const texturedVertex& point1,const texturedVertex& p
 	if (p0->m_position.y > p1->m_position.y) std::swap(p0, p1);
 
 	///case for p1 and p2 y value equal not handled.. basically.. no natural flat bottom is being handled..
-	if (p1->m_position.y == p2->m_position.y)
-	{
-		//natural flat bottom
+	if (p1->m_position.y == p2->m_position.y) //natural flat bottom
 		drawTexturedFlatBottomTriangle(*p0, *p1, *p2, texture);
-	}
-	if (p0->m_position.y == p1->m_position.y)
-	{
-		if (p2->m_position.y > p0->m_position.y)
-		{
-			//natural flat bottom
-			drawTexturedFlatBottomTriangle(*p2, *p0, *p1, texture);
-		}
-		else //for now donot handle not a triangle case..
-		{
-			//natural flat top
-			drawTexturedFlatTopTriangle(*p2, *p0, *p1, texture);
-		}
-	}
+	else if (p0->m_position.y == p1->m_position.y) //natural flat top
+		drawTexturedFlatTopTriangle(*p2, *p0, *p1, texture);
 	else
 	{
 		//normal triangle which needs to be split into natural flat bottom and natural flat top

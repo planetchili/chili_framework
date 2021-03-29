@@ -505,34 +505,34 @@ void Graphics::drawTexturedFlatTopTriangle(const texturedVertex& point1, const t
 	float w12 = (p1->m_position.x - p0->m_position.x) / (p1->m_position.y - p0->m_position.y); //inverse slope
 	float w13 = (p2->m_position.x - p0->m_position.x) / (p2->m_position.y - p0->m_position.y); //inverse slope
 
-	float tW12 = (p1->m_uv_coordinates.x - p0->m_uv_coordinates.x) / (p1->m_uv_coordinates.y - p0->m_uv_coordinates.y); //inverse slope
-	float tW13 = (p2->m_uv_coordinates.x - p0->m_uv_coordinates.x) / (p2->m_uv_coordinates.y - p0->m_uv_coordinates.y); //inverse slope
-
 	float yStart = std::ceil(p1->m_position.y - 0.5f);
 	float yEnd = std::floor(p0->m_position.y + 0.5f);
 
-	float tYStart = p1->m_uv_coordinates.y;
-	float tYEnd = p0->m_uv_coordinates.y;
-	float tYDelta = (p1->m_uv_coordinates.y - p0->m_uv_coordinates.y) / (p1->m_position.y - p0->m_position.y);
+	Vec2 tcEdgeLeft		= p1->m_uv_coordinates;
+	Vec2 tcEdgeRight	= p2->m_uv_coordinates;
+	Vec2 tcEdgeBottomLeft = p0->m_uv_coordinates;
+	Vec2 tcEdgeBottomRight = p0->m_uv_coordinates;
+
+	Vec2 tcScanStepLeft		= (tcEdgeBottomLeft - tcEdgeLeft) / (p0->m_position - p1->m_position).y;
+	Vec2 tcScanStepRight	= (tcEdgeBottomRight - tcEdgeRight) / (p0->m_position - p2->m_position).y;
 
 	float leftEdgeDelta = w12;
 	float rightEdgeDelta = w13;
 	int count = 0; //the count variable keeps track of how many y spaces we advanced.. so that xStart and xEnd can be calculated accordingly..
 
-	for (int y = yStart; y < yEnd; y++, tYStart += tYDelta)
+	for (int y = yStart; y < yEnd; y++, tcEdgeLeft += tcScanStepLeft,tcEdgeRight += tcScanStepRight)
 	{
 		float xStart = p1->m_position.x + (count * leftEdgeDelta);
 		float xEnd = p2->m_position.x + (count * rightEdgeDelta);
-
-		float tXStart = p1->m_uv_coordinates.x + (count * tW12 *tYDelta);
-		float tXEnd = p2->m_uv_coordinates.x + (count * tW13 * tYDelta);
-		float txDelta = (tXEnd - tXStart) / (xEnd - xStart);
-
 		count++;
-		for (int x = xStart; x < xEnd; x++, tXStart += txDelta)
+
+		Vec2 tcScanStep = (tcEdgeRight - tcEdgeLeft) / (xEnd - xStart);
+		Vec2 tcStart = tcEdgeLeft;
+
+		for (int x = xStart; x < xEnd; x++, tcStart += tcScanStep)
 		{
-			PutPixel(x, y, texture.GetPixel(std::clamp(tXStart * texture.GetWidth(), 0.0f, (float)texture.GetWidth() - 1.0f),
-				std::clamp(tYStart * texture.GetHeight(), 0.0f, (float)texture.GetHeight() - 1.0f)
+			PutPixel(x, y, texture.GetPixel(std::clamp(tcStart.x * texture.GetWidth(), 0.0f, (float)texture.GetWidth() - 1.0f),
+				std::clamp(tcStart.y * texture.GetHeight(), 0.0f, (float)texture.GetHeight() - 1.0f)
 			));
 		}
 	}

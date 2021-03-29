@@ -58,7 +58,7 @@ void Game::ComposeFrame()
 	t2.m_uv_coordinates = Vec2( 0.0f,0.0f );
 
 	texturedVertex t3;
-	t3.m_position = Vec3( 500.0f,250.0f,0.0f );
+	t3.m_position = Vec3( 500.0f,360.0f,0.0f );
 	t3.m_uv_coordinates = Vec2( 1.0f,0.0f );
 
 

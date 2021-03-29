@@ -507,7 +507,7 @@ void Graphics::drawTexturedFlatTopTriangle(const texturedVertex& point1, const t
 	float tW12 = (p1->m_uv_coordinates.x - p0->m_uv_coordinates.x) / (p1->m_uv_coordinates.y - p0->m_uv_coordinates.y); //inverse slope
 	float tW13 = (p2->m_uv_coordinates.x - p0->m_uv_coordinates.x) / (p2->m_uv_coordinates.y - p0->m_uv_coordinates.y); //inverse slope
 
-	float yStart = std::floor(p1->m_position.y + 0.5f);
+	float yStart = std::ceil(p1->m_position.y - 0.5f);
 	float yEnd = std::floor(p0->m_position.y + 0.5f);
 
 	float tYStart = p1->m_uv_coordinates.y;

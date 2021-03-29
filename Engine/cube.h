@@ -18,7 +18,7 @@ public:
 		m_vertexBuffer.emplace_back(vertex); //1
 		
 		vertex.m_position = Vec3(-side, side, -side);
-		vertex.m_uv_coordinates = Vec2(0.5f, 0.75f);
+		vertex.m_uv_coordinates = Vec2(0.25f, 0.75f);
 		m_vertexBuffer.emplace_back(vertex); //2
 
 		vertex.m_position = Vec3(side, side, -side);
@@ -76,12 +76,13 @@ private:
 	void setTriangleIndexBuffer()
 	{
 		m_indexBuffer = std::vector<std::uint32_t>{
-				1,0,3	, 3,2,1,
-				4,1,2	, 2,5,4,
+				1,0,3	, 3,2,1, };
+				/*4,1,2	, 2,5,4,
 				8,4,5	, 5,9,8,
 				11,10,9 , 9,5,11,
-				12,13,8 , 8,9,12
-		};
+				12,13,8 , 8,9,12,
+				8,7,6	, 6,4,8
+		};*/
 	}
 
 private:

@@ -523,8 +523,8 @@ void Graphics::drawTexturedFlatTopTriangle(const texturedVertex& point1, const t
 		float xStart = p1->m_position.x + (count * leftEdgeDelta);
 		float xEnd = p2->m_position.x + (count * rightEdgeDelta);
 
-		float tXStart = p0->m_uv_coordinates.x + (count * tW12 * tYDelta);
-		float tXEnd = p0->m_uv_coordinates.x + (count * tW13 * tYDelta);
+		float tXStart = p1->m_uv_coordinates.x + (count * tW12 * tYDelta);
+		float tXEnd = p2->m_uv_coordinates.x + (count * tW13 * tYDelta);
 		float txDelta = (tXEnd - tXStart) / (xEnd - xStart);
 
 		count++;

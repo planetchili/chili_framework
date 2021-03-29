@@ -46,6 +46,7 @@ private:
 	/*  User Variables              */
 	cube cub;
 	Surface m_checkerboardTexture;
+	Surface m_diceTexture;
 
 	Color colors[12] = {
 		Colors::Blue,

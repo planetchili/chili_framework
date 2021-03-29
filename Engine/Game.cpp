@@ -31,7 +31,8 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	cub(0.5f),
-	m_checkerboardTexture(Surface::FromFile(L"checkerboardPattern.bmp"))
+	m_checkerboardTexture(Surface::FromFile(L"checkerboardPattern.bmp")),
+	m_diceTexture(Surface::FromFile(L"diceUV.bmp"))
 {}
 
 void Game::Go()

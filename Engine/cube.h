@@ -11,59 +11,59 @@ public:
 
 		vertex.m_position = Vec3(side, side, side);
 		vertex.m_uv_coordinates = Vec2(0.0f, 0.5f);
-		vertexBuffer.emplace_back(vertex); //0
+		m_vertexBuffer.emplace_back(vertex); //0
 
 		vertex.m_position = Vec3(-side, side, side);
 		vertex.m_uv_coordinates = Vec2(0.25f, 0.5f);
-		vertexBuffer.emplace_back(vertex); //1
+		m_vertexBuffer.emplace_back(vertex); //1
 		
 		vertex.m_position = Vec3(-side, side, -side);
 		vertex.m_uv_coordinates = Vec2(0.5f, 0.75f);
-		vertexBuffer.emplace_back(vertex); //2
+		m_vertexBuffer.emplace_back(vertex); //2
 
 		vertex.m_position = Vec3(side, side, -side);
 		vertex.m_uv_coordinates = Vec2(0.0f, 0.75f);
-		vertexBuffer.emplace_back(vertex); //3
+		m_vertexBuffer.emplace_back(vertex); //3
 		
 		vertex.m_position = Vec3(-side, -side, side);
 		vertex.m_uv_coordinates = Vec2(0.5f, 0.5f);
-		vertexBuffer.emplace_back(vertex); //4
+		m_vertexBuffer.emplace_back(vertex); //4
 		
 		vertex.m_position = Vec3(-side, -side, -side);
 		vertex.m_uv_coordinates = Vec2(0.5f, 0.75f);
-		vertexBuffer.emplace_back(vertex); //5
+		m_vertexBuffer.emplace_back(vertex); //5
 		
 		vertex.m_position = Vec3(-side, side, side);
 		vertex.m_uv_coordinates = Vec2(0.5f, 0.25f);
-		vertexBuffer.emplace_back(vertex); //6
+		m_vertexBuffer.emplace_back(vertex); //6
 		
 		vertex.m_position = Vec3(side, side, side);
 		vertex.m_uv_coordinates = Vec2(0.75f, 0.25f);
-		vertexBuffer.emplace_back(vertex); //7
+		m_vertexBuffer.emplace_back(vertex); //7
 
 		vertex.m_position = Vec3(side, -side, side);
 		vertex.m_uv_coordinates = Vec2(0.75f, 0.5f);
-		vertexBuffer.emplace_back(vertex); //8
+		m_vertexBuffer.emplace_back(vertex); //8
 		
 		vertex.m_position = Vec3(side, -side, -side);
 		vertex.m_uv_coordinates = Vec2(0.75f, 0.75f);
-		vertexBuffer.emplace_back(vertex); //9
+		m_vertexBuffer.emplace_back(vertex); //9
 
 		vertex.m_position = Vec3(side, side, -side);
 		vertex.m_uv_coordinates = Vec2(0.75f, 1.0f);
-		vertexBuffer.emplace_back(vertex); //10
+		m_vertexBuffer.emplace_back(vertex); //10
 
 		vertex.m_position = Vec3(-side, side, -side);
 		vertex.m_uv_coordinates = Vec2(0.5f, 1.0f);
-		vertexBuffer.emplace_back(vertex); //11
+		m_vertexBuffer.emplace_back(vertex); //11
 
 		vertex.m_position = Vec3(side, side, -side);
 		vertex.m_uv_coordinates = Vec2(1.0f, 0.75f);
-		vertexBuffer.emplace_back(vertex); //12
+		m_vertexBuffer.emplace_back(vertex); //12
 
 		vertex.m_position = Vec3(side, side, side);
 		vertex.m_uv_coordinates = Vec2(1.0f, 0.5f);
-		vertexBuffer.emplace_back(vertex); //13
+		m_vertexBuffer.emplace_back(vertex); //13
 
 		setTriangleIndexBuffer();
 	}

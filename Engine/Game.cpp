@@ -47,20 +47,60 @@ void Game::UpdateModel()
 {}
 void Game::ComposeFrame()
 {
-	texturedVertex t1;
-	t1.m_position = Vec3(wnd.mouse.GetPosX(), wnd.mouse.GetPosY(), 0.0f);
-	//t1.m_position = Vec3(250.0f,50.0f , 0.0f);
-	//t1.m_position = Vec3(250.0f, 500.0f, 0.0f);
-	t1.m_uv_coordinates = Vec2( 0.5f,1.0f );
+	static auto rotZ = Mat3::RotateZ(0.0174533);
+	static auto rotY = Mat3::RotateY(0.0174533);
+	static auto rotX = Mat3::RotateX(0.0174533);
 
-	texturedVertex t2;
-	t2.m_position = Vec3( 0.0f,250.0f,0.0f );
-	t2.m_uv_coordinates = Vec2( 0.0f,0.0f );
+	auto trigIB = cub.getIndexBuffer();
+	auto& vertexBuffer = cub.getVertexBuffer();
 
-	texturedVertex t3;
-	t3.m_position = Vec3( 500.0f,360.0f,0.0f );
-	t3.m_uv_coordinates = Vec2( 1.0f,0.0f );
+	if (wnd.kbd.KeyIsPressed(0x5A))
+	{
+		for (auto& i : vertexBuffer)
+			i = i * rotZ;
+	}
+	if (wnd.kbd.KeyIsPressed(0x59))
+	{
+		for (auto& i : vertexBuffer)
+			i = i * rotY;
+	}
+	if (wnd.kbd.KeyIsPressed(0x58))
+	{
+		for (auto& i : vertexBuffer)
+			i = i * rotX;
+	}
+
+	std::vector<texturedVertex> tempVertexBuffer = cub.getVertexBuffer();
+
+	for (auto& i : tempVertexBuffer)
+		i.m_position.z = i.m_position.z + 2.0f;
+
+	//do backface culling here on tempVertexBuffer..
+	std::vector<bool> cullFlags;
+	cullFlags.resize(trigIB.size() / 3, false);
+
+	for (int i = 0, trigCounter = 0; i < trigIB.size() / 3; i++, trigCounter = trigCounter + 3)
+	{
+		Vec3 v0 = tempVertexBuffer[trigIB[trigCounter]].m_position;
+		Vec3 v1 = tempVertexBuffer[trigIB[trigCounter + 1]].m_position;
+		Vec3 v2 = tempVertexBuffer[trigIB[trigCounter + 2]].m_position;
+
+		auto normal = ((v1 - v0).cross(v2 - v0));
+
+		cullFlags[i] = (normal.dot(v0) > 0.0f);
+	}
 
 
-	gfx.DrawTriangle(t1, t2, t3, m_checkerboardTexture);
+	int triangleCounter = 0;
+	for (int i = 0; i < trigIB.size(); i = i + 3)
+	{
+		if (cullFlags[triangleCounter++] == false)
+		{
+			tempVertexBuffer[trigIB[i]].transformToScreenSpace();
+			tempVertexBuffer[trigIB[i + 1]].transformToScreenSpace();
+			tempVertexBuffer[trigIB[i + 2]].transformToScreenSpace();
+
+			gfx.DrawTriangle(tempVertexBuffer[trigIB[i]], tempVertexBuffer[trigIB[i + 1]], tempVertexBuffer[trigIB[i + 2]], m_diceTexture);
+		}
+	}
 }

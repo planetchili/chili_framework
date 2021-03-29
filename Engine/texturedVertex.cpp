@@ -5,6 +5,12 @@ texturedVertex::texturedVertex(Vec3 position,Vec2 uv_coordinates)
 	m_position(position),
 	m_uv_coordinates(uv_coordinates)
 {}
+texturedVertex::texturedVertex(Vec2 position, Vec2 uv_coordinates)
+	:
+	m_position(Vec3(position.x,position.y,0.0f)),
+	m_uv_coordinates(uv_coordinates)
+{}
+
 
 texturedVertex texturedVertex::interpolateTo(const texturedVertex& rhs, float alpha) const
 {
@@ -14,6 +20,16 @@ texturedVertex texturedVertex::interpolateTo(const texturedVertex& rhs, float al
 
 	return vertex;
 }
+void texturedVertex::transformToScreenSpace(int screenWidth,int screenHeight)
+{
+	if (!m_inScreenSpace)
+	{
+		auto vec = pubeToScreenTransformer::getCoordinatesInScreenSpace(m_position, screenWidth, screenHeight);
+		m_position = { vec.x,vec.y,0.0f };
+		m_inScreenSpace = true;
+	}
+}
+
 
 texturedVertex texturedVertex::operator-(const texturedVertex& rhs) const
 {
@@ -29,5 +45,12 @@ texturedVertex texturedVertex::operator+(const texturedVertex& rhs) const
 	vert.m_position = m_position + rhs.m_position;
 	vert.m_uv_coordinates = m_uv_coordinates + rhs.m_uv_coordinates;
 
+	return vert;
+}
+texturedVertex texturedVertex::operator*(const Mat3& rhs) const
+{
+	texturedVertex vert;
+	vert.m_position = m_position * rhs;
+	vert.m_uv_coordinates =  m_uv_coordinates;
 	return vert;
 }

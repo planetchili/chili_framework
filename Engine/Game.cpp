@@ -49,6 +49,7 @@ void Game::ComposeFrame()
 {
 	texturedVertex t1;
 	t1.m_position = Vec3(wnd.mouse.GetPosX(), wnd.mouse.GetPosY(), 0.0f);
+	//t1.m_position = Vec3(250.0f,50.0f , 0.0f);
 	t1.m_uv_coordinates = Vec2( 0.5f,0.0f );
 
 	texturedVertex t2;

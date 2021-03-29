@@ -492,6 +492,49 @@ void Graphics::drawTexturedFlatBottomTriangle(const texturedVertex& point1, cons
 }
 void Graphics::drawTexturedFlatTopTriangle(const texturedVertex& point1, const texturedVertex& point2, const texturedVertex& point3, const Surface& texture)
 {
+	//p1 and p2 form the straight line always and p0 is to the bottom of p1 and p2..
+	const texturedVertex* p0 = &point1;
+	const texturedVertex* p1 = &point2;
+	const texturedVertex* p2 = &point3;
+
+	//see that p1 is to the left of p2 always.
+	if (p1->m_position.x > p2->m_position.x)
+		std::swap(p1, p2);
+
+	float w12 = (p1->m_position.x - p0->m_position.x) / (p1->m_position.y - p0->m_position.y); //inverse slope
+	float w13 = (p2->m_position.x - p0->m_position.x) / (p2->m_position.y - p0->m_position.y); //inverse slope
+
+	float tW12 = (p1->m_uv_coordinates.x - p0->m_uv_coordinates.x) / (p1->m_uv_coordinates.y - p0->m_uv_coordinates.y); //inverse slope
+	float tW13 = (p2->m_uv_coordinates.x - p0->m_uv_coordinates.x) / (p2->m_uv_coordinates.y - p0->m_uv_coordinates.y); //inverse slope
+
+	float yStart = std::floor(p1->m_position.y + 0.5f);
+	float yEnd = std::floor(p0->m_position.y + 0.5f);
+
+	float tYStart = p1->m_uv_coordinates.y;
+	float tYEnd = p0->m_uv_coordinates.y;
+	float tYDelta = (p1->m_uv_coordinates.y - p0->m_uv_coordinates.y) / (p1->m_position.y - p0->m_position.y);
+
+	float leftEdgeDelta = w12;
+	float rightEdgeDelta = w13;
+	int count = 0; //the count variable keeps track of how many y spaces we advanced.. so that xStart and xEnd can be calculated accordingly..
+
+	for (int y = yStart; y < yEnd; y++, tYStart += tYDelta)
+	{
+		float xStart = p1->m_position.x + (count * leftEdgeDelta);
+		float xEnd = p2->m_position.x + (count * rightEdgeDelta);
+
+		float tXStart = p0->m_uv_coordinates.x + (count * tW12 * tYDelta);
+		float tXEnd = p0->m_uv_coordinates.x + (count * tW13 * tYDelta);
+		float txDelta = (tXEnd - tXStart) / (xEnd - xStart);
+
+		count++;
+		for (int x = xStart; x < xEnd; x++, tXStart += txDelta)
+		{
+			PutPixel(x, y, texture.GetPixel(std::clamp(tXStart * texture.GetWidth(), 0.0f, (float)texture.GetWidth() - 1.0f),
+				std::clamp(tYStart * texture.GetHeight(), 0.0f, (float)texture.GetHeight() - 1.0f)
+			));
+		}
+	}
 }
 
 

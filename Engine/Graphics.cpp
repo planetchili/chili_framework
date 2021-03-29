@@ -430,65 +430,23 @@ void Graphics::DrawTriangle(const texturedVertex& point1,const texturedVertex& p
 
 	///case for p1 and p2 y value equal not handled.. basically.. no natural flat bottom is being handled..
 	if (p1->m_position.y == p2->m_position.y) //natural flat bottom
-		drawTexturedFlatBottomTriangle(*p0, *p1, *p2, texture);
+		drawTexturedFlatTriangle(*p0, *p1, *p2, texture);
 	else if (p0->m_position.y == p1->m_position.y) //natural flat top
-		drawTexturedFlatTopTriangle(*p2, *p0, *p1, texture);
+		drawTexturedFlatTriangle(*p2, *p0, *p1, texture);
 	else
 	{
 		//normal triangle which needs to be split into natural flat bottom and natural flat top
-
 		float alphaSplit = (p1->m_position.y - p0->m_position.y)/(p2->m_position.y - p0->m_position.y);
 		texturedVertex splitPoint = p0->interpolateTo(*p2, alphaSplit);
 
 		//draw flat bottom and flat top
-		drawTexturedFlatBottomTriangle	(*p0, * p1, splitPoint, texture);
-		drawTexturedFlatTopTriangle		(*p2, *p1, splitPoint, texture);
+		drawTexturedFlatTriangle	(*p0, * p1, splitPoint, texture); //flat bottom triangle
+		drawTexturedFlatTriangle		(*p2, *p1, splitPoint, texture); //flat top triangle
 	}
 }
-void Graphics::drawTexturedFlatBottomTriangle(const texturedVertex& point1, const texturedVertex& point2, const texturedVertex& point3, const Surface& texture)
+void Graphics::drawTexturedFlatTriangle(const texturedVertex& point1, const texturedVertex& point2, const texturedVertex& point3, const Surface& texture)
 {
-	//p1 and p2 form the straight line always and p0 is to the top of p1 and p2..
-	const texturedVertex* p0 = &point1;
-	const texturedVertex* p1 = &point2;
-	const texturedVertex* p2 = &point3;
-
-	//see that p1 is to the left of p2 always.
-	if (p1->m_position.x > p2->m_position.x)
-		std::swap(p1, p2);
-
-	float w12 = (p1->m_position.x - p0->m_position.x) / (p1->m_position.y - p0->m_position.y); //inverse slope
-	float w13 = (p2->m_position.x - p0->m_position.x) / (p2->m_position.y - p0->m_position.y); //inverse slope
-
-	float tW12 = (p1->m_uv_coordinates.x - p0->m_uv_coordinates.x) / (p1->m_uv_coordinates.y - p0->m_uv_coordinates.y); //inverse slope
-	float tW13 = (p2->m_uv_coordinates.x - p0->m_uv_coordinates.x) / (p2->m_uv_coordinates.y - p0->m_uv_coordinates.y); //inverse slope
-
-	float yStart = std::floor(p0->m_position.y + 0.5f);
-	float yEnd	 = std::floor(p1->m_position.y + 0.5f);
-
-	float tYStart = p0->m_uv_coordinates.y;
-	float tYEnd	  = p1->m_uv_coordinates.y;
-	float tYDelta = (p1->m_uv_coordinates.y - p0->m_uv_coordinates.y)/(p1->m_position.y - p0->m_position.y);
-
-	for (int y = yStart; y < yEnd; y++,tYStart += tYDelta)
-	{
-		float xStart = std::floor(((y * w12) + p0->m_position.x) + 0.5f);
-		float xEnd = std::floor(((y * w13) + p0->m_position.x) + 0.5f);
-
-		float tXStart	= (tYStart * tW12) + p0->m_uv_coordinates.x;
-		float tXEnd		= (tYStart * tW13) + p0->m_uv_coordinates.x;
-		float txDelta = (tXEnd - tXStart) / (xEnd - xStart);
-
-		for (int x = xStart; x < xEnd; x++,tXStart += txDelta)
-		{
-			PutPixel(x, y, texture.GetPixel(std::clamp(tXStart * texture.GetWidth(), 0.0f, (float)texture.GetWidth() - 1.0f),
-				std::clamp(tYStart * texture.GetHeight(), 0.0f, (float)texture.GetHeight() - 1.0f)
-			));
-		}
-	}
-}
-void Graphics::drawTexturedFlatTopTriangle(const texturedVertex& point1, const texturedVertex& point2, const texturedVertex& point3, const Surface& texture)
-{
-	//p1 and p2 form the straight line always and p0 is to the bottom of p1 and p2..
+	//p1 and p2 form the straight line always and p0 is to the bottom or top of p1 and p2..
 	const texturedVertex* p0 = &point1;
 	const texturedVertex* p1 = &point2;
 	const texturedVertex* p2 = &point3;
@@ -506,23 +464,28 @@ void Graphics::drawTexturedFlatTopTriangle(const texturedVertex& point1, const t
 	float c1 = (p0->m_position.y - (m01 * p0->m_position.x));
 	float c2 = (p0->m_position.y - (m02 * p0->m_position.x));
 
-	float tW21 = (p0->m_uv_coordinates.x - p1->m_uv_coordinates.x) / (p0->m_uv_coordinates.y - p1->m_uv_coordinates.y); //inverse slope
-	float tW31 = (p0->m_uv_coordinates.x - p2->m_uv_coordinates.x) / (p0->m_uv_coordinates.y - p2->m_uv_coordinates.y); //inverse slope
+	float tM01 = (p1->m_uv_coordinates.y - p0->m_uv_coordinates.y) / (p1->m_uv_coordinates.x - p0->m_uv_coordinates.x); //slope
+	float tM02 = (p2->m_uv_coordinates.y - p0->m_uv_coordinates.y) / (p2->m_uv_coordinates.x - p0->m_uv_coordinates.x); //slope
+	float tW01 = (p1->m_uv_coordinates.x - p0->m_uv_coordinates.x) / (p1->m_uv_coordinates.y - p0->m_uv_coordinates.y); //inverse slope
+	float tW02 = (p2->m_uv_coordinates.x - p0->m_uv_coordinates.x) / (p2->m_uv_coordinates.y - p0->m_uv_coordinates.y); //inverse slope
 
-	float yStart = std::floor(p1->m_position.y + 0.5f);
-	float yEnd = std::floor(p0->m_position.y + 0.5f); 
+	float tC1 = (p0->m_uv_coordinates.y - (tM01 * p0->m_uv_coordinates.x));
+	float tC2 = (p0->m_uv_coordinates.y - (tM02 * p0->m_uv_coordinates.x));
 
-	float tYStart = p1->m_uv_coordinates.y; 
-	float tYEnd = p0->m_uv_coordinates.y;
+	float yStart	= std::min(std::floor(p1->m_position.y + 0.5f), std::floor(p0->m_position.y + 0.5f));
+	float yEnd		= std::max(std::floor(p1->m_position.y + 0.5f), std::floor(p0->m_position.y + 0.5f));
+
+	float tYStart	= std::min(p1->m_uv_coordinates.y, p0->m_uv_coordinates.y);
+	float tYEnd		= std::max(p1->m_uv_coordinates.y, p0->m_uv_coordinates.y);
 	float tYDelta = (p0->m_uv_coordinates.y - p1->m_uv_coordinates.y) / (p0->m_position.y - p1->m_position.y);
 
 	for (int y = yStart; y < yEnd; y++, tYStart += tYDelta)
 	{
-		float xStart = std::floor(((y - c1) * w01)  + 0.5f);
-		float xEnd = std::floor(((y - c2) * w02) + 0.5f);
+		float xStart	= std::floor(((y - c1) * w01)  + 0.5f);
+		float xEnd		= std::floor(((y - c2) * w02) + 0.5f);
 
-		float tXStart = (tYStart * tW21) + p0->m_uv_coordinates.x;
-		float tXEnd = (tYStart * tW31) + p0->m_uv_coordinates.x;
+		float tXStart	= (tYStart - tC1) * tW01;
+		float tXEnd		= (tYStart - tC2) * tW02;
 		float txDelta = (tXEnd - tXStart) / (xEnd - xStart);
 
 		for (int x = xStart; x < xEnd; x++, tXStart += txDelta)

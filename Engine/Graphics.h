@@ -69,8 +69,8 @@ private:
 	void drawFlatBottomTriangle(const Vec2& p1, const Vec2& p2, const Vec2& p3, const Color& c);
 	void drawFlatTopTriangle   (const Vec2& p1, const Vec2& p2, const Vec2& p3, const Color& c);
 
-	void drawTexturedFlatBottomTriangle(const texturedVertex& p1, const texturedVertex& p2, const texturedVertex& p3, const Surface& texture);
-	void drawTexturedFlatTopTriangle(const texturedVertex& p1, const texturedVertex& p2, const texturedVertex& p3, const Surface& texture);
+	//void drawTexturedFlatBottomTriangle(const texturedVertex& p1, const texturedVertex& p2, const texturedVertex& p3, const Surface& texture);
+	void drawTexturedFlatTriangle(const texturedVertex& p1, const texturedVertex& p2, const texturedVertex& p3, const Surface& texture);
 
 private:
 	GDIPlusManager										gdipMan;

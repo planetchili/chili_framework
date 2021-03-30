@@ -19,7 +19,10 @@
  *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
  ******************************************************************************************/
 #include "Mouse.h"
-#include "Vec2.h"
+#include "dataStructure/math/Vec2.h"
+
+#include<utility>
+#include<algorithm>
 
 
 Vei2 Mouse::GetPos() const

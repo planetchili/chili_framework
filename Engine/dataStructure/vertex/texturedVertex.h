@@ -3,11 +3,11 @@
 #include<vector>
 #include<string>
 
-#include "Vec2.h"
-#include "Vec3.h"
-#include "Mat3.h"
+#include "dataStructure/math/Vec2.h"
+#include "dataStructure/math/Vec3.h"
+#include "dataStructure/math/Mat3.h"
 
-#include "pubeToScreenTransformer.h"
+#include "pipeline/pubeToScreenTransformer.h"
 
 class texturedVertex
 {

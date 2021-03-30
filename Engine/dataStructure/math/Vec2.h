@@ -20,26 +20,26 @@
 ******************************************************************************************/
 #pragma once
 
-#include "ChiliMath.h"
+#include "utilities/ChiliMath.h"
 
 template <typename T>
-class _Vec3 : public _Vec2<T>
+class _Vec2
 {
 public:
-	_Vec3() {}
-	_Vec3( T x,T y,T z )
+	_Vec2() {}
+	_Vec2( T x,T y )
 		:
-		_Vec2( x,y ),
-		z( z )
+	x( x ),
+	y( y )
 	{}
-	_Vec3( const _Vec3& vect )
+	_Vec2( const _Vec2& vect )
 		:
-		_Vec3( vect.x,vect.y,vect.z )
+	_Vec2( vect.x,vect.y )
 	{}
 	template <typename T2>
-	explicit operator _Vec3<T2>() const
+	explicit operator _Vec2<T2>() const
 	{
-		return{ (T2)x,(T2)y,(T2)z };
+		return { (T2)x,(T2)y };
 	}
 	T		LenSq() const
 	{
@@ -49,106 +49,86 @@ public:
 	{
 		return sqrt( LenSq() );
 	}
-	_Vec3&	Normalize()
+	_Vec2&	Normalize()
 	{
 		const T length = Len();
 		x /= length;
 		y /= length;
-		z /= length;
 		return *this;
 	}
-	_Vec3	GetNormalized() const
+	_Vec2	GetNormalized() const
 	{
-		_Vec3 norm = *this;
+		_Vec2 norm = *this;
 		norm.Normalize();
 		return norm;
 	}
-	_Vec3	operator-() const
+	_Vec2	operator-() const
 	{
-		return _Vec3( -x,-y,-z );
+		return _Vec2( -x,-y );
 	}
-	_Vec3&	operator=( const _Vec3 &rhs )
+	_Vec2&	operator=( const _Vec2 &rhs )
 	{
 		x = rhs.x;
 		y = rhs.y;
-		z = rhs.z;
 		return *this;
 	}
-	_Vec3&	operator+=( const _Vec3 &rhs )
+	_Vec2&	operator+=( const _Vec2 &rhs )
 	{
 		x += rhs.x;
 		y += rhs.y;
-		z += rhs.z;
 		return *this;
 	}
-	_Vec3&	operator-=( const _Vec3 &rhs )
+	_Vec2&	operator-=( const _Vec2 &rhs )
 	{
 		x -= rhs.x;
 		y -= rhs.y;
-		z -= rhs.z;
 		return *this;
 	}
-	T		operator*( const _Vec3 &rhs ) const
+	T		operator*( const _Vec2 &rhs ) const
 	{
-		return x * rhs.x + y * rhs.y + z * rhs.z;
-	}
-	_Vec3	operator+( const _Vec3 &rhs ) const
+		return x * rhs.x + y * rhs.y;
+	}	
+	_Vec2	operator+( const _Vec2 &rhs ) const
 	{
-		return _Vec3( *this ) += rhs;
+		return _Vec2( *this ) += rhs;
 	}
-	_Vec3	operator-( const _Vec3 &rhs ) const
+	_Vec2	operator-( const _Vec2 &rhs ) const
 	{
-		return _Vec3( *this ) -= rhs;
+		return _Vec2( *this ) -= rhs;
 	}
-	_Vec3&	operator*=( const T &rhs )
+	_Vec2&	operator*=( const T &rhs )
 	{
 		x *= rhs;
 		y *= rhs;
-		z *= rhs;
 		return *this;
 	}
-	_Vec3	operator*( const T &rhs ) const
+	_Vec2	operator*( const T &rhs ) const
 	{
-		return _Vec3( *this ) *= rhs;
+		return _Vec2( *this ) *= rhs;
 	}
-	_Vec3&	operator/=( const T &rhs )
+	_Vec2&	operator/=( const T &rhs )
 	{
 		x /= rhs;
 		y /= rhs;
-		z /= rhs;
 		return *this;
 	}
-	_Vec3	operator/( const T &rhs ) const
+	_Vec2	operator/( const T &rhs ) const
 	{
-		return _Vec3( *this ) /= rhs;
+		return _Vec2( *this ) /= rhs;
 	}
-	bool	operator==( const _Vec3 &rhs ) const
+	bool	operator==( const _Vec2 &rhs ) const
 	{
-		return x == rhs.x && y == rhs.y && rhs.z = z;
+		return x == rhs.x && y == rhs.y;
 	}
-	bool	operator!=( const _Vec3 &rhs ) const
+	bool	operator!=(const _Vec2 &rhs) const
 	{
 		return !(*this == rhs);
 	}
-
-	float dot(const _Vec3<T>& rhs) const
-	{
-		return (x * rhs.x) + (y * rhs.y) + (z * rhs.z);
-	}
-	
-	_Vec3<T> cross(const _Vec3<T>& rhs) const
-	{
-		return _Vec3<T>(
-			y * rhs.z - z * rhs.y,
-			z * rhs.x - x * rhs.z,
-			x * rhs.y - y * rhs.x
-			);
-	}
-
 public:
-	T z;
+	T x;
+	T y;
 };
 
-typedef _Vec3<float> Vec3;
-typedef _Vec3<double> Ved3;
-typedef _Vec3<int> Vei3;
+typedef _Vec2<float> Vec2;
+typedef _Vec2<double> Ved2;
+typedef _Vec2<int> Vei2;

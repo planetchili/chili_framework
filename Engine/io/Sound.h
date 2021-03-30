@@ -19,15 +19,15 @@
  *	along with this source code.  If not, see <http://www.gnu.org/licenses/>.			  *
  ******************************************************************************************/
 #pragma once
-#include "ChiliWin.h"
+#include "utilities/ChiliWin.h"
 #include <memory>
 #include <vector>
 #include <mutex>
 #include <condition_variable>
 #include <thread>
-#include "ChiliException.h"
+#include "utilities/ChiliException.h"
 #include <wrl\client.h>
-#include "COMInitializer.h"
+#include "utilities/COMInitializer.h"
 
 // forward declare WAVEFORMATEX so we don't have to include bullshit headers
 struct tWAVEFORMATEX;

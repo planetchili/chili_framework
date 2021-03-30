@@ -18,21 +18,21 @@
 *	You should have received a copy of the GNU General Public License					  *
 *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
 ******************************************************************************************/
-#include "MainWindow.h"
+#include "graphics/MainWindow.h"
 #include "Game.h"
 
 #include<iostream>
-#include "Mat3.h"
+#include "dataStructure/math/Mat3.h"
 
-#include "Log.h"
+#include "log/Log.h"
 
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
 	cub(0.5f),
-	m_checkerboardTexture(Surface::FromFile(L"checkerboardPattern.bmp")),
-	m_diceTexture(Surface::FromFile(L"diceUV.bmp"))
+	m_checkerboardTexture(Surface::FromFile(L"resources/texture/checkerboardPattern.bmp")),
+	m_diceTexture(Surface::FromFile(L"resources/texture/diceUV.bmp"))
 {}
 
 void Game::Go()

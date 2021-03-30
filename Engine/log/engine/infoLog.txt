@@ -1,6 +1,0 @@
-[2021-02-10 11:15:05.748] [engineInfoLogger] [info] this is level 1 of the log and this empyreani is a variable and another rvalue.. 255
-[2021-02-10 11:15:05.748] [engineInfoLogger] [info] this is level 1 of the log and this empyreani is a variable and another rvalue.. 255
-[2021-02-10 11:55:07.842] [engineInfoLogger] [info] this is level 1 of the log and this empyreani is a variable and another rvalue.. 255
-[2021-02-10 11:55:07.842] [engineInfoLogger] [info] this is level 1 of the log and this empyreani is a variable and another rvalue.. 255
-[2021-02-13 12:40:52.371] [engineInfoLogger] [info] this is level 1 of the log and this empyreani is a variable and another rvalue.. 255
-[2021-02-13 12:40:52.371] [engineInfoLogger] [info] this is level 1 of the log and this empyreani is a variable and another rvalue.. 255

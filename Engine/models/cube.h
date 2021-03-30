@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "texturedVertex.h"
+#include "dataStructure/vertex/texturedVertex.h"
 
 class cube
 {

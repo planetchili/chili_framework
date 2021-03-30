@@ -19,7 +19,8 @@
 *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
 ******************************************************************************************/
 #pragma once
-
+#include<algorithm>
+#include<utility>
 #include <math.h>
 
 constexpr float PI = 3.14159265f;
@@ -28,4 +29,25 @@ template <typename T>
 inline auto sq( const T& x )
 {
 	return x * x;
+}
+
+template<bool enabler = true>
+float normalize(float val, float min, float max)
+{
+    // Shift to positive to avoid issues when crossing the 0 line
+    if (min < 0) {
+        max += 0 - min;
+        val += 0 - min;
+        min = 0;
+    }
+    // Shift values from 0 - max
+    val = val - min;
+    max = max - min;
+    return std::max(0.0f, std::min(1.0f, val / max));
+}
+
+template<typename T>
+T interpolateTo(T x, T y, float alpha)
+{
+    return x + alpha * (y - x);
 }

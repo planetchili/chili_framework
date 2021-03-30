@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
-#include "Vec2.h"
-#include "Vec3.h"
+#include "dataStructure/math/Vec2.h"
+#include "dataStructure/math/Vec3.h"
 
 class pubeToScreenTransformer
 {

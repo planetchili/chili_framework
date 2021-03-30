@@ -19,10 +19,10 @@
 *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
 ******************************************************************************************/
 #pragma once
-#include "ChiliWin.h"
+#include "utilities/ChiliWin.h"
 #include "Colors.h"
-#include "Rect.h"
-#include "ChiliException.h"
+#include "dataStructure/math/Rect.h"
+#include "utilities/ChiliException.h"
 #include <string>
 #include <assert.h>
 #include <memory>

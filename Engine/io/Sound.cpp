@@ -30,7 +30,7 @@
 #include <mferror.h>
 #include <Propvarutil.h>
 #include "XAudio\XAudio2.h"
-#include "DXErr.h"
+#include "utilities/DXErr.h"
 
 #pragma comment( lib,"mfplat.lib" )
 #pragma comment( lib,"mfreadwrite.lib" )

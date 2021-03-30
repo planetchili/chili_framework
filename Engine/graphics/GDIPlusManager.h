@@ -1,6 +1,6 @@
 /******************************************************************************************
 *	Chili DirectX Framework Version 16.10.01											  *
-*	GDIPlusManager.cpp																	  *
+*	GDIPlusManager.h																	  *
 *	Copyright 2016 PlanetChili <http://www.planetchili.net>								  *
 *																						  *
 *	This file is part of The Chili DirectX Framework.									  *
@@ -18,36 +18,15 @@
 *	You should have received a copy of the GNU General Public License					  *
 *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
 ******************************************************************************************/
-#define FULL_WINTARD
-#include "ChiliWin.h"
-#include "GDIPlusManager.h"
-#include <algorithm>
-namespace Gdiplus
-{
-	using std::min;
-	using std::max;
-}
-#include <gdiplus.h>
+#pragma once
+#include "utilities/ChiliWin.h"
 
-ULONG_PTR GDIPlusManager::token = 0;
-int GDIPlusManager::refCount = 0;
-
-GDIPlusManager::GDIPlusManager()
+class GDIPlusManager
 {
-	if( refCount++ == 0 )
-	{
-		Gdiplus::GdiplusStartupInput input;
-		input.GdiplusVersion = 1;
-		input.DebugEventCallback = nullptr;
-		input.SuppressBackgroundThread = false;
-		Gdiplus::GdiplusStartup( &token,&input,nullptr );
-	}
-}
-
-GDIPlusManager::~GDIPlusManager()
-{
-	if( --refCount == 0 )
-	{
-		Gdiplus::GdiplusShutdown( token );
-	}
-}
+public:
+	GDIPlusManager();
+	~GDIPlusManager();
+private:
+	static ULONG_PTR token;
+	static int refCount;
+};

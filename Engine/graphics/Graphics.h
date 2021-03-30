@@ -22,10 +22,10 @@
 #include <d3d11.h>
 #include <wrl.h>
 #include "GDIPlusManager.h"
-#include "ChiliException.h"
+#include "utilities/ChiliException.h"
 #include "Surface.h"
 #include "Colors.h"
-#include "texturedVertex.h"
+#include "dataStructure/vertex/texturedVertex.h"
 
 #define CHILI_GFX_EXCEPTION( hr,note ) Graphics::Exception( hr,note,_CRT_WIDE(__FILE__),__LINE__ )
 

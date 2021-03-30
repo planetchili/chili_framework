@@ -20,11 +20,11 @@
 ******************************************************************************************/
 #pragma once
 
-#include "Graphics.h"
-#include "Surface.h"
+#include "graphics/Graphics.h"
+#include "graphics/Surface.h"
 
-#include "cube.h"
-#include "pubeToScreenTransformer.h"
+#include "models/cube.h"
+#include "pipeline/pubeToScreenTransformer.h"
 
 class Game
 {

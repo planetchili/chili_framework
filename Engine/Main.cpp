@@ -18,9 +18,9 @@
 *	You should have received a copy of the GNU General Public License					  *
 *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
 ******************************************************************************************/
-#include "MainWindow.h"
+#include "graphics/MainWindow.h"
 #include "Game.h"
-#include "ChiliException.h"
+#include "utilities/ChiliException.h"
 
 static HINSTANCE hInst;
 static LPWSTR pArgs;

@@ -27,6 +27,9 @@ public:
 	template<typename vertex>
 	static void draw(std::vector<uint32_t> indexBuffer, std::vector<vertex> vertexBuffer)
 	{
+		vertexProcessed.clear();
+		vertexProcessed.resize(vertexBuffer.size(), 0);
+
 		vertexTransformer(vertexBuffer);
 		triangleRasterizer(indexBuffer, vertexBuffer);
 	}
@@ -45,21 +48,27 @@ private:
 	template<typename vertex>
 	static void triangleRasterizer(std::vector<uint32_t> indexBuffer, std::vector<vertex> vertexBuffer)
 	{
-		for (int i = 0 ; i < indexBuffer.size() / 3; i= i +3)
+		for (int i = 0 ; i < indexBuffer.size(); i= i +3)
 		{
-			Vec3 v0 = vertexBuffer[indexBuffer[i]].m_position;
-			Vec3 v1 = vertexBuffer[indexBuffer[i + 1]].m_position;
-			Vec3 v2 = vertexBuffer[indexBuffer[i + 2]].m_position;
+			Vec3& v0 = vertexBuffer[indexBuffer[i]].m_position;
+			Vec3& v1 = vertexBuffer[indexBuffer[i + 1]].m_position;
+			Vec3& v2 = vertexBuffer[indexBuffer[i + 2]].m_position;
 
 			Vec3 normal = ((v1 - v0).cross(v2 - v0));
-			if (!normal.dot(v0) > 0.0f)
+			if (!(normal.dot(v0) > 0.0f))
 			{
 				//donot cull this particular triangle..
+				for (int k = 0; k < 3; k++)
+				if (vertexProcessed[indexBuffer[i + k]] == 0)
+				{
+					screenSpaceTransformer(vertexBuffer[indexBuffer[i + k]]);
+					vertexProcessed[indexBuffer[i + k]] = 1;
+				}
+				
 				vertex& v0 = vertexBuffer[indexBuffer[i]];
 				vertex& v1 = vertexBuffer[indexBuffer[i + 1]];
 				vertex& v2 = vertexBuffer[indexBuffer[i + 2]];
 
-				screenSpaceTransformer(v0, v1, v2);
 				triangleRasterizer(v0, v1, v2);
 			}
 		}
@@ -68,14 +77,14 @@ private:
 	template<typename vertex>
 	static void screenSpaceTransformer(vertex& v0, vertex& v1, vertex& v2)
 	{
-		//get rid of this from here block.. its unnecessary in a proper environment
-		v0.m_position.z += 2.0f;
-		v1.m_position.z += 2.0f;
-		v2.m_position.z += 2.0f;
-		
 		v0.m_position = pubeToScreenTransformer::getCoordinatesInScreenSpace(v0.m_position, gfx->ScreenWidth, gfx->ScreenHeight);
 		v1.m_position = pubeToScreenTransformer::getCoordinatesInScreenSpace(v1.m_position, gfx->ScreenWidth, gfx->ScreenHeight);
 		v2.m_position = pubeToScreenTransformer::getCoordinatesInScreenSpace(v2.m_position, gfx->ScreenWidth, gfx->ScreenHeight);
+	}
+	template<typename vertex>
+	static void screenSpaceTransformer(vertex& v0)
+	{
+		v0.m_position = pubeToScreenTransformer::getCoordinatesInScreenSpace(v0.m_position, gfx->ScreenWidth, gfx->ScreenHeight);
 	}
 
 	template<typename vertex>
@@ -210,6 +219,8 @@ private:
 	static Mat3 m_rotationMatrix; //the rotation is on model centre
 	static Vec3 m_translation; // the translation is with respect to the model centre
 	static Graphics* gfx;
+
+	static std::vector<int> vertexProcessed;
 
 	friend class Game;
 };

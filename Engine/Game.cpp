@@ -53,5 +53,6 @@ void Game::UpdateModel()
 {}
 void Game::ComposeFrame()
 {
+	pipeline::translate(Vec3(0.0f, 0.0f, 2.0f)); //push the cube model by two in the z
 	pipeline::draw<texturedVertex>(cub.getIndexBuffer(), cub.getVertexBuffer());
 }

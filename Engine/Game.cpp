@@ -38,7 +38,7 @@ Game::Game(MainWindow& wnd)
 {
 	//setup the pipeline properly as the first order of business..
 	pipeline::gfx = &gfx;
-	pipeline::bindTexture(std::filesystem::path(L"resources/texture/checkerboardPattern.bmp"));
+	pipeline::bindTexture(std::filesystem::path(L"resources/texture/diceUV.bmp"));
 }
 
 void Game::Go()
@@ -53,6 +53,13 @@ void Game::UpdateModel()
 {}
 void Game::ComposeFrame()
 {
+	static Mat3 rotation = Mat3::Identity();
+
+	if (wnd.kbd.KeyIsPressed(0x5A))	{ rotation = rotation * Mat3::RotateZ(0.0174533); }
+	if (wnd.kbd.KeyIsPressed(0x59)) { rotation = rotation * Mat3::RotateY(0.0174533); }
+	if (wnd.kbd.KeyIsPressed(0x58)) { rotation = rotation * Mat3::RotateX(0.0174533); }
+
 	pipeline::translate(Vec3(0.0f, 0.0f, 2.0f)); //push the cube model by two in the z
+	pipeline::bindRotationMatrix(rotation);
 	pipeline::draw<texturedVertex>(cub.getIndexBuffer(), cub.getVertexBuffer());
 }

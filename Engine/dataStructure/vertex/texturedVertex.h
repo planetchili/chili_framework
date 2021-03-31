@@ -7,8 +7,6 @@
 #include "dataStructure/math/Vec3.h"
 #include "dataStructure/math/Mat3.h"
 
-#include "pipeline/pubeToScreenTransformer.h"
-
 class texturedVertex
 {
 public:
@@ -18,7 +16,6 @@ public:
 	
 public:
 	texturedVertex interpolateTo(const texturedVertex& rhs, float alpha) const;
-	void transformToScreenSpace(int screenWidth = 640U,int screenHeight = 640U);
 
 	//bool operator ==(const texturedVertex& rhs) { return ((m_position == rhs.m_position) && (m_uv_coordinates == rhs.m_uv_coordinates)); };
 	texturedVertex operator-(const texturedVertex& rhs) const;

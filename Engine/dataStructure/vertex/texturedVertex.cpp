@@ -20,15 +20,6 @@ texturedVertex texturedVertex::interpolateTo(const texturedVertex& rhs, float al
 
 	return vertex;
 }
-void texturedVertex::transformToScreenSpace(int screenWidth,int screenHeight)
-{
-	if (!m_inScreenSpace)
-	{
-		auto vec = pubeToScreenTransformer::getCoordinatesInScreenSpace(m_position, screenWidth, screenHeight);
-		m_position = { vec.x,vec.y,0.0f };
-		m_inScreenSpace = true;
-	}
-}
 
 
 texturedVertex texturedVertex::operator-(const texturedVertex& rhs) const

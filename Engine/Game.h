@@ -24,7 +24,7 @@
 #include "graphics/Surface.h"
 
 #include "models/cube.h"
-#include "pipeline/pubeToScreenTransformer.h"
+#include "pipeline/pipeline.h"
 
 class Game
 {
@@ -33,35 +33,13 @@ public:
 	Game( const Game& ) = delete;
 	Game& operator=( const Game& ) = delete;
 	void Go();
+
 private:
 	void ComposeFrame();
 	void UpdateModel();
-	/********************************/
-	/*  User Functions              */
-	/********************************/
+	
 private:
 	MainWindow& wnd;
 	Graphics gfx;
-	/********************************/
-	/*  User Variables              */
 	cube cub;
-	Surface m_checkerboardTexture;
-	Surface m_diceTexture;
-
-	Color colors[12] = {
-		Colors::Blue,
-		Colors::Red,
-		Colors::Green,
-		Colors::Magenta,
-		Colors::White,
-		Colors::Cyan,
-		Colors::Yellow,
-		Colors::Red,
-		Colors::Blue,
-		Colors::White,
-		Colors::Gray,
-		Colors::Magenta
-	};
-
-	/********************************/
 };

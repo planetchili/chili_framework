@@ -69,7 +69,7 @@ public:
 	}
 
 	inline std::vector<uint32_t> getIndexBuffer	() { return m_indexBuffer; }
-	inline std::vector<texturedVertex>&     getVertexBuffer() { return m_vertexBuffer; }
+	inline std::vector<texturedVertex>     getVertexBuffer() { return m_vertexBuffer; }
 
 private:
 	

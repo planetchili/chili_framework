@@ -33,6 +33,11 @@ public:
 		_Vec2( x,y ),
 		z( z )
 	{}
+	_Vec3(_Vec2<T> vector)
+		:
+		_Vec2(vector),
+		z(0.0f)
+	{}
 	_Vec3( const _Vec3& vect )
 		:
 		_Vec3( vect.x,vect.y,vect.z )

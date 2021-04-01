@@ -145,18 +145,41 @@ private:
 			}
 		}
 	}
-	void drawFlatTopTriangle(const vertex& point1, const vertex& point2, const vertex& point3)
+	void drawFlatTopTriangle(const vertex& vertex0, const vertex& vertex1, const vertex& vertex2)
 	{
 		//p1 and p2 form the straight line always and p0 is to the bottom of p1 and p2..
-		const vertex* p0 = &point1;
-		const vertex* p1 = &point2;
-		const vertex* p2 = &point3;
+		const vertex* v0 = &vertex0;
+		const vertex* v1 = &vertex1;
+		const vertex* v2 = &vertex2;
 
 		//see that p1 is to the left of p2 always.
-		if (p1->m_position.x > p2->m_position.x)
-			std::swap(p1, p2);
+		if (v1->m_position.x > v2->m_position.x)
+			std::swap(v1, v2);
 
-		
+		vertex leftEdge = *v1;
+		vertex rightEdge = *v2;
+		vertex leftEdgeEnd = *v0;
+		vertex rightEdgeEnd = *v0;
+
+		vertex leftEdgeDelta = (leftEdgeEnd - leftEdge) / (leftEdgeEnd.m_position - leftEdge.m_position).y;
+		vertex rightEdgeDelta = (rightEdgeEnd - rightEdge) / (rightEdgeEnd.m_position - rightEdge.m_position).y;
+
+		//prestepping to stop division by zero
+		leftEdge += leftEdgeDelta;
+		rightEdge += rightEdgeDelta;
+
+		for (; leftEdge.m_position.y <= leftEdgeEnd.m_position.y; leftEdge += leftEdgeDelta, rightEdge += rightEdgeDelta)
+		{
+			vertex yStart = leftEdge;
+			vertex yEnd = rightEdge;
+
+			vertex deltaX = (yEnd - yStart) / (yEnd.m_position - yStart.m_position).x;
+
+			for (; yStart.m_position.x <= yEnd.m_position.x; yStart += deltaX)
+			{
+				gfx->PutPixel(yStart.m_position.x, yStart.m_position.y, m_effectFunctor.ps(yStart));
+			}
+		}
 	}
 
 private:

@@ -125,7 +125,14 @@ private:
 		vertex leftEdgeEnd	= *v1;
 		vertex rightEdgeEnd = *v2;
 
-		drawFlatTriangle(leftEdge, rightEdge, leftEdgeEnd, rightEdgeEnd);
+		vertex leftEdgeDelta = (leftEdgeEnd - leftEdge) / (leftEdgeEnd.m_position - leftEdge.m_position).y;
+		vertex rightEdgeDelta = (rightEdgeEnd - rightEdge) / (rightEdgeEnd.m_position - rightEdge.m_position).y;
+
+		//prestepping to stop division by zero
+		leftEdge += leftEdgeDelta;
+		rightEdge += rightEdgeDelta;
+
+		drawFlatTriangle(leftEdge, rightEdge, leftEdgeEnd, rightEdgeEnd,leftEdgeDelta,rightEdgeDelta);
 	}
 	void drawFlatTopTriangle(const vertex& vertex0, const vertex& vertex1, const vertex& vertex2)
 	{
@@ -143,17 +150,13 @@ private:
 		vertex leftEdgeEnd	= *v0;
 		vertex rightEdgeEnd = *v0;
 
-		drawFlatTriangle(leftEdge, rightEdge, leftEdgeEnd, rightEdgeEnd);
-	}
-	void drawFlatTriangle(vertex leftEdge,vertex rightEdge,vertex leftEdgeEnd,vertex rightEdgeEnd)
-	{
 		vertex leftEdgeDelta = (leftEdgeEnd - leftEdge) / (leftEdgeEnd.m_position - leftEdge.m_position).y;
 		vertex rightEdgeDelta = (rightEdgeEnd - rightEdge) / (rightEdgeEnd.m_position - rightEdge.m_position).y;
 
-		//prestepping to stop division by zero
-		leftEdge += leftEdgeDelta;
-		rightEdge += rightEdgeDelta;
-
+		drawFlatTriangle(leftEdge, rightEdge, leftEdgeEnd, rightEdgeEnd,leftEdgeDelta, rightEdgeDelta);
+	}
+	void drawFlatTriangle(vertex leftEdge,vertex rightEdge,vertex leftEdgeEnd,vertex rightEdgeEnd,vertex leftEdgeDelta,vertex rightEdgeDelta)
+	{
 		for (; leftEdge.m_position.y <= leftEdgeEnd.m_position.y; leftEdge += leftEdgeDelta, rightEdge += rightEdgeDelta)
 		{
 			vertex yStart = leftEdge;

@@ -23,8 +23,8 @@
 #include "graphics/Graphics.h"
 #include "graphics/Surface.h"
 
-#include "models/cube.h"
-#include "pipeline/pipeline.h"
+#include "scene/sceneViewer.h"
+#include "scene/scene.h"
 
 class Game
 {
@@ -41,7 +41,6 @@ private:
 private:
 	MainWindow& wnd;
 	Graphics gfx;
-	cube cub;
-
-	pipeline<textureEffect> pip;
+	
+	sceneViewer m_viewer;
 };

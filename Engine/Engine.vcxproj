@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -186,6 +186,9 @@
     <ClInclude Include="models\cube.h" />
     <ClInclude Include="pipeline\pipeline.h" />
     <ClInclude Include="pipeline\pubeToScreenTransformer.h" />
+    <ClInclude Include="scene\collection\texturedCubeScene.h" />
+    <ClInclude Include="scene\scene.h" />
+    <ClInclude Include="scene\sceneViewer.h" />
     <ClInclude Include="utilities\ChiliException.h" />
     <ClInclude Include="utilities\ChiliMath.h" />
     <ClInclude Include="utilities\ChiliWin.h" />
@@ -208,6 +211,7 @@
     <ClCompile Include="io\Mouse.cpp" />
     <ClCompile Include="log\Log.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="scene\sceneViewer.cpp" />
     <ClCompile Include="utilities\DXErr.cpp" />
   </ItemGroup>
   <ItemGroup>

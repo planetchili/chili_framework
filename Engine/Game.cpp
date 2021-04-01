@@ -19,44 +19,34 @@
 *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
 ******************************************************************************************/
 #include "Game.h"
+#include "graphics/MainWindow.h"
+
 #include<iostream>
 #include "log/Log.h"
 
-#include "dataStructure/math/Mat3.h"
-#include "dataStructure/math/Vec3.h"
-
-#include "effects/textureEffect.h"
-
-#include "graphics/MainWindow.h"
+#include "scene/collection/texturedCubeScene.h"
 
 
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	cub(0.5f),
-	pip(textureEffect(std::filesystem::path(L"resources/texture/diceUV.bmp")),&gfx)
-{}
+	m_viewer(&wnd,&gfx)
+{
+	//add all the relevant scenes once into the viewer
+	m_viewer.addScene<texturedCubeScene>();
+}
 
 void Game::Go()
 {
 	gfx.BeginFrame();
 	UpdateModel();
 	ComposeFrame();
+	m_viewer.updateDraw();
 	gfx.EndFrame();
 }
 
 void Game::UpdateModel()
 {}
 void Game::ComposeFrame()
-{
-	static Mat3 rotation = Mat3::Identity();
-
-	if (wnd.kbd.KeyIsPressed(0x5A))	{ rotation = rotation * Mat3::RotateZ(0.0174533); }
-	if (wnd.kbd.KeyIsPressed(0x59)) { rotation = rotation * Mat3::RotateY(0.0174533); }
-	if (wnd.kbd.KeyIsPressed(0x58)) { rotation = rotation * Mat3::RotateX(0.0174533); }
-
-	pip.bindTranslation(Vec3(0.0f, 0.0f, 2.0f)); //push the cube model by two in the z
-	pip.bindRotationMatrix(rotation);
-	pip.draw(cub.getIndexBuffer(), cub.getVertexBuffer());
-}
+{}

@@ -157,6 +157,7 @@ private:
 	}
 	void drawFlatTriangle(vertex leftEdge,vertex rightEdge,vertex leftEdgeEnd,vertex rightEdgeEnd,vertex leftEdgeDelta,vertex rightEdgeDelta)
 	{
+		//this function may fail thanks to a division by zero when calculating deltaX
 		for (; leftEdge.m_position.y <= leftEdgeEnd.m_position.y; leftEdge += leftEdgeDelta, rightEdge += rightEdgeDelta)
 		{
 			vertex yStart = leftEdge;

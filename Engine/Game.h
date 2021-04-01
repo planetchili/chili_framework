@@ -42,4 +42,6 @@ private:
 	MainWindow& wnd;
 	Graphics gfx;
 	cube cub;
+
+	pipeline<textureEffect> pip;
 };

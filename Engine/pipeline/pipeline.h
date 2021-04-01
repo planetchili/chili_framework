@@ -23,18 +23,21 @@ class pipeline
 public:
 	using vertex =typename effect::vertex;
 
-	static void bindTexture(std::filesystem::path texturePath)	{	m_texture = std::make_unique<Surface>(Surface::FromFile(texturePath));	}
-	static void bindRotationMatrix(Mat3 rotationMat) { m_rotationMatrix = rotationMat; }
-	static void translate(Vec3 translateby) { m_translation = translateby; }
+	pipeline(effect obj,Graphics* gfx)
+		: m_effectFunctor(obj), gfx(gfx)
+	{}
+	
+	void bindRotationMatrix(Mat3 rotationMat) { m_rotationMatrix = rotationMat; }
+	void bindTranslation(Vec3 translateby) { m_translation = translateby; }
 
-	static void draw(std::vector<uint32_t> indexBuffer, std::vector<vertex> vertexBuffer)
+	void draw(std::vector<uint32_t> indexBuffer, std::vector<vertex> vertexBuffer)
 	{
 		vertexTransformer(vertexBuffer);
 		triangleRasterizer(indexBuffer, vertexBuffer);
 	}
 
 private:
-	static void vertexTransformer(std::vector<vertex>& vertexBuffer)
+	void vertexTransformer(std::vector<vertex>& vertexBuffer)
 	{
 		for (auto& vertex : vertexBuffer)
 		{
@@ -43,7 +46,7 @@ private:
 		}
 	}
 
-	static void triangleRasterizer(std::vector<uint32_t> indexBuffer, std::vector<vertex> vertexBuffer)
+	void triangleRasterizer(std::vector<uint32_t> indexBuffer, std::vector<vertex> vertexBuffer)
 	{
 		for (int i = 0 ; i < indexBuffer.size(); i= i +3)
 		{
@@ -65,18 +68,18 @@ private:
 		}
 	}
 
-	static void screenSpaceTransformer(vertex& v0, vertex& v1, vertex& v2)
+	void screenSpaceTransformer(vertex& v0, vertex& v1, vertex& v2)
 	{
 		v0.m_position = pubeToScreenTransformer::getCoordinatesInScreenSpace(v0.m_position, gfx->ScreenWidth, gfx->ScreenHeight);
 		v1.m_position = pubeToScreenTransformer::getCoordinatesInScreenSpace(v1.m_position, gfx->ScreenWidth, gfx->ScreenHeight);
 		v2.m_position = pubeToScreenTransformer::getCoordinatesInScreenSpace(v2.m_position, gfx->ScreenWidth, gfx->ScreenHeight);
 	}
-	static void screenSpaceTransformer(vertex& v0)
+	void screenSpaceTransformer(vertex& v0)
 	{
 		v0.m_position = pubeToScreenTransformer::getCoordinatesInScreenSpace(v0.m_position, gfx->ScreenWidth, gfx->ScreenHeight);
 	}
 
-	static void triangleRasterizer(vertex v0, vertex v1, vertex v2)
+	void triangleRasterizer(vertex v0, vertex v1, vertex v2)
 	{
 		const vertex* p0 = &v0;
 		const vertex* p1 = &v1;
@@ -106,12 +109,12 @@ private:
 
 
 private:
-	static void TriangleRasterizer()
+	void TriangleRasterizer()
 	{
 
 	}
 
-	static void scanFlatBottomTriangle(const vertex& p0, const vertex& p1, const vertex& p2)
+	void scanFlatBottomTriangle(const vertex& p0, const vertex& p1, const vertex& p2)
 	{
 		//p1 and p2 form the straight line always and p0 is to the top of p1 and p2..
 		const vertex* p0 = &point1;
@@ -129,12 +132,12 @@ private:
 
 		
 	}
-	static void scanFlatTopTriangle(const vertex& p0, const vertex& p1, const vertex& p2)
+	void scanFlatTopTriangle(const vertex& p0, const vertex& p1, const vertex& p2)
 	{
 
 	}
 
-	static void scanTriangle(const vertex& p0, const vertex& p1, const vertex& p2,
+	void scanTriangle(const vertex& p0, const vertex& p1, const vertex& p2,
 							 vertex letfEdge,vertex rightEdge,vertex deltaLeftEdge, vertex deltaRightEdge)
 	{
 
@@ -143,7 +146,7 @@ private:
 
 
 
-	static void drawTexturedFlatBottomTriangle(const vertex& point1, const vertex& point2, const vertex& point3)
+	void drawTexturedFlatBottomTriangle(const vertex& point1, const vertex& point2, const vertex& point3)
 	{
 		//p1 and p2 form the straight line always and p0 is to the top of p1 and p2..
 		const vertex* p0 = &point1;
@@ -190,7 +193,7 @@ private:
 			}
 		}
 	}
-	static void drawTexturedFlatTopTriangle(const vertex& point1, const vertex& point2, const vertex& point3)
+	void drawTexturedFlatTopTriangle(const vertex& point1, const vertex& point2, const vertex& point3)
 	{
 		//p1 and p2 form the straight line always and p0 is to the bottom of p1 and p2..
 		const vertex* p0 = &point1;
@@ -230,24 +233,17 @@ private:
 
 			for (int x = xStart; x < xEnd; x++, tcStart += tcScanStep)
 			{
-				gfx->PutPixel(x, y, m_texture->GetPixel(std::clamp(tcStart.x * m_texture->GetWidth(), 0.0f, (float)m_texture->GetWidth() - 1.0f),
-					std::clamp(tcStart.y * m_texture->GetHeight(), 0.0f, (float)m_texture->GetHeight() - 1.0f)
-				));
+				gfx->PutPixel(x, y, m_effectFunctor()); //my function as of now does not give me a vertex dataStructure to work with.. I must change this.
 			}
 		}
 	}
 
 private:
-	static std::unique_ptr<Surface> m_texture;
-	static Mat3 m_rotationMatrix; //the rotation is on model centre
-	static Vec3 m_translation; // the translation is with respect to the model centre
-	static Graphics* gfx;
+	Mat3 m_rotationMatrix; //the rotation is on model centre
+	Vec3 m_translation; // the translation is with respect to the model centre
+	Graphics* gfx;
+
+	effect m_effectFunctor;
 
 	friend class Game;
 };
-
-//static variables definition
-template<typename effect> std::unique_ptr<Surface> pipeline<effect>::m_texture = nullptr;
-template<typename effect> Mat3 pipeline<effect>::m_rotationMatrix = Mat3::Identity();
-template<typename effect> Vec3 pipeline<effect>::m_translation = Vec3(0.0f, 0.0f, 0.0f);
-template<typename effect> Graphics* pipeline<effect>::gfx = nullptr;

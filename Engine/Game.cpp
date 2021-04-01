@@ -34,12 +34,9 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	cub(0.5f)
-{
-	//setup the pipeline properly as the first order of business..
-	pipeline<textureEffect>::gfx = &gfx;
-	pipeline<textureEffect>::bindTexture(std::filesystem::path(L"resources/texture/diceUV.bmp"));
-}
+	cub(0.5f),
+	pip(std::filesystem::path(L"resources/texture/diceUV.bmp"),&gfx)
+{}
 
 void Game::Go()
 {
@@ -59,7 +56,7 @@ void Game::ComposeFrame()
 	if (wnd.kbd.KeyIsPressed(0x59)) { rotation = rotation * Mat3::RotateY(0.0174533); }
 	if (wnd.kbd.KeyIsPressed(0x58)) { rotation = rotation * Mat3::RotateX(0.0174533); }
 
-	pipeline<textureEffect>::translate(Vec3(0.0f, 0.0f, 2.0f)); //push the cube model by two in the z
-	pipeline<textureEffect>::bindRotationMatrix(rotation);
-	pipeline<textureEffect>::draw(cub.getIndexBuffer(), cub.getVertexBuffer());
+	pip.bindTranslation(Vec3(0.0f, 0.0f, 2.0f)); //push the cube model by two in the z
+	pip.bindRotationMatrix(rotation);
+	pip.draw(cub.getIndexBuffer(), cub.getVertexBuffer());
 }

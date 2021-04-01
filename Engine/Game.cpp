@@ -25,7 +25,7 @@
 #include "dataStructure/math/Mat3.h"
 #include "dataStructure/math/Vec3.h"
 
-#include "dataStructure/vertex/texturedVertex.h"
+#include "effects/textureEffect.h"
 
 #include "graphics/MainWindow.h"
 
@@ -37,8 +37,8 @@ Game::Game(MainWindow& wnd)
 	cub(0.5f)
 {
 	//setup the pipeline properly as the first order of business..
-	pipeline::gfx = &gfx;
-	pipeline::bindTexture(std::filesystem::path(L"resources/texture/diceUV.bmp"));
+	pipeline<textureEffect>::gfx = &gfx;
+	pipeline<textureEffect>::bindTexture(std::filesystem::path(L"resources/texture/diceUV.bmp"));
 }
 
 void Game::Go()
@@ -59,7 +59,7 @@ void Game::ComposeFrame()
 	if (wnd.kbd.KeyIsPressed(0x59)) { rotation = rotation * Mat3::RotateY(0.0174533); }
 	if (wnd.kbd.KeyIsPressed(0x58)) { rotation = rotation * Mat3::RotateX(0.0174533); }
 
-	pipeline::translate(Vec3(0.0f, 0.0f, 2.0f)); //push the cube model by two in the z
-	pipeline::bindRotationMatrix(rotation);
-	pipeline::draw<texturedVertex>(cub.getIndexBuffer(), cub.getVertexBuffer());
+	pipeline<textureEffect>::translate(Vec3(0.0f, 0.0f, 2.0f)); //push the cube model by two in the z
+	pipeline<textureEffect>::bindRotationMatrix(rotation);
+	pipeline<textureEffect>::draw(cub.getIndexBuffer(), cub.getVertexBuffer());
 }

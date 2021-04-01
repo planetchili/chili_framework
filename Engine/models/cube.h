@@ -1,13 +1,13 @@
 #pragma once
 #include <vector>
-#include "dataStructure/vertex/texturedVertex.h"
+#include "effects/textureEffect.h"
 
 class cube
 {
 public:
 	cube(float side = 0.5f)
 	{
-		texturedVertex vertex;
+		textureEffect::vertex vertex;
 
 		vertex.m_position = Vec3(side, side, side);
 		vertex.m_uv_coordinates = Vec2(0.0f, 0.5f);
@@ -69,7 +69,7 @@ public:
 	}
 
 	inline std::vector<uint32_t> getIndexBuffer	() { return m_indexBuffer; }
-	inline std::vector<texturedVertex>     getVertexBuffer() { return m_vertexBuffer; }
+	inline std::vector<textureEffect::vertex> getVertexBuffer() { return m_vertexBuffer; }
 
 private:
 	
@@ -86,6 +86,6 @@ private:
 	}
 
 private:
-	std::vector<texturedVertex> m_vertexBuffer;
+	std::vector<textureEffect::vertex> m_vertexBuffer;
 	std::vector<uint32_t> m_indexBuffer;
 };

@@ -99,6 +99,9 @@
     <ClInclude Include="pipeline\pipeline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="effects\textureEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dataStructure\vertex\texturedVertex.cpp">
@@ -132,9 +135,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pipeline\pipeline.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

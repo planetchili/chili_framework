@@ -173,6 +173,7 @@
     <ClInclude Include="dataStructure\math\Vec2.h" />
     <ClInclude Include="dataStructure\math\Vec3.h" />
     <ClInclude Include="dataStructure\vertex\texturedVertex.h" />
+    <ClInclude Include="effects\textureEffect.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="graphics\Colors.h" />
     <ClInclude Include="graphics\GDIPlusManager.h" />
@@ -207,7 +208,6 @@
     <ClCompile Include="io\Mouse.cpp" />
     <ClCompile Include="log\Log.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="pipeline\pipeline.cpp" />
     <ClCompile Include="utilities\DXErr.cpp" />
   </ItemGroup>
   <ItemGroup>

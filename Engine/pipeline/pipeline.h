@@ -17,14 +17,16 @@
 
 class Game;
 
+template<typename effect>
 class pipeline
 {
 public:
+	using vertex =typename effect::vertex;
+
 	static void bindTexture(std::filesystem::path texturePath)	{	m_texture = std::make_unique<Surface>(Surface::FromFile(texturePath));	}
 	static void bindRotationMatrix(Mat3 rotationMat) { m_rotationMatrix = rotationMat; }
 	static void translate(Vec3 translateby) { m_translation = translateby; }
 
-	template<typename vertex>
 	static void draw(std::vector<uint32_t> indexBuffer, std::vector<vertex> vertexBuffer)
 	{
 		vertexTransformer(vertexBuffer);
@@ -32,7 +34,6 @@ public:
 	}
 
 private:
-	template<typename vertex>
 	static void vertexTransformer(std::vector<vertex>& vertexBuffer)
 	{
 		for (auto& vertex : vertexBuffer)
@@ -42,7 +43,6 @@ private:
 		}
 	}
 
-	template<typename vertex>
 	static void triangleRasterizer(std::vector<uint32_t> indexBuffer, std::vector<vertex> vertexBuffer)
 	{
 		for (int i = 0 ; i < indexBuffer.size(); i= i +3)
@@ -65,20 +65,17 @@ private:
 		}
 	}
 
-	template<typename vertex>
 	static void screenSpaceTransformer(vertex& v0, vertex& v1, vertex& v2)
 	{
 		v0.m_position = pubeToScreenTransformer::getCoordinatesInScreenSpace(v0.m_position, gfx->ScreenWidth, gfx->ScreenHeight);
 		v1.m_position = pubeToScreenTransformer::getCoordinatesInScreenSpace(v1.m_position, gfx->ScreenWidth, gfx->ScreenHeight);
 		v2.m_position = pubeToScreenTransformer::getCoordinatesInScreenSpace(v2.m_position, gfx->ScreenWidth, gfx->ScreenHeight);
 	}
-	template<typename vertex>
 	static void screenSpaceTransformer(vertex& v0)
 	{
 		v0.m_position = pubeToScreenTransformer::getCoordinatesInScreenSpace(v0.m_position, gfx->ScreenWidth, gfx->ScreenHeight);
 	}
 
-	template<typename vertex>
 	static void triangleRasterizer(vertex v0, vertex v1, vertex v2)
 	{
 		const vertex* p0 = &v0;
@@ -109,7 +106,43 @@ private:
 
 
 private:
-	template<typename vertex>
+	static void TriangleRasterizer()
+	{
+
+	}
+
+	static void scanFlatBottomTriangle(const vertex& p0, const vertex& p1, const vertex& p2)
+	{
+		//p1 and p2 form the straight line always and p0 is to the top of p1 and p2..
+		const vertex* p0 = &point1;
+		const vertex* p1 = &point2;
+		const vertex* p2 = &point3;
+
+		//see that p1 is to the left of p2 always.
+		if (p1->m_position.x > p2->m_position.x)
+			std::swap(p1, p2);
+
+		Vec2 leftEdge = p0->m_position.x;
+		Vec2 rightEdge = p0->m_position.x;
+		Vec2 leftBottomEdge = p1->m_position.x;
+		Vec2 rightBottomEdge = p2->m_position.x;
+
+		
+	}
+	static void scanFlatTopTriangle(const vertex& p0, const vertex& p1, const vertex& p2)
+	{
+
+	}
+
+	static void scanTriangle(const vertex& p0, const vertex& p1, const vertex& p2,
+							 vertex letfEdge,vertex rightEdge,vertex deltaLeftEdge, vertex deltaRightEdge)
+	{
+
+	}
+
+
+
+
 	static void drawTexturedFlatBottomTriangle(const vertex& point1, const vertex& point2, const vertex& point3)
 	{
 		//p1 and p2 form the straight line always and p0 is to the top of p1 and p2..
@@ -157,7 +190,6 @@ private:
 			}
 		}
 	}
-	template<typename vertex>
 	static void drawTexturedFlatTopTriangle(const vertex& point1, const vertex& point2, const vertex& point3)
 	{
 		//p1 and p2 form the straight line always and p0 is to the bottom of p1 and p2..
@@ -213,3 +245,9 @@ private:
 
 	friend class Game;
 };
+
+//static variables definition
+template<typename effect> std::unique_ptr<Surface> pipeline<effect>::m_texture = nullptr;
+template<typename effect> Mat3 pipeline<effect>::m_rotationMatrix = Mat3::Identity();
+template<typename effect> Vec3 pipeline<effect>::m_translation = Vec3(0.0f, 0.0f, 0.0f);
+template<typename effect> Graphics* pipeline<effect>::gfx = nullptr;

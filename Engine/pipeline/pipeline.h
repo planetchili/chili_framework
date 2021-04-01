@@ -125,25 +125,7 @@ private:
 		vertex leftEdgeEnd	= *v1;
 		vertex rightEdgeEnd = *v2;
 
-		vertex leftEdgeDelta  = (leftEdgeEnd - leftEdge) / (leftEdgeEnd.m_position - leftEdge.m_position).y;
-		vertex rightEdgeDelta = (rightEdgeEnd - rightEdge) / (rightEdgeEnd.m_position - rightEdge.m_position).y;
-
-		//prestepping to stop division by zero
-		leftEdge += leftEdgeDelta;
-		rightEdge += rightEdgeDelta;
-
-		for (; leftEdge.m_position.y <= leftEdgeEnd.m_position.y; leftEdge += leftEdgeDelta, rightEdge += rightEdgeDelta)
-		{
-			vertex yStart = leftEdge;
-			vertex yEnd   = rightEdge;
-
-			vertex deltaX = (yEnd - yStart) / (yEnd.m_position - yStart.m_position).x;
-
-			for (; yStart.m_position.x <= yEnd.m_position.x; yStart += deltaX)
-			{
-				gfx->PutPixel(yStart.m_position.x, yStart.m_position.y, m_effectFunctor.ps(yStart));
-			}
-		}
+		drawFlatTriangle(leftEdge, rightEdge, leftEdgeEnd, rightEdgeEnd);
 	}
 	void drawFlatTopTriangle(const vertex& vertex0, const vertex& vertex1, const vertex& vertex2)
 	{
@@ -156,11 +138,15 @@ private:
 		if (v1->m_position.x > v2->m_position.x)
 			std::swap(v1, v2);
 
-		vertex leftEdge = *v1;
-		vertex rightEdge = *v2;
-		vertex leftEdgeEnd = *v0;
+		vertex leftEdge		= *v1;
+		vertex rightEdge	= *v2;
+		vertex leftEdgeEnd	= *v0;
 		vertex rightEdgeEnd = *v0;
 
+		drawFlatTriangle(leftEdge, rightEdge, leftEdgeEnd, rightEdgeEnd);
+	}
+	void drawFlatTriangle(vertex leftEdge,vertex rightEdge,vertex leftEdgeEnd,vertex rightEdgeEnd)
+	{
 		vertex leftEdgeDelta = (leftEdgeEnd - leftEdge) / (leftEdgeEnd.m_position - leftEdge.m_position).y;
 		vertex rightEdgeDelta = (rightEdgeEnd - rightEdge) / (rightEdgeEnd.m_position - rightEdge.m_position).y;
 

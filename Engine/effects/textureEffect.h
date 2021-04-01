@@ -41,15 +41,7 @@ public:
 			return v;
 		}
 
-		//bool operator ==(const texturedVertex& rhs) { return ((m_position == rhs.m_position) && (m_uv_coordinates == rhs.m_uv_coordinates)); };
-		vertex operator-(const vertex& rhs) const
-		{
-			vertex vert;
-			vert.m_position = m_position - rhs.m_position;
-			vert.m_uv_coordinates = m_uv_coordinates - rhs.m_uv_coordinates;
-
-			return vert;
-		}
+		
 		vertex operator+(const vertex& rhs) const
 		{
 			vertex vert;
@@ -58,11 +50,33 @@ public:
 
 			return vert;
 		}
-		vertex operator*(const Mat3& rhs) const
+		vertex& operator+=(vertex& rhs)
+		{
+			m_position = m_position + rhs.m_position;
+			m_uv_coordinates = m_uv_coordinates + rhs.m_uv_coordinates;
+			return *this;
+		}
+
+		vertex operator-(const vertex& rhs) const
 		{
 			vertex vert;
-			vert.m_position = m_position * rhs;
-			vert.m_uv_coordinates = m_uv_coordinates;
+			vert.m_position = m_position - rhs.m_position;
+			vert.m_uv_coordinates = m_uv_coordinates - rhs.m_uv_coordinates;
+			return vert;
+		}
+		vertex operator-=(vertex& rhs)
+		{
+			m_position = m_position - rhs.m_position;
+			m_uv_coordinates = m_uv_coordinates - rhs.m_uv_coordinates;
+			return *this;
+		}
+		
+
+		vertex operator/(const float rhs) const
+		{
+			vertex vert;
+			vert.m_position = m_position / rhs;
+			vert.m_uv_coordinates = m_uv_coordinates / rhs;
 			return vert;
 		}
 

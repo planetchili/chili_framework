@@ -24,7 +24,7 @@ public:
 	using vertex =typename effect::vertex;
 
 	pipeline(effect obj,Graphics* gfx)
-		: m_effectFunctor(obj), gfx(gfx)
+		: m_effectFunctor(std::move(obj)), gfx(gfx)
 	{}
 	
 	void bindRotationMatrix(Mat3 rotationMat) { m_rotationMatrix = rotationMat; }
@@ -92,9 +92,9 @@ private:
 
 		///case for p1 and p2 y value equal not handled.. basically.. no natural flat bottom is being handled..
 		if (p1->m_position.y == p2->m_position.y) //natural flat bottom
-			drawTexturedFlatBottomTriangle(*p0, *p1, *p2);
+			drawFlatBottomTriangle(*p0, *p1, *p2);
 		else if (p0->m_position.y == p1->m_position.y) //natural flat top
-			drawTexturedFlatTopTriangle(*p2, *p0, *p1);
+			drawFlatTopTriangle(*p2, *p0, *p1);
 		else
 		{
 			//normal triangle which needs to be split into natural flat bottom and natural flat top
@@ -102,98 +102,50 @@ private:
 			vertex splitPoint = p0->interpolateTo(*p2, alphaSplit);
 
 			//draw flat bottom and flat top
-			drawTexturedFlatBottomTriangle(*p0, *p1, splitPoint); //flat bottom triangle
-			drawTexturedFlatTopTriangle(*p2, *p1, splitPoint); //flat top triangle
+			drawFlatBottomTriangle(*p0, *p1, splitPoint); //flat bottom triangle
+			drawFlatTopTriangle(*p2, *p1, splitPoint); //flat top triangle
 		}
 	}
 
 
 private:
-	void TriangleRasterizer()
+	void drawFlatBottomTriangle(const vertex& vertex0, const vertex& vertex1, const vertex& vertex2)
 	{
-
-	}
-
-	void scanFlatBottomTriangle(const vertex& p0, const vertex& p1, const vertex& p2)
-	{
-		//p1 and p2 form the straight line always and p0 is to the top of p1 and p2..
-		const vertex* p0 = &point1;
-		const vertex* p1 = &point2;
-		const vertex* p2 = &point3;
+		//v1 and v2 form the straight line always and v0 is to the top of p1 and p2..
+		const vertex* v0 = &vertex0;
+		const vertex* v1 = &vertex1;
+		const vertex* v2 = &vertex2;
 
 		//see that p1 is to the left of p2 always.
-		if (p1->m_position.x > p2->m_position.x)
-			std::swap(p1, p2);
+		if (v1->m_position.x > v2->m_position.x)
+			std::swap(v1, v2);
 
-		Vec2 leftEdge = p0->m_position.x;
-		Vec2 rightEdge = p0->m_position.x;
-		Vec2 leftBottomEdge = p1->m_position.x;
-		Vec2 rightBottomEdge = p2->m_position.x;
+		vertex leftEdge		= *v0;
+		vertex rightEdge	= *v0;
+		vertex leftEdgeEnd	= *v1;
+		vertex rightEdgeEnd = *v2;
 
-		
-	}
-	void scanFlatTopTriangle(const vertex& p0, const vertex& p1, const vertex& p2)
-	{
+		vertex leftEdgeDelta  = (leftEdgeEnd - leftEdge) / (leftEdgeEnd.m_position - leftEdge.m_position).y;
+		vertex rightEdgeDelta = (rightEdgeEnd - rightEdge) / (rightEdgeEnd.m_position - rightEdge.m_position).y;
 
-	}
+		//prestepping to stop division by zero
+		leftEdge += leftEdgeDelta;
+		rightEdge += rightEdgeDelta;
 
-	void scanTriangle(const vertex& p0, const vertex& p1, const vertex& p2,
-							 vertex letfEdge,vertex rightEdge,vertex deltaLeftEdge, vertex deltaRightEdge)
-	{
-
-	}
-
-
-
-
-	void drawTexturedFlatBottomTriangle(const vertex& point1, const vertex& point2, const vertex& point3)
-	{
-		//p1 and p2 form the straight line always and p0 is to the top of p1 and p2..
-		const vertex* p0 = &point1;
-		const vertex* p1 = &point2;
-		const vertex* p2 = &point3;
-
-		//see that p1 is to the left of p2 always.
-		if (p1->m_position.x > p2->m_position.x)
-			std::swap(p1, p2);
-
-		float w12 = (p1->m_position.x - p0->m_position.x) / (p1->m_position.y - p0->m_position.y); //inverse slope
-		float w13 = (p2->m_position.x - p0->m_position.x) / (p2->m_position.y - p0->m_position.y); //inverse slope
-
-		float yStart = std::floor(p0->m_position.y + 0.5f);
-		float yEnd = std::floor(p1->m_position.y + 0.5f);
-
-		float leftEdgeDelta = w12;
-		float rightEdgeDelta = w13;
-		int count = 0; //the count variable keeps track of how many y spaces we advanced.. so that xStart and xEnd can be calculated accordingly..
-
-		Vec2 tcLeftEdge = p0->m_uv_coordinates;
-		Vec2 tcRightEdge = p0->m_uv_coordinates;
-
-		Vec2 tcBottomLeftEdge = p1->m_uv_coordinates;
-		Vec2 tcBottomRightEdge = p2->m_uv_coordinates;
-
-		Vec2 tcScanStepLeft = (tcBottomLeftEdge - tcLeftEdge) / (p1->m_position - p0->m_position).y;
-		Vec2 tcScanStepRight = (tcBottomRightEdge - tcRightEdge) / (p2->m_position - p0->m_position).y;
-
-		for (int y = yStart; y < yEnd; y++, tcLeftEdge += tcScanStepLeft, tcRightEdge += tcScanStepRight)
+		for (; leftEdge.m_position.y <= leftEdgeEnd.m_position.y; leftEdge += leftEdgeDelta, rightEdge += rightEdgeDelta)
 		{
-			float xStart = p0->m_position.x + (count * leftEdgeDelta);
-			float xEnd = p0->m_position.x + (count * rightEdgeDelta);
-			count++;
+			vertex yStart = leftEdge;
+			vertex yEnd   = rightEdge;
 
-			Vec2 tcScanStep = (tcRightEdge - tcLeftEdge) / (xEnd - xStart);
-			Vec2 tcStart = tcLeftEdge;
+			vertex deltaX = (yEnd - yStart) / (yEnd.m_position - yStart.m_position).x;
 
-			for (int x = xStart; x < xEnd; x++, tcStart += tcScanStep)
+			for (; yStart.m_position.x <= yEnd.m_position.x; yStart += deltaX)
 			{
-				gfx->PutPixel(x, y, m_texture->GetPixel(std::clamp(tcStart.x * m_texture->GetWidth(), 0.0f, (float)m_texture->GetWidth() - 1.0f),
-					std::clamp(tcStart.y * m_texture->GetHeight(), 0.0f, (float)m_texture->GetHeight() - 1.0f)
-				));
+				gfx->PutPixel(yStart.m_position.x, yStart.m_position.y, m_effectFunctor.ps(yStart));
 			}
 		}
 	}
-	void drawTexturedFlatTopTriangle(const vertex& point1, const vertex& point2, const vertex& point3)
+	void drawFlatTopTriangle(const vertex& point1, const vertex& point2, const vertex& point3)
 	{
 		//p1 and p2 form the straight line always and p0 is to the bottom of p1 and p2..
 		const vertex* p0 = &point1;
@@ -204,38 +156,7 @@ private:
 		if (p1->m_position.x > p2->m_position.x)
 			std::swap(p1, p2);
 
-		float w12 = (p1->m_position.x - p0->m_position.x) / (p1->m_position.y - p0->m_position.y); //inverse slope
-		float w13 = (p2->m_position.x - p0->m_position.x) / (p2->m_position.y - p0->m_position.y); //inverse slope
-
-		float yStart = std::ceil(p1->m_position.y - 0.5f);
-		float yEnd = std::floor(p0->m_position.y + 0.5f);
-
-		Vec2 tcEdgeLeft = p1->m_uv_coordinates;
-		Vec2 tcEdgeRight = p2->m_uv_coordinates;
-		Vec2 tcEdgeBottomLeft = p0->m_uv_coordinates;
-		Vec2 tcEdgeBottomRight = p0->m_uv_coordinates;
-
-		Vec2 tcScanStepLeft = (tcEdgeBottomLeft - tcEdgeLeft) / (p0->m_position - p1->m_position).y;
-		Vec2 tcScanStepRight = (tcEdgeBottomRight - tcEdgeRight) / (p0->m_position - p2->m_position).y;
-
-		float leftEdgeDelta = w12;
-		float rightEdgeDelta = w13;
-		int count = 0; //the count variable keeps track of how many y spaces we advanced.. so that xStart and xEnd can be calculated accordingly..
-
-		for (int y = yStart; y < yEnd; y++, tcEdgeLeft += tcScanStepLeft, tcEdgeRight += tcScanStepRight)
-		{
-			float xStart = p1->m_position.x + (count * leftEdgeDelta);
-			float xEnd = p2->m_position.x + (count * rightEdgeDelta);
-			count++;
-
-			Vec2 tcScanStep = (tcEdgeRight - tcEdgeLeft) / (xEnd - xStart);
-			Vec2 tcStart = tcEdgeLeft;
-
-			for (int x = xStart; x < xEnd; x++, tcStart += tcScanStep)
-			{
-				gfx->PutPixel(x, y, m_effectFunctor()); //my function as of now does not give me a vertex dataStructure to work with.. I must change this.
-			}
-		}
+		
 	}
 
 private:

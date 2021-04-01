@@ -35,7 +35,7 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	cub(0.5f),
-	pip(std::filesystem::path(L"resources/texture/diceUV.bmp"),&gfx)
+	pip(textureEffect(std::filesystem::path(L"resources/texture/diceUV.bmp")),&gfx)
 {}
 
 void Game::Go()

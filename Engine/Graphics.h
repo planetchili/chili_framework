@@ -25,6 +25,7 @@
 #include "ChiliException.h"
 #include "Colors.h"
 #include "RectF.h"
+#include "RectI.h"
 
 class Graphics
 {
@@ -64,6 +65,7 @@ public:
 		DrawRect(int(rect.left), int(rect.top), int(rect.right), int(rect.bottom), c);
 	}
 	void DrawCircle(int x, int y, int radius, Color c);
+	RectI GetRect() const;
 
 	~Graphics();
 private:

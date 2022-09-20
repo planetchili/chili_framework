@@ -335,6 +335,14 @@ void Graphics::DrawRect(int x0, int y0, int x1, int y1, Color c)
 		}
 	}
 }
+/*
+* Get Rect m8
+*/
+
+RectI Graphics::GetRect() const
+{
+	return RectI(0, ScreenWidth, 0, ScreenHeight);
+}
 
 /*
 * Applies Pythagorean theorem to test where a point

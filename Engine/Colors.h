@@ -55,7 +55,7 @@ public:
 	{
 		return dword == rhs.dword;
 	}
-	bool operator!=(Color rhs)
+	bool operator!=(Color rhs) const
 	{
 		return !(*this == rhs);
 	}

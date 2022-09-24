@@ -26,6 +26,7 @@
 #include "Colors.h"
 #include "RectF.h"
 #include "RectI.h"
+#include "Surface.h"
 
 class Graphics
 {
@@ -66,6 +67,12 @@ public:
 	}
 	void DrawCircle(int x, int y, int radius, Color c);
 	RectI GetRect() const;
+	void DrawSpriteNonChroma(int x, int y, const Surface& s);
+	void DrawSpriteNonChroma(int x, int y, const RectI& rect, const Surface& s);
+	void DrawSpriteNonChroma(int x, int y, RectI rect, const RectI& clip, const Surface& s);
+	void DrawSprite(int x, int y, const Surface& s, Color chroma = Colors::Magenta);
+	void DrawSprite(int x, int y, const RectI rect, const Surface& s, Color chroma = Colors::Magenta);
+	void DrawSprite(int x, int y, RectI rect, const RectI& clip, const Surface& s, Color chroma = Colors::Magenta);
 
 	~Graphics();
 private:
@@ -85,4 +92,5 @@ private:
 public:
 	static constexpr int ScreenWidth = 800;
 	static constexpr int ScreenHeight = 600;
+	static RectI GetScreenRect();
 };

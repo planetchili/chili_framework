@@ -1,3 +1,4 @@
+#pragma once
 #include "Vei2.h"
 
 class RectI
@@ -13,6 +14,8 @@ public:
 	static RectI FromCenter(const Vei2& center, int halfWidth, int halfHeight);
 	RectI GetExpanded(int offset) const;
 	Vei2 GetCenter() const;
+	int GetWidth() const;
+	int GetHeight() const;
 public:
 	int left;
 	int right;

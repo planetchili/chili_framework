@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Graphics.h"
-#include "Vei2.h"
+#include "Vec2.h"
 
 class SpriteCodex
 {

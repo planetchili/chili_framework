@@ -24,8 +24,8 @@
 #include <wrl.h>
 #include "ChiliException.h"
 #include "Colors.h"
-#include "RectF.h"
-#include "RectI.h"
+#include "Rect.h"
+#include "Rect.h"
 #include "Surface.h"
 
 class Graphics

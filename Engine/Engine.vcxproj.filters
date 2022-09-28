@@ -66,13 +66,7 @@
     <ClInclude Include="Vec2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RectF.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RectI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vei2.h">
+    <ClInclude Include="Rect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Surface.h">
@@ -111,18 +105,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SpriteCodex.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vec2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RectF.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RectI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vei2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Surface.cpp">

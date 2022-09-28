@@ -25,7 +25,7 @@
 #include <assert.h>
 #include <string>
 #include <array>
-#include "RectI.h"
+#include "Rect.h"
 
 // Ignore the intellisense error "cannot open source file" for .shh files.
 // They will be created during the build sequence before the preprocessor runs.

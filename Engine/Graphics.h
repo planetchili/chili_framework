@@ -73,6 +73,7 @@ public:
 	void DrawSprite(int x, int y, const Surface& s, Color chroma = Colors::Magenta);
 	void DrawSprite(int x, int y, const RectI rect, const Surface& s, Color chroma = Colors::Magenta);
 	void DrawSprite(int x, int y, RectI rect, const RectI& clip, const Surface& s, Color chroma = Colors::Magenta);
+	void DrawLine(Vec2 p0, Vec2 p1, Color c);
 
 	~Graphics();
 private:

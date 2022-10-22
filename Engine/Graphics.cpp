@@ -462,6 +462,59 @@ void Graphics::DrawSprite(int x, int y, RectI rect, const RectI& clip, const Sur
 	}
 }
 
+void Graphics::DrawLine(Vec2 p0, Vec2 p1, Color c)
+{
+	// check line if horizontal or vertical
+	// for a complete vertical line watchout for division by 0 as y1 = y0 in the slope equation
+	float m = 0.0f;
+
+	// check for completly vertical line
+	if (p1.x != p0.x)
+	{
+		m = (p1.y - p0.y) / (p1.x - p0.x);
+	}
+
+	// completly horizontal line
+	if (p1.x != p0.x && std::abs(m) <= 1.0f)
+	{
+		// horizontal line
+		// loop from lower X to greater X
+		if (p0.x > p1.x)
+		{
+			std::swap(p0, p1);
+		}
+
+		// y = mx + b
+		const float b = p0.y - m * p0.x;
+
+		for (int x = (int)p0.x; x < (int)p1.x; ++x)
+		{
+			const float y = m * (float)x + b;
+			PutPixel(x, (int)y, c);
+		}
+	}
+	else
+	{
+		// vertical line
+		// in this case order by Y
+		if (p0.y > p1.y)
+		{
+			std::swap(p0, p1);
+		}
+
+		// x = wy + p 
+		const float w = (p1.x - p0.x) / (p1.y - p0.y);
+		const float p = p0.x - w * p0.y;
+
+		for (int y = (int)p0.y; y < (int)p1.y; ++y)
+		{
+			const float x = w * (float)y + p;
+			PutPixel((int)x, y, c);
+		}
+	}
+}
+
+
 
 
 /*

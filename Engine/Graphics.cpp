@@ -514,7 +514,41 @@ void Graphics::DrawLine(Vec2 p0, Vec2 p1, Color c)
 	}
 }
 
+// loop thru vertices and draw lines between them
+void Graphics::DrawClosedPolyline(const std::vector<Vec2>& verts, Color c)
+{
+	// loop until the second last vertice
+	for (auto i = verts.begin(); i != std::prev(verts.end()); ++i)
+	{
+		DrawLine(*i, *std::next(i), c);
+	}
 
+	// close the polyline
+	DrawLine(verts.back(), verts.front(), c);
+}
+
+void Graphics::DrawClosedPolyline(const std::vector<Vec2>& verts, const Vec2& translation, float scale_x, float scale_y, Color c)
+{
+	const auto xform = [&](Vec2 v)
+	{
+		v.x *= scale_x;
+		v.y *= scale_y;
+		v += translation;
+		return v;
+	};
+
+	const Vec2 front = xform(verts.front());
+	Vec2 cur = front;
+
+	for (auto i = verts.begin(); i < std::prev(verts.end()); ++i)
+	{
+		const Vec2 next = xform(*std::next(i));
+		DrawLine(cur, next, c);
+		cur = next;
+	}
+	// close polyline
+	DrawLine(cur, front, c);
+}
 
 
 /*

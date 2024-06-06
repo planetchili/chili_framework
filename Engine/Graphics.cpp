@@ -51,8 +51,8 @@ Graphics::Graphics( HWNDKey& key )
 	sd.BufferDesc.Width = Graphics::ScreenWidth;
 	sd.BufferDesc.Height = Graphics::ScreenHeight;
 	sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-	sd.BufferDesc.RefreshRate.Numerator = 1;
-	sd.BufferDesc.RefreshRate.Denominator = 60;
+	sd.BufferDesc.RefreshRate.Numerator = 0;
+	sd.BufferDesc.RefreshRate.Denominator = 0;
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	sd.OutputWindow = key.hWnd;
 	sd.SampleDesc.Count = 1;
@@ -288,7 +288,7 @@ void Graphics::EndFrame()
 	pImmediateContext->Draw( 6u,0u );
 
 	// flip back/front buffers
-	if( FAILED( hr = pSwapChain->Present( 1u,0u ) ) )
+	if( FAILED( hr = pSwapChain->Present( 0u,0u ) ) )
 	{
 		if( hr == DXGI_ERROR_DEVICE_REMOVED )
 		{

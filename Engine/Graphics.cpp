@@ -316,6 +316,11 @@ void Graphics::PutPixel( int x,int y,Color c )
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
 }
 
+bool Graphics::InBounds(int x, int y, int left, int right, int top, int bottom)
+{
+	return (x >= left && y >= top && x < right && y < bottom);
+}
+
 
 //////////////////////////////////////////////////
 //           Graphics Exception

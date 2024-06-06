@@ -24,6 +24,9 @@
 #include "Mouse.h"
 #include "Graphics.h"
 
+
+#include "StarfieldSim/StarfieldSimulation.h"
+
 class Game
 {
 public:
@@ -32,15 +35,10 @@ public:
 	Game& operator=( const Game& ) = delete;
 	void Go();
 private:
-	void ComposeFrame();
-	void UpdateModel();
-	/********************************/
-	/*  User Functions              */
-	/********************************/
-private:
 	MainWindow& wnd;
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
 	/********************************/
+	StarfieldSimulation sSim;
 };

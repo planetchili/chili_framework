@@ -24,22 +24,15 @@
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
-	gfx( wnd )
+	gfx( wnd ),
+	sSim(200, gfx.ScreenWidth, gfx.ScreenHeight)
 {
 }
 
 void Game::Go()
 {
-	gfx.BeginFrame();	
-	UpdateModel();
-	ComposeFrame();
+	gfx.BeginFrame();
+	sSim.UpdateFrame();
+	sSim.ComposeFrame(gfx);
 	gfx.EndFrame();
-}
-
-void Game::UpdateModel()
-{
-}
-
-void Game::ComposeFrame()
-{
 }

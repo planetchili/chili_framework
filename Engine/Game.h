@@ -23,6 +23,9 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
+#include "Board.h"
+#include "Vei2.h"
+#include "Player.h"
 
 class Game
 {
@@ -34,13 +37,14 @@ public:
 private:
 	void ComposeFrame();
 	void UpdateModel();
-	/********************************/
-	/*  User Functions              */
-	/********************************/
 private:
 	MainWindow& wnd;
 	Graphics gfx;
-	/********************************/
-	/*  User Variables              */
-	/********************************/
+	Board brd;
+	Player player;
+	Vei2 playerDelta_Loc = { 0, 0 };
+	bool rightPressed = false;
+	bool leftPressed = false;
+	bool upPressed = false;
+	bool downPressed = false;
 };

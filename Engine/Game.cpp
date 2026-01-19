@@ -24,7 +24,9 @@
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
-	gfx( wnd )
+	gfx( wnd ),
+	brd(20, 20),
+	player({2, 1})
 {
 }
 
@@ -38,8 +40,33 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	if (wnd.kbd.KeyIsPressed(VK_RIGHT) && !rightPressed)
+	{	
+		rightPressed = true;
+		playerDelta_Loc = { 1, 0 };
+		player.MoveBy(playerDelta_Loc);
+	}
+	if (wnd.kbd.KeyIsPressed(VK_LEFT) && !leftPressed)
+	{	
+		leftPressed = true;
+		playerDelta_Loc = { -1, 0 };
+		player.MoveBy(playerDelta_Loc);
+	}
+	if (wnd.kbd.KeyIsPressed(VK_DOWN) && !downPressed)
+	{	
+		downPressed = true;
+		playerDelta_Loc = { 0, 1 };
+		player.MoveBy(playerDelta_Loc);
+	}
+	if (wnd.kbd.KeyIsPressed(VK_UP) && !upPressed)
+	{	
+		upPressed = true;
+		playerDelta_Loc = { 0, -1 };
+		player.MoveBy(playerDelta_Loc);
+	}
 }
 
 void Game::ComposeFrame()
 {
+	player.Draw(brd, gfx, Colors::Green);
 }
